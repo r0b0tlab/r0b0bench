@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local credentials. Private benchmark evidence is forbidden inside this
+# checkout and is intentionally not ignored: accidental runs/, private/, or
+# archives/ trees must remain visible to Git and fail publication review.
+.env
+.env.*
+!.env.example
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
