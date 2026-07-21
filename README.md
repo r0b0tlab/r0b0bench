@@ -3,13 +3,14 @@
 A reviewed specification for a reproducible, provenance-bound benchmark suite for
 OpenAI-compatible model endpoints.
 
-> **Status: specification only.** The runner, package, contracts, and benchmark
-> results are not implemented or released yet. This repository currently contains
-> the public implementation plan and review record.
+> **Status: specification and current reference method.** A run-specific private
+> harness is exercising the 8,620-case lifecycle, but the model-neutral package,
+> contracts, and CLI have not yet been ported or released. Private campaign output
+> is not automatically an r0b0bench result.
 
-## Planned core suite
+## Standard core suite
 
-`r0b0bench-core-v1` will contain 8,620 cases:
+`r0b0bench-core-v1-rc2` candidate contains 8,620 logical cases:
 
 | Pillar | Component | Cases | Primary output |
 |---|---|---:|---|
@@ -23,7 +24,23 @@ cases; adding 200 official BFCL cases yields the 8,620-case core.
 
 BFCL and the other components are independent lanes under one standardized run
 identity. Non-BFCL tasks are not inserted into BFCL's official category namespace,
-and v1 will not publish one opaque composite score.
+and v1 will not publish one opaque composite score. BFCL counts toward the 8,620
+logical total while retaining its separate official lane metric. Two pre-admission
+105-case calibration repeats are excluded from the standard-suite count.
+
+## Current reference method
+
+The 2026-07-21 `r0b0bench-core-v1-rc2` candidate replaced the historical short
+completion caps with a fixed 32,768-token ceiling for BFCL, generated-answer,
+IFEval, and HumanEval generation. Non-BFCL model requests use concurrency 16;
+official BFCL evaluation uses a separately versioned adapter profile and remains
+one thread. The method also requires two hash-bound calibration repeats,
+exact-stack BFCL canaries, private immutable evidence, endpoint-attempt ledgers,
+and separate lane reporting.
+
+See [Current reference method and porting boundary](docs/REFERENCE_METHOD_2026-07-21.md).
+This evidence updates the implementation contract but does not make the public
+repository runnable or authorize publication of private campaign results.
 
 ## Core principles
 
@@ -42,19 +59,26 @@ and v1 will not publish one opaque composite score.
 ## Documents
 
 - [Implementation plan](docs/IMPLEMENTATION_PLAN.md)
+- [Current reference method and porting boundary](docs/REFERENCE_METHOD_2026-07-21.md)
+- [Calibration identity hash preimage](docs/CALIBRATION_IDENTITY_2026-07-21.json)
 - [Independent review history](docs/REVIEW_HISTORY.md)
 - [Third-party notices and source boundaries](THIRD_PARTY_NOTICES.md)
 - [Contributing](CONTRIBUTING.md)
 
 ## Current milestone
 
-The next milestone is contract-first implementation:
+The next milestone is to port the audited reference behavior into a reusable,
+model-neutral package without copying deployment-specific paths or runtime identity:
 
-1. create strict suite/dataset/request/result schemas;
-2. add atomic private storage and one endpoint lease;
-3. implement a BFCL vertical slice through the unmodified official evaluator;
+1. freeze strict suite/dataset/request/result schemas for the 32,768-token
+   reference contract;
+2. add atomic private storage, descendant owner/lock verification, and one
+   endpoint lease;
+3. implement an exact-stack official BFCL vertical slice with opaque-state
+   canonicalization and call/result binding;
 4. add generated-answer, IFEval, and sandboxed HumanEval lanes;
-5. qualify one fresh 8,620-case reference run before freezing v1.
+5. qualify a fresh 8,620-case reference run and safe public projection before
+   freezing v1.
 
 There is currently no install command because there is no released package or
 working CLI. Please do not report benchmark scores as r0b0bench results until the

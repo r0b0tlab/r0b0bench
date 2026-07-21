@@ -1,0 +1,549 @@
+{
+  "combined_projection_sha256": "47bcc014b84ce0ad0b4d86936407c6895a8ae31c75640b14522a07300ada7d7e",
+  "hash_algorithm": "sha256(UTF-8 canonical JSON with sorted object keys, compact separators, ensure_ascii=false, list order preserved)",
+  "lane_projection_sha256": {
+    "generated_answer": "e11304fd3f2a3fdfd4b9df9b8a6c8f7d1de83d58192a9750c68c6f7bc6645163",
+    "humaneval": "436ed06adb79ee7fff8f4627b8326a3eab305dff248da3361b01c3ebdae2ff0f",
+    "ifeval": "f7fe54bf2e049ed829d4f1821313b5482c48438f247b87ae46f7a2d30b90be98"
+  },
+  "lanes": {
+    "generated_answer": [
+      {
+        "index": 0,
+        "prompt_sha256": "9c59feaf41ee16bd18b6c847e7d876391ce0f1d5e998a1a7fe6a3fb0e7211787",
+        "task": "gsm8k"
+      },
+      {
+        "index": 1,
+        "prompt_sha256": "5c5ff062344dd3ab1def828e588daac74603479c27dfe5406fde5fb9fbe60dfc",
+        "task": "gsm8k"
+      },
+      {
+        "index": 2,
+        "prompt_sha256": "863fe629d089edb84188b6ce48f6e90618c2a4aa74afcd8bf5aac31bb58c5388",
+        "task": "gsm8k"
+      },
+      {
+        "index": 3,
+        "prompt_sha256": "112d92dae341565e90007ff1fa866cd1fdda93094063e7774e67fc5f8107209b",
+        "task": "gsm8k"
+      },
+      {
+        "index": 4,
+        "prompt_sha256": "05b70c8acb339f2c9486e177350b36a7a1605b61ccb1b3f8fae98d354912c222",
+        "task": "gsm8k"
+      },
+      {
+        "index": 0,
+        "prompt_sha256": "755c318fdf7d75472d5fde04227d18c56a3ba1eb0ad33a5c81758afad17c0ca8",
+        "task": "arc_challenge"
+      },
+      {
+        "index": 1,
+        "prompt_sha256": "1dad76c6a7dee45ff54a13c8a55d3d6eabbf9581d096fe580bdecd2f04d952d9",
+        "task": "arc_challenge"
+      },
+      {
+        "index": 2,
+        "prompt_sha256": "83bd1e6914f9dee646be670e1a6b0a56bf33593ecf5b5d0d841f94767fb0ff48",
+        "task": "arc_challenge"
+      },
+      {
+        "index": 3,
+        "prompt_sha256": "4251adb36b6b2d723bee54947a4ab98b580cc609d8accbc3fb24cb2abd2e3b49",
+        "task": "arc_challenge"
+      },
+      {
+        "index": 4,
+        "prompt_sha256": "d6288a53dd3df1bc3917602869fe3098fb6f7a02c5f3f4218eaf1f3dc14c1e69",
+        "task": "arc_challenge"
+      },
+      {
+        "index": 0,
+        "prompt_sha256": "7216b68d920393833eb608509fef0e3ea639db01ffee82613a3143bc481a412e",
+        "task": "piqa"
+      },
+      {
+        "index": 1,
+        "prompt_sha256": "57369df982f674f2e577a2af9fae141e1238e1d55d9a43c1994b2400dd617926",
+        "task": "piqa"
+      },
+      {
+        "index": 2,
+        "prompt_sha256": "56bd42b2b44cd289ba9da98f860491accb1cfb93d8d2d24bfff24ef4a6741859",
+        "task": "piqa"
+      },
+      {
+        "index": 3,
+        "prompt_sha256": "c1f4359709268e5b54938a2b6ebeb55158e8ba8a171247cf5231450aa683925a",
+        "task": "piqa"
+      },
+      {
+        "index": 4,
+        "prompt_sha256": "a92b124a3ef82f3d448afebfcf4ef39214416e00cae93ef905254bb55f5e3c2a",
+        "task": "piqa"
+      },
+      {
+        "index": 0,
+        "prompt_sha256": "2417f5de97604ac97ce3019b26cc5c06bc41ae42ad9198b21527f92d9e363106",
+        "task": "winogrande"
+      },
+      {
+        "index": 1,
+        "prompt_sha256": "a37d660fe4d6536a7e1ce6229b3758ed6d53991c71dcfd53da3112cbdaeed6e0",
+        "task": "winogrande"
+      },
+      {
+        "index": 2,
+        "prompt_sha256": "01317bfdc878e94338e4bdd488f1e368167a9e82bdffd7c7c16f157ff60caecb",
+        "task": "winogrande"
+      },
+      {
+        "index": 3,
+        "prompt_sha256": "ac7b136cc6cc81d8a546c4e1c50f150baa0c1000e065f2c444ebbfb07adb3842",
+        "task": "winogrande"
+      },
+      {
+        "index": 4,
+        "prompt_sha256": "ebc457ba7a0cb3b12be2f7d9b13968a1754e580a88a3287837480b3d59c22f56",
+        "task": "winogrande"
+      },
+      {
+        "index": 0,
+        "prompt_sha256": "60c9bbc7683dc41a6e5cc8225ea37c7823936b89279dc6967ed9d2c5aa46eac7",
+        "task": "truthfulqa_mc1"
+      },
+      {
+        "index": 1,
+        "prompt_sha256": "1eee933ad6e39b6f0a66902a4f7d0e55e25e3c2b8777fee291f233fe6a23c150",
+        "task": "truthfulqa_mc1"
+      },
+      {
+        "index": 2,
+        "prompt_sha256": "9efe25a23e944bd7b7a5a08400f5b82117673a4a2dd329125dbe5c2affedb420",
+        "task": "truthfulqa_mc1"
+      },
+      {
+        "index": 3,
+        "prompt_sha256": "da2b71522a439bd7d063f8c0bd10b2d53043bdc098c0e585b0fd11bf24c0e10e",
+        "task": "truthfulqa_mc1"
+      },
+      {
+        "index": 4,
+        "prompt_sha256": "daa6b2fd99007ef309f24da85f676a5c0d230d8bc125aac0dc6960d698458b09",
+        "task": "truthfulqa_mc1"
+      },
+      {
+        "index": 0,
+        "prompt_sha256": "f8e91ba1f8cbfc2f137043e853d0bb78fe73afae0465c4ff653b09af19a6ef50",
+        "task": "mmlu_abstract_algebra"
+      },
+      {
+        "index": 1,
+        "prompt_sha256": "441a0b5a8c4700a7187318bcefb3b669848b87bbfe97cdf72dd00ee96d7d6a0b",
+        "task": "mmlu_abstract_algebra"
+      },
+      {
+        "index": 2,
+        "prompt_sha256": "3e4c1abf757a1552c1bd35e40a52ca38304ce7586fd7a58d5487afc1428d1a33",
+        "task": "mmlu_abstract_algebra"
+      },
+      {
+        "index": 3,
+        "prompt_sha256": "88fce7acf1c6751c48b096ba852052b0258cd0924e1ad0272a2a23b6190396e4",
+        "task": "mmlu_abstract_algebra"
+      },
+      {
+        "index": 4,
+        "prompt_sha256": "ce9e6bcecfb0b737d560b02140d90f62122bbfa39011ec6b1b48359974c1b269",
+        "task": "mmlu_abstract_algebra"
+      },
+      {
+        "index": 0,
+        "prompt_sha256": "9364dc5ac5fe0f2d882630898ada67def9063182296f19d0b5dc6a8b281ac69e",
+        "task": "mmlu_business_ethics"
+      },
+      {
+        "index": 1,
+        "prompt_sha256": "94a070acc1af0b9f67fd552d89dd4bde0d821e7f33f85af3953fd11e895384bd",
+        "task": "mmlu_business_ethics"
+      },
+      {
+        "index": 2,
+        "prompt_sha256": "c6b12b48c093e0bb2dfbc490885eb40378dd4aa4cb7d6aff31916f19ca444035",
+        "task": "mmlu_business_ethics"
+      },
+      {
+        "index": 3,
+        "prompt_sha256": "a1bbf3e27427dca9e26fb924280a1cc2c401e08dd6ec9a64cde57bde5498c66f",
+        "task": "mmlu_business_ethics"
+      },
+      {
+        "index": 4,
+        "prompt_sha256": "a7e632ec4bb68f3800ded4a59014bc844d77893f2190ae9540b5b5aab133900f",
+        "task": "mmlu_business_ethics"
+      },
+      {
+        "index": 0,
+        "prompt_sha256": "1e9ccddbac4596efdb06135e94fda116906d885d0a1064ab415e8d710e8b31e3",
+        "task": "mmlu_clinical_knowledge"
+      },
+      {
+        "index": 1,
+        "prompt_sha256": "25dbaddd204cfe151f25740da822a5a375df9ac708ef7774a4d04bca25a4cc91",
+        "task": "mmlu_clinical_knowledge"
+      },
+      {
+        "index": 2,
+        "prompt_sha256": "9b5d2af69dafc718e0f789cd572f7cc377c64c03d2cce99c310148870937126d",
+        "task": "mmlu_clinical_knowledge"
+      },
+      {
+        "index": 3,
+        "prompt_sha256": "5ea2d182d8b17b860c29d822ef49286c47d2fa6c2be5d47ee3d0364c65654663",
+        "task": "mmlu_clinical_knowledge"
+      },
+      {
+        "index": 4,
+        "prompt_sha256": "f11512008f7de053d637a718a2d61bc26907fd6bbb176b5ebbee28867457e40c",
+        "task": "mmlu_clinical_knowledge"
+      },
+      {
+        "index": 0,
+        "prompt_sha256": "4f45eac0e3a7c34a1f7d5a207545529c47632e5d4072282c0d8966d2b0c117bb",
+        "task": "mmlu_college_biology"
+      },
+      {
+        "index": 1,
+        "prompt_sha256": "0daa0d4a1b811cf7c9b1a57a7fc8b771e73733a7646171c02cefa80fb7440b7f",
+        "task": "mmlu_college_biology"
+      },
+      {
+        "index": 2,
+        "prompt_sha256": "fcd150eb840e73fd2fd87d75c4585c4dde90da0392d15c002825f78770bbcfe3",
+        "task": "mmlu_college_biology"
+      },
+      {
+        "index": 3,
+        "prompt_sha256": "285c6e50b58fba800b34209858ea35ced02698bf777781df8b493eed1c764ee2",
+        "task": "mmlu_college_biology"
+      },
+      {
+        "index": 4,
+        "prompt_sha256": "0a9145fd05fded9fa8a020d54fbb56c02cdf0055049fb70b8cd531002f120d66",
+        "task": "mmlu_college_biology"
+      },
+      {
+        "index": 0,
+        "prompt_sha256": "d47389a2f08cb184f1e124aeec4b61aeb39d47af1d3f5c846a9728f1e4a6f3bc",
+        "task": "mmlu_computer_security"
+      },
+      {
+        "index": 1,
+        "prompt_sha256": "852c453ebb4f3ca864b37f30e746ef44687228591e6f83a54d2d8bddb5744caa",
+        "task": "mmlu_computer_security"
+      },
+      {
+        "index": 2,
+        "prompt_sha256": "97e84217d455f9d4e4a094978aba5157330a257f26b7514ed2c3b2161ca74c55",
+        "task": "mmlu_computer_security"
+      },
+      {
+        "index": 3,
+        "prompt_sha256": "44e7dc63aa93d090fd3775197462d88a187b77484da27e3bfee84d47181a5fcd",
+        "task": "mmlu_computer_security"
+      },
+      {
+        "index": 4,
+        "prompt_sha256": "35a605d73026d7af807748f919e5070b70519868bc3cc730f7e0b978a067eb68",
+        "task": "mmlu_computer_security"
+      },
+      {
+        "index": 0,
+        "prompt_sha256": "1e738b381aa51be3ed97139e50d4afe87420f82749dc498057a2933cf7ff4ee4",
+        "task": "mmlu_conceptual_physics"
+      },
+      {
+        "index": 1,
+        "prompt_sha256": "9f8bef039abcf6941fd83c9851414c3c30c3d1443804b07a20de26af249343a0",
+        "task": "mmlu_conceptual_physics"
+      },
+      {
+        "index": 2,
+        "prompt_sha256": "10104228f425107d28cf722b6382d20a4ff165d615b15fab6334cc0dccc1d59b",
+        "task": "mmlu_conceptual_physics"
+      },
+      {
+        "index": 3,
+        "prompt_sha256": "86ab974f64d22829a26fa377ace9f3dcb5befa8cb5c355598bec255ad211e568",
+        "task": "mmlu_conceptual_physics"
+      },
+      {
+        "index": 4,
+        "prompt_sha256": "244fd5c8f2ac4230d6691b7f56f9ecea72870142c7e866ec18cb46c2984a7ce0",
+        "task": "mmlu_conceptual_physics"
+      },
+      {
+        "index": 0,
+        "prompt_sha256": "69d28e5adfcb854a0bf1e5b9e60b11e20d09c8114fab6a8f879015b3598541d1",
+        "task": "mmlu_high_school_world_history"
+      },
+      {
+        "index": 1,
+        "prompt_sha256": "10f2e3d55e9429bb0f05bd742b24e855041c4d3775675406dd90b3c2483d0dd8",
+        "task": "mmlu_high_school_world_history"
+      },
+      {
+        "index": 2,
+        "prompt_sha256": "39bd18826a243138c155f06285cae29d69540a50e9bf65a81c7a3e6af08fcbe2",
+        "task": "mmlu_high_school_world_history"
+      },
+      {
+        "index": 3,
+        "prompt_sha256": "2f8ab19d3f2e2a5b78da0d235e37ed90596e91e3b7ad688fd321c7b9ec2ea6d1",
+        "task": "mmlu_high_school_world_history"
+      },
+      {
+        "index": 4,
+        "prompt_sha256": "03740e0eae235de5baa4baded6d1cee333e550e20572ecf5fc90c6e1a961bb4f",
+        "task": "mmlu_high_school_world_history"
+      },
+      {
+        "index": 0,
+        "prompt_sha256": "526945f439c6bf1e95bc9446d3f5ba7bfa0fec476157e3f6243289105c393bac",
+        "task": "mmlu_international_law"
+      },
+      {
+        "index": 1,
+        "prompt_sha256": "8381cfd9eb021b0095a07f0d735cf8563cee1fca080bd08e1d75269bc614f0a0",
+        "task": "mmlu_international_law"
+      },
+      {
+        "index": 2,
+        "prompt_sha256": "9b247120b818aecd1c3f0a2f86dcfb3648d3f49ee0cfbd74e8923dc749ef6747",
+        "task": "mmlu_international_law"
+      },
+      {
+        "index": 3,
+        "prompt_sha256": "c522322b48e83da66d9e96a4a3aed2679788366f234e44c00d071d67709e00c4",
+        "task": "mmlu_international_law"
+      },
+      {
+        "index": 4,
+        "prompt_sha256": "d81e4c9f6cd709dff64f0fa70956047c7f21d09f5370693125f5cff5f6e4eb04",
+        "task": "mmlu_international_law"
+      }
+    ],
+    "humaneval": [
+      {
+        "index": 0,
+        "prompt_sha256": "e1cff0d586af78f3e708239a97c244d3ef8f917b25fc7c28249ff2f4077f21b8",
+        "task_id_sha256": "de004141fa5f04d845443ff6783bd85b90b3189eab95e47eb7ca5bd836a9081a"
+      },
+      {
+        "index": 1,
+        "prompt_sha256": "0305446be79ea3ec6f08b68f90c1fc5b9e8e231392366e95d6afb2f1aea30a5a",
+        "task_id_sha256": "2b625257b3a2242ca5fdbe3595acf329e7ba460688f4485cc3e32a018ae996cd"
+      },
+      {
+        "index": 2,
+        "prompt_sha256": "1a32c5839958f7fcb46566f03bcc0ed300304f89a59e8052d5ac081bea9d175b",
+        "task_id_sha256": "3273f6bf8feb0b8329c489e15407b9ffcec9d5bd2e863595f9acd562e2008f1e"
+      },
+      {
+        "index": 3,
+        "prompt_sha256": "418ca4923dce6653edb0a0b0bf3eeea66d599aa5674544a73700802edb23a556",
+        "task_id_sha256": "a62f14a8ccb0cf88064f9f8ff6fc040e116145af3951929dded6cb624fd088d5"
+      },
+      {
+        "index": 4,
+        "prompt_sha256": "42c231064e049c73abc0d25a4d60667336db60169893512618263c813402f936",
+        "task_id_sha256": "f921ad923ee1debd0b949e4fbe7370cbf0d5fd03e34b547b5ecada09fb7e2119"
+      },
+      {
+        "index": 5,
+        "prompt_sha256": "44892c1ea4010680e83e824f56ce7edfcc90916302ca478663fab2770b4f2156",
+        "task_id_sha256": "232f52cff54e2e47dfab5f84ba6bf17ba98eac5295ef298ee995f9ff7a0fa07b"
+      },
+      {
+        "index": 6,
+        "prompt_sha256": "2b8f91c805627fbfa19a401c95b19bf3cdd3455f497ded8a16c2a7b748cf43cd",
+        "task_id_sha256": "be3eebd77038660538a69429e9d32f38d91ba4ce0a571e8b070a4673a3709bb8"
+      },
+      {
+        "index": 7,
+        "prompt_sha256": "bf8e0594b840ed0ce4fb845373d11e2a5ac4e4b4a6cd5be83eaa70a3e9f30458",
+        "task_id_sha256": "2733b90a7cad1177ba92e4bdb0dd3f77feff57a1f96c91138a025188fe345b75"
+      },
+      {
+        "index": 8,
+        "prompt_sha256": "01e9a92a9c66319ca13edb81e7e290dba5eee21bce7220a4325eef51f031fd16",
+        "task_id_sha256": "3e38f74ddaa1e16991cf4cb096e620df6237d295bae0514db0147a44f951b4e6"
+      },
+      {
+        "index": 9,
+        "prompt_sha256": "2e7234e5f7b3f912541fc7573d80abf9ba727d126bffbb874da536efd9f78478",
+        "task_id_sha256": "c58bbfc44a0e1b3368b30bd527c94a0956a05011322f4431f891285ed4cbf478"
+      },
+      {
+        "index": 10,
+        "prompt_sha256": "8ba07d51c299d9a44ee0a76cd9869f6716d3384c7e4c0748b01983d060f87673",
+        "task_id_sha256": "cd407095a184e5d296eee4ddb7425c07207a680e5b05af2a83de84e710cb1aef"
+      },
+      {
+        "index": 11,
+        "prompt_sha256": "c894e6fb1198b58ce10dba21982fc8d97e27cc1c8e3d6314682c92b03ce977dc",
+        "task_id_sha256": "ba2f4acae5a9d57f01660cf1acff2a43a6cbe2562204e1f93b4db132a851a0f1"
+      },
+      {
+        "index": 12,
+        "prompt_sha256": "4d3c7e1197759dc9c15797e89a8d6f898dc53c0ccf90878e350dd67d22561a63",
+        "task_id_sha256": "d98e9fb34bc2569724de4709ecb002b81dbb2132275e816760e16687e3d65e33"
+      },
+      {
+        "index": 13,
+        "prompt_sha256": "defb9266c209cbc02ee22a63a84a82c4d57bb5c4159ad84833aeda141cde135d",
+        "task_id_sha256": "f22f28074db0ec8a01bc845ce4bd723bed56ac5c8b46a43e6a436d97effd60b3"
+      },
+      {
+        "index": 14,
+        "prompt_sha256": "3516c8c1be8ba532ee143daa69cf2f09ee8de4d98047e13e7220c0f97627fd28",
+        "task_id_sha256": "963267bc4e5e2c82bc0348863ecc668e536ff37c97c3eb047c483eff5d7be068"
+      },
+      {
+        "index": 15,
+        "prompt_sha256": "c101933869106e92be2de40d80ba637d0007b5bbb007e72eada604b7bbb6cd5f",
+        "task_id_sha256": "97680794067f1f3a7658fc9af59c689971ac73d201b414f908189a67d3aa0c40"
+      },
+      {
+        "index": 16,
+        "prompt_sha256": "c485621f4a43c92ed2ce9bee66c3a949552f8f34d26a0226613cd72e214dd6c4",
+        "task_id_sha256": "6a29427f6e6a13231388534040725fb212b462497f07e6730bc3f485516e0907"
+      },
+      {
+        "index": 17,
+        "prompt_sha256": "ca8d6a39cb751f9b6f8e71ebca47ad1237282b28b2acad8ce44180e60f916e8f",
+        "task_id_sha256": "2bcdef9bb0b6574426b62e8671a4954423c82f57ec577733417202dcca7db81b"
+      },
+      {
+        "index": 18,
+        "prompt_sha256": "b6ffeff7de762cc53a74357d0ed3b61328de1863a4d77354e8dbcbd0b80f4d76",
+        "task_id_sha256": "f1820e35c01452546f017ab6af734b8d73ef3097daafe2f3374506c0959ae580"
+      },
+      {
+        "index": 19,
+        "prompt_sha256": "fd83f5d23e0a689b33dcc6766050b1e7f8f788ea35c0e6bc92a973735a9347dc",
+        "task_id_sha256": "7b5e464ce3780827e00709073c2963668a1f698bcfc336e3b04bff8b27e0071a"
+      }
+    ],
+    "ifeval": [
+      {
+        "index": 0,
+        "instruction_ids_sha256": "a05fd51d0d29fc0fcc5cc2c67c4a6561e1b36a434f0bfdecd12fa96d526fa297",
+        "prompt_sha256": "660ae519b1bfa04010ef6a0ae961f6c085f1db81ba10af17aad36e57a3afb3ad"
+      },
+      {
+        "index": 1,
+        "instruction_ids_sha256": "724e6f203a2839a38aa36afa36b5eed7fff185de2713dd4c69dce216f2350814",
+        "prompt_sha256": "73a3a80767f020eb34e4e0a90c2910e80ac824fbac3f98c8fe4fa352e4fa3311"
+      },
+      {
+        "index": 2,
+        "instruction_ids_sha256": "c16ca8baabc12796c90698430b66d096fdab3554921aa578333204dd639e0c48",
+        "prompt_sha256": "cf7ebf6b17d5c09436d7d16a5083dbb9db414aaa8799ded3e9fb187ba4493872"
+      },
+      {
+        "index": 3,
+        "instruction_ids_sha256": "45534a0b6e76a3893b6bffafa022f2868cd47dcbdc5a3ad843500346b7a9f6dd",
+        "prompt_sha256": "d099a8e8a3675373f870c69412c5b788c2e1e3e744793236b9e773358ad38657"
+      },
+      {
+        "index": 4,
+        "instruction_ids_sha256": "f968f29ccf6546d1522cc47ee06d444dce9b581a934c343462a3bdd9c69535d9",
+        "prompt_sha256": "24400085a5e1d68c2db801e73c131a2cb50ba3a9fc9d87ca9711cc3449ab12c4"
+      },
+      {
+        "index": 5,
+        "instruction_ids_sha256": "6cb799afc95a9bb7fbfa9cb4eb6428b3739f0d6a73eb74274cd7c1e2413a8447",
+        "prompt_sha256": "0b74d0e1c8d2859a2ab309cbf105b2ab77b7eac4498f759d1cc7fd3ec12d7ea5"
+      },
+      {
+        "index": 6,
+        "instruction_ids_sha256": "64e8cee4d08d4ac483fac28f827f928a197f115d85453b2179e3ff3041a2ba6b",
+        "prompt_sha256": "0568c3aeee972b842d9616845e171b4f054c31c52daf593c70791da6bf84e1d0"
+      },
+      {
+        "index": 7,
+        "instruction_ids_sha256": "62935fe6462f3de0375febc57b79a9e2b139149bf93846d54f05eee8fbeb58a7",
+        "prompt_sha256": "5454e2eb1021b11f53ee6adb0aa3374f941451d44e193e9eba66259c2c317a12"
+      },
+      {
+        "index": 8,
+        "instruction_ids_sha256": "f968f29ccf6546d1522cc47ee06d444dce9b581a934c343462a3bdd9c69535d9",
+        "prompt_sha256": "0635ea7812ec8f36a6d6ceba00c4be1897aa7446f14fcf61b26c4e0b8831facd"
+      },
+      {
+        "index": 9,
+        "instruction_ids_sha256": "5e1691a563279d055ccbc12290d68b58fed5a30b09101ff8e8fefce7b5dd09df",
+        "prompt_sha256": "dfc3b4a55b4956edd8641d84671273afe0fce7bc51de9362559aff5bec6e406a"
+      },
+      {
+        "index": 10,
+        "instruction_ids_sha256": "d9af3991368fca2e4a065a750e45a2698377745ff762a1e8b8287ed668b3a99c",
+        "prompt_sha256": "fc6c76b3c320283aeb150f2021399b1887b1f68e6f03a81815d230548627bb06"
+      },
+      {
+        "index": 11,
+        "instruction_ids_sha256": "a2941562aff9c0fc7d232b403ba24302d1ba2c49819b2da17f6dca766f33a503",
+        "prompt_sha256": "eaa884fe78cfb86af89d33fdf5effd81bb0646ae6062e5208314a096600f4fe5"
+      },
+      {
+        "index": 12,
+        "instruction_ids_sha256": "7ade8b3664711310383c99561197c1d251066798339f9191981590df21be3456",
+        "prompt_sha256": "abdb9d60b901f8696b97aebb27ae7abd7e4a124acd3fe5b3217f7634ffd83916"
+      },
+      {
+        "index": 13,
+        "instruction_ids_sha256": "f968f29ccf6546d1522cc47ee06d444dce9b581a934c343462a3bdd9c69535d9",
+        "prompt_sha256": "185bd238ae580c6663362d4213a137d23b7362a622808d1e7587d821a66d4231"
+      },
+      {
+        "index": 14,
+        "instruction_ids_sha256": "d9af3991368fca2e4a065a750e45a2698377745ff762a1e8b8287ed668b3a99c",
+        "prompt_sha256": "e2f65e7ba288095a0849742c7a052efc01467eec0f728536b239503cbe5d1cdc"
+      },
+      {
+        "index": 15,
+        "instruction_ids_sha256": "a2941562aff9c0fc7d232b403ba24302d1ba2c49819b2da17f6dca766f33a503",
+        "prompt_sha256": "b3aecc9bd8ff70e9f749d207c1f777d5d07f42b6df644f6f7b3ed8d75bb07b7c"
+      },
+      {
+        "index": 16,
+        "instruction_ids_sha256": "1b7312ab75ed3cb9d45a4cbec1a335f27cd4f48e298dda621f7df0575dc19d44",
+        "prompt_sha256": "b56b3c5922b9402ab9d684a4ba548abb0f341d8fae152c891c5cf64b6d7b4484"
+      },
+      {
+        "index": 17,
+        "instruction_ids_sha256": "28ada4b6d1bdf25df82163725f9030d150831eb9028e0ee6a096590b750fa302",
+        "prompt_sha256": "eeee4cf0dbfa8c19e46a3e99c36b00d3086ae2a61f87538498e4ed344dee0c1f"
+      },
+      {
+        "index": 18,
+        "instruction_ids_sha256": "f53c4df26a8c9a458d982a8a2e51b52ccfa20b181b30faa986cbe1c3918cef6f",
+        "prompt_sha256": "9310f472f19cc0cf04f1782d4596f89c620fb5ba9b689c996b6037336308d23a"
+      },
+      {
+        "index": 19,
+        "instruction_ids_sha256": "9b6d302c7ee0ba65157d7d0c7bfcb0082ce10e5f5f411f88ca5f015515e84ae8",
+        "prompt_sha256": "05773a8469ae91d412d53682e3752d52e31f467dac0ab8b8804b1cc0e2321643"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "selection_rule": {
+    "generated_answer": "zero-based indices 0-4 from each task in suite order",
+    "humaneval": "zero-based indices 0-19",
+    "ifeval": "zero-based indices 0-19"
+  },
+  "suite_candidate": "r0b0bench-core-v1-rc2"
+}

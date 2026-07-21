@@ -14,6 +14,12 @@ mistaking scoreable model behavior for infrastructure failure.
 
 **Package / CLI:** planned Python package `r0b0bench`; planned command `r0b0bench`
 
+**2026-07-21 status:** the public tree remains specification-only. A private,
+run-specific reference harness is exercising the method documented in
+[`REFERENCE_METHOD_2026-07-21.md`](REFERENCE_METHOD_2026-07-21.md). Its audited
+behavior updates this plan, but its deployment paths, runtime/model identity, and
+private evidence must not be copied into the standalone package.
+
 **License:** MIT for original r0b0bench documentation and future code. Third-party
 software, datasets, and benchmark material remain under their own licenses. Do
 not redistribute benchmark datasets; fetch pinned revisions at setup time.
@@ -46,7 +52,9 @@ There is no opaque single overall score in v1.
 
 ### Why this is the right boundary
 
-- BFCL remains citable and bit-for-bit official.
+- BFCL's pinned dataset and unmodified evaluator remain citable; the separately
+  versioned adapter request profile is never described as byte-identical
+  leaderboard request behavior.
 - Quality scorers can evolve only by creating a new r0b0bench suite version.
 - Model-format failures remain visible instead of being hidden by a permissive
   universal parser.
@@ -100,7 +108,7 @@ There is no opaque single overall score in v1.
 
 ---
 
-## 3. Frozen r0b0bench-core-v1 scope
+## 3. Frozen r0b0bench-core-v1-rc2 candidate scope
 
 | Pillar | Task | Count | Primary metric |
 |---|---|---:|---|
@@ -129,34 +137,43 @@ Verified subtotals:
 - Quality plus HumanEval: 8,420
 - Full r0b0bench core including BFCL: 8,620
 
-### Initial fixed request envelopes
+### Current fixed request envelope candidate
 
-These values are implementation defaults for `r0b0bench-core-v1-rc1`. Phase 8
-must calibrate them before the immutable `v1` tag. If calibration changes a
-value, create `rc2`; never mutate a released contract.
+The 2026-07-21 reference campaign supersedes the original short-cap RC1 table.
+The next standalone contract revision must bind this fixed 32,768-token
+envelope; it must not silently mutate an already released suite hash or describe
+calibration evidence as a guarantee against full-suite length stops.
 
-| Lane | Temperature | Maximum completion tokens | Concurrency |
-|---|---:|---:|---:|
-| BFCL | Official `0.001` | Upstream BFCL behavior | 1 thread |
-| Multiple choice | 0 | 2,048 | 1 |
-| GSM8K | 0 | 2,048 | 1 |
-| IFEval | 0 | 4,096 | 1 |
-| HumanEval | 0 | 2,048 | 1 |
+| Lane | Temperature | top_p | Seed | Stop | Maximum completion tokens | Concurrency |
+|---|---:|---:|---:|---:|---:|---:|
+| BFCL adapter profile | 0.001 | omitted | omitted | omitted | 32,768 | 1 thread |
+| Multiple choice | 0 | 1 | 0 | none | 32,768 | 16 |
+| GSM8K | 0 | 1 | 0 | none | 32,768 | 16 |
+| IFEval | 0 | 1 | 0 | none | 32,768 | 16 |
+| HumanEval generation | 0 | 1 | 0 | none | 32,768 | 16 |
 
-For non-BFCL lanes, RC1 uses a 10-second connect timeout, 900-second response
-timeout, and at most three wire attempts. Retry only connection/reset/timeout
-failures and HTTP 408, 429, 500, 502, 503, or 504, with deterministic 2-second
-then 10-second backoff and no jitter. Do not retry any valid 2xx model response
-or nonlisted 4xx. Persist every attempt, distinguish total wall time from the
-scored attempt latency, and flag post-send timeout retries as transport-ambiguous.
-BFCL retains its pinned upstream request policy; the package/tree hash binds it.
+For non-BFCL lanes, the current candidate uses a 10-second connect timeout,
+3,600-second response timeout, and at most three wire attempts. Retry only
+connection/reset/timeout failures and HTTP 408, 429, 500, 502, 503, or 504, with
+deterministic 2-second then 10-second backoff and no jitter. Do not retry any
+valid 2xx model response or nonlisted 4xx. Persist every attempt, distinguish
+total wall time from scored-attempt latency, and flag post-send timeout retries
+as transport-ambiguous. The BFCL adapter profile separately binds temperature
+0.001, omitted top_p/seed/stop, `store=false`, one thread, and explicit
+`max_tokens=32768` in its outgoing request, endpoint ledger, usage validation,
+and final row validator. “Official BFCL” refers to the pinned dataset and
+unmodified evaluator, not byte-identical leaderboard request defaults. The
+standalone adapter sets OpenAI SDK `max_retries=0`, bypasses the upstream
+`RateLimitError` decorator, and applies the same three-total-attempt, 2/10-second,
+no-jitter status/transport policy directly around the SDK `create` call. Every
+wire attempt, including the exhausted terminal attempt, is represented once.
 
-Canonical non-BFCL RC1 requests send `seed=0`; endpoint rejection of that field
-is a compatibility failure for the seeded canonical profile, not permission to
-drop it mid-run. An explicitly versioned `seed-uncontrolled` profile may be
-added later but is not directly comparable. Official BFCL remains
-`upstream-unseeded` because injecting a seed would alter its request contract.
-Record visible, reasoning (when exposed), and total completion tokens separately.
+Canonical non-BFCL candidate requests send `seed=0`; endpoint rejection of that
+field is a compatibility failure for the seeded canonical profile, not permission
+to drop it mid-run. An explicitly versioned `seed-uncontrolled` profile may be
+added later but is not directly comparable. The BFCL adapter omits seed because
+injecting one would create a different request profile. Record visible, reasoning
+(when exposed), and total completion tokens separately.
 
 Rationale: the historical 192-token MC envelope repeatedly terminated a
 reasoning model before its final answer. A fixed generous envelope lets the
@@ -188,10 +205,10 @@ quality.
 
 - Label the 200-case tool row exactly `Official BFCL v4 multi_turn_base`; never
   call it full BFCL V4 or BFCL overall.
-- Label generated-answer results `r0b0bench-core-v1 <task>` because the frozen
-  chat prompts, answer contracts, and completion envelopes are part of this
-  suite. Do not present them as drop-in lm-eval leaderboard rows unless an
-  explicit equivalence test proves that claim.
+- Label generated-answer results `r0b0bench-core-v1-rc2 <task>` while the
+  candidate contract is active because its frozen chat prompts, answer contracts,
+  and completion envelopes are part of this suite. Do not present them as drop-in
+  lm-eval leaderboard rows unless an explicit equivalence test proves that claim.
 - Label IFEval metrics with dataset revision, scorer package/hash, strict/loose,
   and prompt/instruction level.
 - Label HumanEval `pass@1`, one sample, with extraction version and sandbox
@@ -273,7 +290,7 @@ r0b0bench/
 ├── pyproject.toml
 ├── uv.lock
 ├── contracts/
-│   ├── suites/r0b0bench-core-v1-rc1.yaml
+│   ├── suites/r0b0bench-core-v1-rc2.yaml
 │   ├── datasets/v1.json
 │   ├── prompts/v1/*.txt
 │   ├── algorithms/request-v1.json
@@ -427,10 +444,10 @@ crossed.
 ## 7. CLI contract
 
 ```bash
-r0b0bench doctor --suite r0b0bench-core-v1-rc1
+r0b0bench doctor --suite r0b0bench-core-v1-rc2
 r0b0bench inspect --base-url http://127.0.0.1:8888/v1 --model MODEL
 r0b0bench run \
-  --suite r0b0bench-core-v1-rc1 \
+  --suite r0b0bench-core-v1-rc2 \
   --base-url http://127.0.0.1:8888/v1 \
   --model MODEL \
   --variant default \
@@ -531,7 +548,7 @@ policy, and contamination-risk classification.
 - `tests/contract/test_suite_contract.py`
 - `tests/contract/test_dataset_contract.py`
 - `tests/contract/test_contract_hash.py`
-- `contracts/suites/r0b0bench-core-v1-rc1.yaml`
+- `contracts/suites/r0b0bench-core-v1-rc2.yaml`
 - `contracts/datasets/v1.json`
 
 Test exact task set, counts, request envelopes, unknown-key rejection, strict
@@ -593,10 +610,13 @@ to serialize.
 
 Use same-directory temp files, flush, `fsync`, atomic replacement, and directory
 `fsync`. Create run directories as user-private (`0700`) and evidence files as
-`0600` unless explicitly read-only; reject ancestor/final symlinks, non-regular
-files, foreign ownership, and unexpected hard links. Validate an existing row
-semantically before resuming. A nonempty file is not automatically valid.
-Quarantine corrupt/foreign rows; never silently skip them.
+`0600` unless explicitly read-only. New and resumed roots must be absolute,
+beneath one configured private run parent, outside Git checkouts, and must satisfy
+the same owner/mode policy on every directory through that parent. Reject
+ancestor/final symlinks, non-regular files, foreign ownership, and unexpected
+hard links. Validate an existing row semantically before resuming. A nonempty
+file is not automatically valid. Quarantine corrupt/foreign rows; never silently
+skip them.
 
 If directory `fsync` fails after `os.replace`, preserve the replaced target and
 report an ambiguous durability failure; never unlink the newly committed target.
@@ -615,8 +635,11 @@ and model identity in mutable `owner.json`, never in immutable
 `run-manifest.json`. Use advisory locks under a user-private cache directory keyed
 by endpoint/model hash. The top-level `run` process acquires and holds the one
 `EndpointLease` across every adapter; adapters must never acquire, replace, or
-release endpoint ownership. Verify the inherited descriptor in workers. A stale
-PID must not be mistaken for a live owner after PID reuse.
+release endpoint ownership. Verify that the token owner is a live process
+ancestor, not only the immediate parent, and recheck its start ticks to prevent
+PID reuse. Nested evaluator subprocesses must receive the required lock
+descriptors explicitly (for example, Python `pass_fds`) and verify that each
+still resolves to and holds the exact lock path.
 
 #### Task 2.4: Implement endpoint and response normalization
 
@@ -699,15 +722,24 @@ same worker:
 2. Validate package version, installed wheel/full package-tree hash, official
    dataset count, ordered ID set, and dataset hash. Pinning selected source files
    alone is insufficient.
-3. Call `generation_main` in-process with `skip_server_setup=True`, one thread,
+3. Canonicalize mappings, sequences, primitives, Pydantic values, bytes, and only
+   an explicit allowlist of evaluator-owned opaque multi-turn state objects;
+   reject every unknown type. Bind the exact 32,768-token request ceiling.
+4. Disable SDK retries (`max_retries=0`) and bypass the upstream retry decorator.
+   Put the frozen three-total-attempt 2/10-second no-jitter retry policy directly
+   around the actual SDK `create` call. Bind canonical case/input hash, call
+   ordinal, request hash, endpoint epoch, response identity/usage, terminal
+   classification, and final result-row hash. Reject gaps, overwrites, duplicates,
+   foreign calls, and orphans.
+5. Call `generation_main` in-process with `skip_server_setup=True`, one thread,
    and official temperature.
-4. Validate 200 rows and 200 unique IDs. Classify persisted row errors by cause:
+6. Validate 200 rows and 200 unique IDs. Classify persisted row errors by cause:
    transport, authentication, endpoint-schema, or harness exceptions are
    infrastructure failures; official BFCL decode/tool-format failures that the
    evaluator can score remain model outcomes.
-5. Call `evaluation_main` in-process and require it to score the complete
-   official category without synthesizing or editing rows.
-6. Parse the official score artifact and write a path-free lane summary.
+7. Re-run `evaluation_main` in-process from validated result rows and require it
+   to score the complete official category without synthesizing or editing rows.
+8. Parse the official score artifact and write a path-free lane summary.
 
 Do not register in the parent and then invoke the bare `bfcl` CLI; that loses the
 in-memory model mapping.
@@ -845,6 +877,11 @@ Create separate pillars:
 - efficiency metrics by lane
 - completeness/provenance status
 
+The scorecard also publishes `standard_suite_logical_items = 8620` and exact
+component counts. BFCL's 200 canonical cases are included in that logical total;
+the two 105-case calibration repeats are reported separately and excluded. This
+counting rule does not create a combined accuracy.
+
 For every proportion, publish numerator, denominator, decimal score, and a
 supplemental 95% Wilson interval. Keep official BFCL/IFEval/HumanEval primary
 values untouched; intervals are r0b0bench diagnostics. For same-suite model
@@ -900,23 +937,34 @@ Do not copy private rows or model-specific aggregates into the public repository
 Add equivalent synthetic public fixtures for empty content, reasoning-only
 content, length stops, unextractable answers, and valid final markers.
 
-#### Task 8.2: Fixed-envelope calibration (before v1 only)
+#### Task 8.2: Fixed-envelope calibration and admission
 
-Against a representative reasoning endpoint and a non-reasoning endpoint, run
-a frozen stratified calibration set. Test candidate fixed envelopes; do not
-adapt within a run. Choose the smallest power-of-two envelope up to 4,096 that
-eliminates budget-induced length stops on the reasoning calibration set without
-changing prompts or reasoning mode.
+The 2026-07-21 reference campaign established a 32,768-token candidate envelope
+after the historical short caps produced budget-induced length stops. The
+standalone implementation must freeze this envelope as a new suite-contract
+revision rather than mutate RC1 or tune per model.
 
-Decision rule:
+Before admitting the 8,420 non-BFCL rows, run two independent pre-admission
+105-case repeats. Each repeat sends fresh requests for zero-based indices 0-4
+from each of the 13 generated-answer tasks (65), IFEval indices 0-19 (20), and
+HumanEval indices 0-19 (20). The suite contract must carry the per-lane and
+combined identity-projection hashes defined in
+[`REFERENCE_METHOD_2026-07-21.md`](REFERENCE_METHOD_2026-07-21.md). The two
+repeats use scopes `calibration-repeat-01` and `calibration-repeat-02`; `full`
+is a third scope and cannot reuse either repeat's rows. Calibration is excluded
+from the 8,620 standard-suite count. Admission requires:
 
-- If 2,048 eliminates length stops, keep rc1 values.
-- If it does not, create rc2 with 4,096 for that lane.
-- If 4,096 still truncates, freeze the limitation transparently or defer v1;
-  never add a model-specific exception.
+- the exact generated-answer, IFEval, and HumanEval calibration identity sets;
+- zero `finish_reason=length` rows in both repeats;
+- maximum completion usage no greater than 80% of the fixed ceiling;
+- semantic recomputation of every row, scorer output, sandbox verdict, comparison,
+  and evidence index;
+- rejection of copied/relabelled rows, missing/foreign evidence, stale failure
+  ledgers, and changed request semantics.
 
-Re-run only the calibration set while tuning. Once v1 is frozen, no cap ladder
-may be used for official model comparisons.
+Calibration is an infrastructure/method admission gate, not a score threshold.
+Once the suite contract is frozen, do not run a cap ladder inside official model
+comparisons. A different ceiling creates a different suite hash/version.
 
 #### Task 8.3: End-to-end reference qualification
 
@@ -924,15 +972,19 @@ Run, in order:
 
 1. Mock endpoint full miniature suite.
 2. Synthetic fixtures plus opt-in private archive imports when available.
-3. One live canary across every lane.
-4. One fresh, uninterrupted, pre-bound 8,620-case live reference run.
-5. A separate forced-interruption/resume qualification run or miniature fixture;
+3. One no-request lifecycle proof through every real manifest/owner/validator entry
+   point.
+4. One isolated exact-stack live canary across every lane, including three
+   official BFCL IDs with real multi-turn evaluator state.
+5. Two pre-admission 105-case calibration repeats and semantic admission.
+6. One fresh, uninterrupted, pre-bound 8,620-case live reference run.
+7. A separate forced-interruption/resume qualification run or miniature fixture;
    never manufacture a crash inside the canonical reference run.
-6. A preregistered 125-case reproducibility subset run twice without changing
+8. A preregistered 125-case reproducibility subset run twice without changing
    settings: 20 BFCL IDs, five IDs from each of 13 base tasks, 20 IFEval IDs, and
    20 HumanEval IDs. Report exact response/verdict agreement and metric variance;
    these repeats are diagnostics and never replace first-run primary scores.
-7. Public export and safety scan.
+9. Public export and safety scan.
 
 The reference score may be low. Qualification requires structural correctness,
 not a target accuracy. Run the long reference job in a durable `tmux` session or
@@ -944,9 +996,10 @@ transitions; never rely on an attached terminal for ownership or resume.
 
 When all gates pass:
 
-- Rename/copy the accepted RC contract to `r0b0bench-core-v1.yaml`.
+- Freeze the accepted contract as `r0b0bench-core-v1-rc2.yaml`; do not rename it
+  to a stable v1 identity during RC qualification.
 - Record canonical suite hash and dependency lock hash.
-- Tag locally as `v0.1.0-rc1` first.
+- Tag locally as `v0.1.0-rc2` first.
 - Reinstall from the built wheel in a clean venv and rerun mock plus opt-in
   private-archive gates.
 - Push implementation commits only after their exact-SHA release gates pass.
@@ -996,7 +1049,10 @@ r0b0bench v1 is ready only when all conditions hold:
 
 - [ ] Official BFCL is unmodified and pinned by version plus installed
       wheel/full package-tree hash.
-- [ ] The suite contract resolves to exactly 8,620 cases.
+- [ ] The suite contract resolves to exactly 8,620 cases and is identified as
+      `r0b0bench-core-v1-rc2` throughout candidate artifacts and result labels.
+- [ ] The two 105-case calibration identity projections and combined map recompute
+      exactly from the published hash preimage; repeat scopes cannot satisfy full.
 - [ ] Dataset revisions, counts, fingerprints, and content hashes are frozen.
 - [ ] Every prompt, extractor, scorer, request envelope, and sandbox digest is
       included in the canonical suite identity.
@@ -1047,7 +1103,7 @@ r0b0bench v1 is ready only when all conditions hold:
 ## 11. Deliverables
 
 1. Local, tested `r0b0bench` Python package and CLI.
-2. Immutable `r0b0bench-core-v1` contract and canonical hash.
+2. Immutable `r0b0bench-core-v1-rc2` candidate contract and canonical hash.
 3. Official BFCL adapter with unmodified score provenance.
 4. Generated-answer, IFEval, and sandboxed HumanEval adapters.
 5. Atomic, resumable, ownership-bound run engine.

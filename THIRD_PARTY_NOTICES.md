@@ -27,3 +27,10 @@ redistribution status, content hash, item count, publishable fields, and
 contamination-risk classification. Dataset content must be fetched from pinned
 sources rather than committed here unless redistribution is independently
 verified.
+
+The 2026-07-21 calibration identity file publishes only task names, zero-based
+indices, and prompt/instruction/task-ID hashes needed to recompute the reference
+calibration digests. It does not redistribute benchmark content and does not
+satisfy the required per-dataset license/revision manifest. Exact immutable
+upstream revisions and license/publication policies therefore remain explicit
+standalone-implementation release blockers.
