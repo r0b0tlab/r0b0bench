@@ -1,0 +1,28 @@
+# Profile: core — full quality pillars + mandatory systems block
+profile: core
+description: Full r0b0bench quality (8,620-class) plus systems (BFCL-MT/AST, perf, NIAH, canary)
+includes_systems: true
+quality:
+  qa:
+    mode: full
+    n: 7715
+    status: not_implemented_in_rc1
+  ifeval:
+    mode: full
+    n: 541
+    status: not_implemented_in_rc1
+  humaneval:
+    mode: full
+    n: 164
+    status: not_implemented_in_rc1
+  gsm8k:
+    mode: full
+    n: 1319
+    status: not_implemented_in_rc1
+    note: 0-shot flexible-extract when implemented
+lane_order:
+  - systems  # expands to canary, bfcl_mt, bfcl_ast, perf, niah
+  - qa
+  - ifeval
+  - humaneval
+  - gsm8k

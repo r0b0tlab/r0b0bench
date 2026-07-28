@@ -1,0 +1,46 @@
+services:
+  bench:
+    image: ghcr.io/r0b0tlab/r0b0bench:v1.0.0-rc1
+    network_mode: host
+    environment:
+      R0B0BENCH_BASE_URL: ${R0B0BENCH_BASE_URL:-http://127.0.0.1:18082/v1}
+      R0B0BENCH_MODEL: ${R0B0BENCH_MODEL:-xyz-aquila-nvfp4}
+    volumes:
+      - ${R0B0BENCH_OUT:-./out}:/out
+      - ${R0B0BENCH_TOKENIZER:-/tmp/tokenizer}:/tokenizer:ro
+    command:
+      - run
+      - --profile
+      - core-subset
+      - --base-url
+      - ${R0B0BENCH_BASE_URL:-http://127.0.0.1:18082/v1}
+      - --model
+      - ${R0B0BENCH_MODEL:-xyz-aquila-nvfp4}
+      - --tokenizer
+      - /tokenizer
+      - --output
+      - /out
+
+  # Optional demo model server (not part of r0b0bench image)
+  aquila-vllm:
+    profiles: ["aquila-demo"]
+    image: ghcr.io/r0b0tlab/xyz-aquila-mini-nvfp4-vllm:v0.25.0-sm121-702f4814
+    network_mode: host
+    ipc: host
+    gpus: all
+    environment:
+      PORT: "18082"
+      MODEL_ID: /models/model
+      SERVED_MODEL_NAME: xyz-aquila-nvfp4
+      QUANTIZATION: modelopt_mixed
+      KV_CACHE_DTYPE: fp8
+      ATTENTION_BACKEND: flashinfer
+      MOE_BACKEND: flashinfer_b12x
+      LINEAR_BACKEND: flashinfer_cutlass
+      LANGUAGE_MODEL_ONLY: "1"
+      GPU_MEMORY_UTILIZATION: "0.85"
+      MAX_MODEL_LEN: "32768"
+      MAX_NUM_SEQS: "16"
+      SPECULATIVE_CONFIG: ""
+    volumes:
+      - ${AQUILA_MODEL_PATH}:/models/model:ro

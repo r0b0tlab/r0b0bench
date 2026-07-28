@@ -1,0 +1,42 @@
+# Shared systems block — included by both core and core-subset (not a user profile).
+version: 1
+lanes:
+  - canary
+  - bfcl_mt
+  - bfcl_ast
+  - perf
+  - niah
+
+canary:
+  temperature: 0
+  max_tokens_default: 256
+
+bfcl_mt:
+  package: bfcl-eval==2025.12.17
+  category: multi_turn_base
+  expected_rows: 200
+  temperature: 0.001
+  num_threads: 1
+
+bfcl_ast:
+  package: bfcl-eval==2025.12.17
+  categories: [multiple, parallel, parallel_multiple]
+  expected_rows_per_category: 200
+  temperature: 0.001
+  num_threads: 1
+
+perf:
+  backend: openai_portable  # or vllm_bench_exec
+  levels: [1, 2, 4, 8, 16]
+  reps: 3
+  drop_first_rep: true
+  input_tokens: 1024
+  output_tokens: 256
+  temperature: 0
+
+niah:
+  depth_policy: frac_of_max_context
+  fractions: [0.25, 0.50, 0.90]
+  generation_reserve: 64
+  needle_fraction: 0.5
+  temperature: 0

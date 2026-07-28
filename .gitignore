@@ -9,6 +9,14 @@ build/
 .mypy_cache/
 .ruff_cache/
 
+# Agent / local plans (private)
+.hermes/
+
+# Runtime outputs (must stay outside package identity)
+out/
+.r0b0bench-data/
+r0b0bench-out/
+
 # Local credentials. Private benchmark evidence is forbidden inside this
 # checkout and is intentionally not ignored: accidental runs/, private/, or
 # archives/ trees must remain visible to Git and fail publication review.

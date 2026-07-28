@@ -1,0 +1,31 @@
+# Profile: core-subset — powered quality subsets + mandatory systems block
+profile: core-subset
+description: Powered quality subsets plus full systems block (default RC qualification path)
+includes_systems: true
+quality:
+  qa:
+    mode: subset
+    n: 400
+    population_n: 7715
+    status: not_implemented_in_rc1
+  ifeval:
+    mode: subset
+    n: 200
+    population_n: 541
+    status: not_implemented_in_rc1
+  humaneval:
+    mode: full
+    n: 164
+    status: not_implemented_in_rc1
+  gsm8k:
+    mode: subset
+    n: 200
+    population_n: 1319
+    status: not_implemented_in_rc1
+    note: 0-shot flexible-extract when implemented
+lane_order:
+  - systems
+  - qa
+  - ifeval
+  - humaneval
+  - gsm8k

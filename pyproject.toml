@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "r0b0bench"
+version = "1.0.0rc1"
+description = "Reproducible OpenAI-compatible endpoint benchmark suite (BFCL + quality + systems)"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+authors = [{ name = "r0b0tlab" }]
+dependencies = [
+  "httpx>=0.27",
+  "pydantic>=2.6",
+  "pyyaml>=6.0",
+  "transformers>=4.44",
+  "jinja2>=3.1",
+  "sentencepiece>=0.2",
+  "protobuf>=4.0",
+]
+
+[project.optional-dependencies]
+bfcl = ["bfcl-eval==2025.12.17"]
+full = ["bfcl-eval==2025.12.17", "lm-eval==0.4.12", "datasets>=2.18"]
+dev = ["pytest>=8.0", "ruff>=0.6"]
+
+[project.scripts]
+r0b0bench = "r0b0bench.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+r0b0bench = ["profiles/*.yaml"]

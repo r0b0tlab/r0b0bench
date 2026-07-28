@@ -14,6 +14,13 @@ mistaking scoreable model behavior for infrastructure failure.
 
 **Package / CLI:** planned Python package `r0b0bench`; planned command `r0b0bench`
 
+**2026-07-28 status:** public tree now ships a **runnable RC1 client** (`r0b0bench` CLI +
+`ghcr.io/r0b0tlab/r0b0bench:v1.0.0-rc1`). Profiles are **only** `core` and `core-subset`;
+both embed the systems block (canary, BFCL-MT, BFCL-AST, perf, NIAH@max-context).
+Quality scorers (QA/IFEval/HE/GSM8K) remain scaffolded (`NOT_IMPLEMENTED`) pending port of
+the full 8,620 method. Systems lanes canary/niah/perf are executable; BFCL requires
+`[bfcl]` extra or external/import runner in RC1.
+
 **2026-07-21 status:** the public tree remains specification-only. A private,
 run-specific reference harness is exercising the method documented in
 [`REFERENCE_METHOD_2026-07-21.md`](REFERENCE_METHOD_2026-07-21.md). Its audited
