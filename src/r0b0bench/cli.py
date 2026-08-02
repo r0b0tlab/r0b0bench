@@ -8,24 +8,28 @@ import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
-from r0b0bench import PROFILES, SYSTEMS_LANES, __version__
+from r0b0bench import OPTIONAL_LANES, PROFILES, SYSTEMS_LANES, __version__
 from r0b0bench.config import ensure_outside_checkout, load_profile, write_json
 from r0b0bench.endpoint import Endpoint
 from r0b0bench.lanes.bfcl import run_bfcl_ast, run_bfcl_mt, run_quality_stub
 from r0b0bench.lanes.canary import run_canary
+from r0b0bench.lanes.concurrency import run_concurrency
+from r0b0bench.lanes.latency import run_latency
 from r0b0bench.lanes.niah import run_niah
 from r0b0bench.lanes.perf import run_perf
+from r0b0bench.lanes.throughput import run_throughput
 
 
 def cmd_profiles(_: argparse.Namespace) -> int:
-    print("core")
-    print("core-subset")
+    for p in PROFILES:
+        print(p)
     return 0
 
 
 def cmd_doctor(args: argparse.Namespace) -> int:
     print(f"r0b0bench {__version__}")
     print(f"profiles: {', '.join(PROFILES)}")
+    print(f"systems_lanes: {', '.join(SYSTEMS_LANES)}")
     ok = True
     if args.base_url and args.model:
         ep = Endpoint(args.base_url, args.model)
@@ -36,6 +40,8 @@ def cmd_doctor(args: argparse.Namespace) -> int:
                 ok = False
             m = ep.max_model_len()
             print("max_model_len:", m)
+            kv = ep.kv_cache_size_tokens()
+            print("kv_cache_size_tokens:", kv)
             models = ep.models()
             ids = [x.get("id") for x in models.get("data") or []]
             print("models:", ids)
@@ -65,6 +71,10 @@ def _expand_lanes(profile: dict, only: list[str] | None) -> list[str]:
     if only:
         allow = set(only)
         order = [x for x in order if x in allow]
+        # allow optional lanes not in profile order
+        for x in only:
+            if x in OPTIONAL_LANES and x not in order:
+                order.append(x)
     # de-dupe preserving order
     seen = set()
     out = []
@@ -73,6 +83,29 @@ def _expand_lanes(profile: dict, only: list[str] | None) -> list[str]:
             seen.add(x)
             out.append(x)
     return out
+
+
+def _run_lane(lane: str, ep: Endpoint, lane_dir: Path, systems_cfg: dict, profile: dict, tokenizer: str):
+    if lane == "canary":
+        return run_canary(ep, lane_dir, systems_cfg.get("canary"))
+    if lane == "bfcl_mt":
+        return run_bfcl_mt(ep, lane_dir, systems_cfg.get("bfcl_mt") or {})
+    if lane == "bfcl_ast":
+        return run_bfcl_ast(ep, lane_dir, systems_cfg.get("bfcl_ast") or {})
+    if lane == "latency":
+        return run_latency(ep, lane_dir, systems_cfg.get("latency") or {})
+    if lane == "concurrency":
+        return run_concurrency(ep, lane_dir, systems_cfg.get("concurrency") or {})
+    if lane == "throughput":
+        return run_throughput(ep, lane_dir, systems_cfg.get("throughput") or {})
+    if lane == "perf":
+        return run_perf(ep, lane_dir, systems_cfg.get("perf") or {})
+    if lane == "niah":
+        return run_niah(ep, lane_dir, systems_cfg.get("niah") or {}, tokenizer_path=tokenizer or None)
+    if lane in ("qa", "ifeval", "humaneval", "gsm8k"):
+        q = (profile.get("quality") or {}).get(lane) or {}
+        return run_quality_stub(lane, lane_dir, q)
+    return run_quality_stub(lane, lane_dir, {"error": "unknown_lane"})
 
 
 def cmd_run(args: argparse.Namespace) -> int:
@@ -92,9 +125,10 @@ def cmd_run(args: argparse.Namespace) -> int:
     run_dir.mkdir(parents=True, exist_ok=True)
 
     only = args.only.split(",") if args.only else None
+    if only:
+        only = [x.strip() for x in only if x.strip()]
     if args.skip_systems:
         only = only or []
-        # filter systems out
         only = [x for x in (_expand_lanes(profile, None)) if x not in SYSTEMS_LANES] if not args.only else [
             x for x in only if x not in SYSTEMS_LANES
         ]
@@ -103,7 +137,8 @@ def cmd_run(args: argparse.Namespace) -> int:
         invalid_for_publish = False
 
     lanes = _expand_lanes(profile, only)
-    ep = Endpoint(args.base_url, args.model)
+    timeout = float(args.timeout) if args.timeout else 600.0
+    ep = Endpoint(args.base_url, args.model, timeout=timeout)
     systems_cfg = profile.get("systems") or {}
     results = []
     t0 = time.perf_counter()
@@ -111,21 +146,7 @@ def cmd_run(args: argparse.Namespace) -> int:
         for lane in lanes:
             lane_dir = run_dir / "lanes" / lane
             print(f"=== lane {lane} ===", flush=True)
-            if lane == "canary":
-                res = run_canary(ep, lane_dir, systems_cfg.get("canary"))
-            elif lane == "bfcl_mt":
-                res = run_bfcl_mt(ep, lane_dir, systems_cfg.get("bfcl_mt") or {})
-            elif lane == "bfcl_ast":
-                res = run_bfcl_ast(ep, lane_dir, systems_cfg.get("bfcl_ast") or {})
-            elif lane == "perf":
-                res = run_perf(ep, lane_dir, systems_cfg.get("perf") or {})
-            elif lane == "niah":
-                res = run_niah(ep, lane_dir, systems_cfg.get("niah") or {}, tokenizer_path=args.tokenizer)
-            elif lane in ("qa", "ifeval", "humaneval", "gsm8k"):
-                q = (profile.get("quality") or {}).get(lane) or {}
-                res = run_quality_stub(lane, lane_dir, q)
-            else:
-                res = run_quality_stub(lane, lane_dir, {"error": "unknown_lane"})
+            res = _run_lane(lane, ep, lane_dir, systems_cfg, profile, args.tokenizer)
             results.append(res.model_dump())
             write_json(lane_dir / "lane_result.json", res.model_dump())
             print(json.dumps({"lane": lane, "status": res.status, "infra_errors": res.infra_errors}), flush=True)
@@ -136,12 +157,13 @@ def cmd_run(args: argparse.Namespace) -> int:
         ep.close()
 
     report = {
-        "schema_version": 1,
+        "schema_version": 2,
         "r0b0bench_version": __version__,
         "run_id": run_id,
         "profile": profile.get("profile"),
         "base_url": args.base_url,
         "model": args.model,
+        "systems_lanes": list(SYSTEMS_LANES),
         "invalid_for_publish": invalid_for_publish or bool(args.skip_systems),
         "started_utc": datetime.now(timezone.utc).isoformat(),
         "elapsed_s": time.perf_counter() - t0,
@@ -149,7 +171,6 @@ def cmd_run(args: argparse.Namespace) -> int:
         "infra_errors_total": sum(int(r.get("infra_errors") or 0) for r in results),
     }
     write_json(run_dir / "report.json", report)
-    # human summary
     lines = [
         f"# r0b0bench report `{run_id}`",
         "",
@@ -167,7 +188,6 @@ def cmd_run(args: argparse.Namespace) -> int:
     print(f"report: {run_dir / 'report.json'}")
     if report["infra_errors_total"]:
         return 2
-    # NOT_IMPLEMENTED quality does not fail RC if systems ran; still exit 0 for measurement scaffold
     return 0
 
 
@@ -199,9 +219,14 @@ def main(argv: list[str] | None = None) -> int:
     sr.add_argument("--model", required=True)
     sr.add_argument("--output", required=True, help="output root OUTSIDE the git checkout")
     sr.add_argument("--tokenizer", default="", help="local tokenizer/model path for NIAH")
-    sr.add_argument("--only", default="", help="comma-separated lane filter")
+    sr.add_argument(
+        "--only",
+        default="",
+        help="comma-separated lane filter (canary,bfcl_mt,bfcl_ast,latency,concurrency,throughput,niah[,perf])",
+    )
     sr.add_argument("--skip-systems", action="store_true", help="debug only; marks report invalid")
     sr.add_argument("--run-id", default="")
+    sr.add_argument("--timeout", type=float, default=600.0, help="default HTTP timeout seconds per request")
     sr.set_defaults(func=cmd_run)
 
     srep = sub.add_parser("report", help="print report.json")

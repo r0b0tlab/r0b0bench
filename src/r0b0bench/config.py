@@ -31,12 +31,19 @@ def wilson_ci(k: int, n: int, z: float = 1.96) -> dict[str, float] | None:
 
 def load_profile(name: str) -> dict[str, Any]:
     key = name.replace("_", "-")
-    if key not in ("core", "core-subset"):
-        raise ValueError(f"unknown profile {name!r}; allowed: core, core-subset")
-    fname = "core.yaml" if key == "core" else "core_subset.yaml"
+    allowed = ("core", "core-subset", "systems")
+    if key not in allowed:
+        raise ValueError(f"unknown profile {name!r}; allowed: {', '.join(allowed)}")
+    fname = {
+        "core": "core.yaml",
+        "core-subset": "core_subset.yaml",
+        "systems": "systems.yaml",
+    }[key]
     path = Path(__file__).resolve().parent / "profiles" / fname
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
-    systems = yaml.safe_load((Path(__file__).resolve().parent / "profiles" / "_systems_block.yaml").read_text(encoding="utf-8"))
+    systems = yaml.safe_load(
+        (Path(__file__).resolve().parent / "profiles" / "_systems_block.yaml").read_text(encoding="utf-8")
+    )
     data["systems"] = systems
     data["profile"] = key
     return data

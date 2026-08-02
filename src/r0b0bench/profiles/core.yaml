@@ -1,6 +1,6 @@
 # Profile: core — full quality pillars + mandatory systems block
 profile: core
-description: Full r0b0bench quality (8,620-class) plus systems (BFCL-MT/AST, perf, NIAH, canary)
+description: Full r0b0bench quality (8,620-class) plus systems (BFCL, latency, concurrency, throughput, max-context NIAH, canary)
 includes_systems: true
 quality:
   qa:
@@ -21,7 +21,7 @@ quality:
     status: not_implemented_in_rc1
     note: 0-shot flexible-extract when implemented
 lane_order:
-  - systems  # expands to canary, bfcl_mt, bfcl_ast, perf, niah
+  - systems  # canary, bfcl_mt, bfcl_ast, latency, concurrency, throughput, niah
   - qa
   - ifeval
   - humaneval

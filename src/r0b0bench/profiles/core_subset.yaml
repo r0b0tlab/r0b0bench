@@ -1,6 +1,6 @@
 # Profile: core-subset — powered quality subsets + mandatory systems block
 profile: core-subset
-description: Powered quality subsets plus full systems block (default RC qualification path)
+description: Powered quality subsets plus full systems package (default RC qualification path)
 includes_systems: true
 quality:
   qa:
@@ -24,7 +24,7 @@ quality:
     status: not_implemented_in_rc1
     note: 0-shot flexible-extract when implemented
 lane_order:
-  - systems
+  - systems  # canary, bfcl_mt, bfcl_ast, latency, concurrency, throughput, niah
   - qa
   - ifeval
   - humaneval

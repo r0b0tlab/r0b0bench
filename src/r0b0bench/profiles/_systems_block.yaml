@@ -1,10 +1,12 @@
-# Shared systems block — included by both core and core-subset (not a user profile).
-version: 1
+# Shared systems block — included by core, core-subset, and systems profiles.
+version: 2
 lanes:
   - canary
   - bfcl_mt
   - bfcl_ast
-  - perf
+  - latency
+  - concurrency
+  - throughput
   - niah
 
 canary:
@@ -25,18 +27,49 @@ bfcl_ast:
   temperature: 0.001
   num_threads: 1
 
-perf:
-  backend: openai_portable  # or vllm_bench_exec
-  levels: [1, 2, 4, 8, 16]
-  reps: 3
+latency:
+  reps: 5
   drop_first_rep: true
-  input_tokens: 1024
-  output_tokens: 256
+  output_tokens: 128
   temperature: 0
 
+concurrency:
+  levels: [1, 2, 4, 6]
+  reps: 3
+  drop_first_rep: true
+  output_tokens: 512
+  temperature: 0
+
+throughput:
+  decode_output_tokens: 2048
+  decode_reps: 5
+  prefill_prompt_tokens: 14000
+  prefill_output_tokens: 16
+  prefill_reps: 3
+  drop_first_rep: true
+
+# Composite alias (not in default systems expand). Use: --only perf
+perf:
+  mode: full
+  latency:
+    reps: 5
+    output_tokens: 128
+  concurrency:
+    levels: [1, 2, 4, 6]
+    output_tokens: 512
+  throughput:
+    decode_output_tokens: 2048
+    decode_reps: 5
+    prefill_prompt_tokens: 14000
+    prefill_reps: 3
+
+# Max-context NIAH — always 25/50/90% of advertised max_model_len
 niah:
   depth_policy: frac_of_max_context
   fractions: [0.25, 0.50, 0.90]
   generation_reserve: 64
   needle_fraction: 0.5
+  request_timeout_s: 7200
+  stop_on_infra_error: true
   temperature: 0
+  marker: R0B0BENCH_NIAH_SLOT

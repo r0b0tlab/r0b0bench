@@ -97,3 +97,28 @@ r0b0bench report --run-dir DIR
 ## License
 
 MIT for original r0b0bench code and docs. Third-party benchmarks remain under their own terms — see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+## Standard systems package (v1.0.0rc2+)
+
+Profiles: `systems`, `core-subset`, `core`.
+
+Systems lanes (always, via `lane_order: [systems]`):
+
+| Lane | What it measures |
+|------|------------------|
+| `canary` | semantic / tool / stop smoke |
+| `bfcl_mt` | BFCL multi-turn base (200) |
+| `bfcl_ast` | BFCL AST micro (multiple/parallel/parallel_multiple) |
+| `latency` | C1 streaming TTFT + ITL + e2e |
+| `concurrency` | C1/C2/C4/C6 decode ladder |
+| `throughput` | C1 decode (2048 out) + ~14k prefill proxy |
+| `niah` | **max-context** NIAH at 25/50/90% of `max_model_len` |
+
+Optional composite: `--only perf` runs latency+concurrency+throughput as one lane.
+
+```bash
+r0b0bench run --profile systems \
+  --base-url http://HOST:PORT/v1 --model MODEL \
+  --tokenizer /path/to/hf-or-tokenizer.json-dir \
+  --output /tmp/r0b0bench-out
+```

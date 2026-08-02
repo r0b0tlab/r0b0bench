@@ -1,0 +1,11 @@
+# Systems-only standard package (no quality stubs).
+# Includes: canary, BFCL, latency, concurrency, throughput, max-context NIAH.
+profile: systems
+version: 1
+lane_order:
+  - systems
+
+description: >
+  Standard systems measurement package for OpenAI-compatible endpoints.
+  Max-context NIAH uses 25/50/90% of advertised max_model_len.
+  Performance covers latency (TTFT/ITL), concurrency ladder, and C1 throughput.

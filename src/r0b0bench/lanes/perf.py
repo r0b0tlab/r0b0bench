@@ -1,105 +1,97 @@
 from __future__ import annotations
 
-import statistics
 import time
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any
 
 from r0b0bench.config import LaneResult, write_json
 from r0b0bench.endpoint import Endpoint
-
-
-def _one_request(ep: Endpoint, prompt: str, max_tokens: int) -> dict[str, Any]:
-    status, body, elapsed = ep.chat_completions(
-        {
-            "messages": [{"role": "user", "content": prompt}],
-            "temperature": 0,
-            "max_tokens": max_tokens,
-        }
-    )
-    usage = body.get("usage") or {}
-    return {
-        "http_status": status,
-        "elapsed_s": elapsed,
-        "completion_tokens": int(usage.get("completion_tokens") or 0),
-        "prompt_tokens": int(usage.get("prompt_tokens") or 0),
-        "ok": status == 200 and bool(body.get("choices")),
-    }
+from r0b0bench.lanes.concurrency import run_concurrency
+from r0b0bench.lanes.latency import run_latency
+from r0b0bench.lanes.throughput import run_throughput
 
 
 def run_perf(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
-    """Portable OpenAI-chat concurrency sweep (not vllm bench exec)."""
+    """Composite systems performance package: latency + concurrency + throughput.
+
+    Kept as a single lane id for backward-compatible core/core-subset profiles.
+    Prefer explicit `latency` / `concurrency` / `throughput` lanes when available.
+    """
     t0 = time.perf_counter()
     out_dir.mkdir(parents=True, exist_ok=True)
-    levels = [int(x) for x in (cfg.get("levels") or [1, 2, 4, 8, 16])]
-    reps = int(cfg.get("reps") or 3)
-    drop_first = bool(cfg.get("drop_first_rep", True))
-    out_tok = int(cfg.get("output_tokens") or 256)
-    # approximate input with repeated filler (not exact token count without tokenizer)
-    filler = ("benchmark filler token sequence for throughput measurement. " * 80).strip()
-    prompt = filler + "\nReply with a single word: OK"
+    mode = str(cfg.get("mode") or "full").lower()
+    parts: list[str] = []
+    if mode == "legacy_sweep_only":
+        # old portable sweep only via concurrency lane levels
+        from r0b0bench.lanes.concurrency import run_concurrency as _rc
 
-    rows = []
-    for c in levels:
-        rep_stats = []
-        for rep in range(1, reps + 1):
-            n_req = max(8, c * 4)
-            t_batch = time.perf_counter()
-            results = []
-            with ThreadPoolExecutor(max_workers=c) as pool:
-                futs = [pool.submit(_one_request, ep, prompt, out_tok) for _ in range(n_req)]
-                for f in as_completed(futs):
-                    results.append(f.result())
-            wall = time.perf_counter() - t_batch
-            ok = [r for r in results if r["ok"]]
-            fail = len(results) - len(ok)
-            comp = sum(r["completion_tokens"] for r in ok)
-            out_tps = comp / wall if wall > 0 else 0.0
-            rps = len(ok) / wall if wall > 0 else 0.0
-            lat = [r["elapsed_s"] * 1000 for r in ok]
-            rep_stats.append(
-                {
-                    "rep": rep,
-                    "concurrency": c,
-                    "n_requests": n_req,
-                    "completed": len(ok),
-                    "failed": fail,
-                    "wall_s": wall,
-                    "output_throughput_tok_s": out_tps,
-                    "request_throughput_rps": rps,
-                    "mean_e2el_ms": statistics.mean(lat) if lat else None,
-                }
-            )
-            write_json(out_dir / f"c{c}-r{rep}.json", rep_stats[-1])
-        stable = rep_stats[1:] if drop_first and len(rep_stats) > 1 else rep_stats
-
-        def mean_key(key: str) -> float | None:
-            vals = [float(r[key]) for r in stable if r.get(key) is not None]
-            return statistics.mean(vals) if vals else None
-
-        rows.append(
-            {
-                "concurrency": c,
-                "repetitions_present": len(rep_stats),
-                "warmup_rep_dropped": 1 if drop_first and len(rep_stats) > 1 else 0,
-                "output_throughput_tok_s": mean_key("output_throughput_tok_s"),
-                "request_throughput_rps": mean_key("request_throughput_rps"),
-                "mean_e2el_ms": mean_key("mean_e2el_ms"),
-                "completed": sum(int(r["completed"]) for r in stable),
-                "failed": sum(int(r["failed"]) for r in stable),
-            }
+        legacy_cfg = {
+            "levels": cfg.get("levels") or [1, 2, 4, 8, 12, 16],
+            "reps": cfg.get("reps") or 3,
+            "drop_first_rep": cfg.get("drop_first_rep", True),
+            "output_tokens": cfg.get("output_tokens") or 256,
+            "temperature": cfg.get("temperature") or 0,
+        }
+        res = _rc(ep, out_dir / "legacy_concurrency", legacy_cfg)
+        summary = {"mode": mode, "legacy": res.summary}
+        write_json(out_dir / "summary.json", summary)
+        return LaneResult(
+            lane_id="perf",
+            status=res.status,
+            summary=summary,
+            artifacts={"summary.json": str(out_dir / "summary.json")},
+            infra_errors=res.infra_errors,
+            elapsed_s=time.perf_counter() - t0,
         )
 
+    # full package
+    lat_cfg = dict(cfg.get("latency") or {})
+    conc_cfg = dict(cfg.get("concurrency") or {})
+    thr_cfg = dict(cfg.get("throughput") or {})
+    # inherit a few top-level knobs
+    if "levels" in cfg and "levels" not in conc_cfg:
+        conc_cfg["levels"] = cfg["levels"]
+    if "reps" in cfg and "reps" not in lat_cfg:
+        lat_cfg.setdefault("reps", cfg["reps"])
+    if "drop_first_rep" in cfg:
+        lat_cfg.setdefault("drop_first_rep", cfg["drop_first_rep"])
+        conc_cfg.setdefault("drop_first_rep", cfg["drop_first_rep"])
+        thr_cfg.setdefault("drop_first_rep", cfg["drop_first_rep"])
+
+    results = {}
+    infra = 0
+    for name, fn, c in (
+        ("latency", run_latency, lat_cfg),
+        ("concurrency", run_concurrency, conc_cfg),
+        ("throughput", run_throughput, thr_cfg),
+    ):
+        parts.append(name)
+        r = fn(ep, out_dir / name, c)
+        results[name] = {
+            "status": r.status,
+            "infra_errors": r.infra_errors,
+            "summary": r.summary,
+            "elapsed_s": r.elapsed_s,
+        }
+        infra += int(r.infra_errors or 0)
+        write_json(out_dir / name / "lane_result.json", r.model_dump())
+
+    statuses = [results[p]["status"] for p in parts]
+    if any(s == "ERROR" for s in statuses) or infra:
+        status = "ERROR" if infra else "FAIL"
+    elif all(s == "PASS" for s in statuses):
+        status = "PASS"
+    else:
+        status = "FAIL"
+
     summary = {
-        "method": f"openai_portable_chat approx_in/out={out_tok}; levels={levels}; reps={reps} drop_first={drop_first}",
-        "backend": "openai_portable",
-        "rows": rows,
-        "total_failed": sum(int(r["failed"] or 0) for r in rows),
+        "method": "composite_latency_concurrency_throughput",
+        "mode": mode,
+        "parts": parts,
+        "results": {k: {"status": v["status"], "infra_errors": v["infra_errors"]} for k, v in results.items()},
+        "detail": results,
     }
     write_json(out_dir / "summary.json", summary)
-    infra = 1 if summary["total_failed"] and all(r["completed"] == 0 for r in rows) else 0
-    status = "PASS" if summary["total_failed"] == 0 else ("ERROR" if infra else "FAIL")
     return LaneResult(
         lane_id="perf",
         status=status,
