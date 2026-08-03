@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "r0b0bench"
-version = "1.0.0rc1"
+version = "1.0.0rc2"
 description = "Reproducible OpenAI-compatible endpoint benchmark suite (BFCL + quality + systems)"
 readme = "README.md"
 license = { text = "MIT" }

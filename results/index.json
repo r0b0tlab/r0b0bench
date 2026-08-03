@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "n_entries": 1,
+  "entries": [
+    {
+      "entry_id": "dsv4-flash-native-v11-core-subset-20260803",
+      "file": "dsv4-flash-native-v11-core-subset-20260803.json",
+      "model": "DeepSeek-V4-Flash DSpark NVFP4 (dual GB10)",
+      "profile": "core-subset",
+      "invalid_for_publish": false,
+      "infra_errors_total": 0,
+      "gsm8k": 0.95,
+      "humaneval_pass1": 0.9085365853658537,
+      "qa": 0.96,
+      "ifeval": 0.795,
+      "bfcl_mt": 0.755,
+      "bfcl_ast_micro": 0.3617,
+      "niah": "PASS",
+      "ttft_ms": 221.8835612584371,
+      "c1_tok_s": 86.93117930952073
+    }
+  ]
+}

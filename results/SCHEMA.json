@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "r0b0bench-results-entry-v1",
+  "title": "r0b0bench results entry",
+  "type": "object",
+  "required": ["schema_version", "entry_id", "model", "harness", "scores", "infra_errors_total", "invalid_for_publish"],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "entry_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$"},
+    "recorded_utc": {"type": "string"},
+    "model": {
+      "type": "object",
+      "required": ["id", "display_name"],
+      "properties": {
+        "id": {"type": "string"},
+        "display_name": {"type": "string"},
+        "family": {"type": "string"},
+        "revision": {"type": "string"},
+        "quantization": {"type": "string"}
+      }
+    },
+    "runtime": {"type": "object"},
+    "harness": {
+      "type": "object",
+      "required": ["name", "profile"],
+      "properties": {
+        "name": {"type": "string"},
+        "version": {"type": "string"},
+        "profile": {"type": "string", "enum": ["core", "core-subset", "systems"]}
+      }
+    },
+    "scores": {
+      "type": "object",
+      "description": "Per-lane objects; include status and primary metric fields"
+    },
+    "infra_errors_total": {"type": "integer", "minimum": 0},
+    "invalid_for_publish": {"type": "boolean"},
+    "disclosures": {"type": "array", "items": {"type": "string"}},
+    "artifact_roots_private": {"type": "array", "items": {"type": "string"}}
+  }
+}

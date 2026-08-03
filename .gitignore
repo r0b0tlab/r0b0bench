@@ -28,3 +28,4 @@ r0b0bench-out/
 .vscode/
 .idea/
 .DS_Store
+venv/

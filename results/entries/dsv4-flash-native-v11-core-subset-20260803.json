@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "entry_id": "dsv4-flash-native-v11-core-subset-20260803",
+  "recorded_utc": "2026-08-03T12:33:06.067330+00:00",
+  "model": {
+    "id": "deepseek-v4-flash-dspark",
+    "display_name": "DeepSeek-V4-Flash DSpark NVFP4 (dual GB10)",
+    "family": "deepseek-v4-flash",
+    "revision": "9e165c30e2704aec5d9d593cce3eebd58bbef1cb",
+    "quantization": "deepseek_v4_fp8 + nvfp4_ds_mla KV"
+  },
+  "runtime": {
+    "image_id": "sha256:2dfe24a303743722046c55bf2cf3ef9c9e6a40a008f73be16f9aa5c2ca38cf9b",
+    "image_tag": "dspark-r0b0tlab:production-v026-b12x-native-v11",
+    "package": "0.26.0+dspark.sm121.3",
+    "integrated_vllm": "fbad93432ebf60c8345397b3032fe03bf5d239cc",
+    "hardware": "2x NVIDIA GB10 (SM121), TP=2, IB/RDMA",
+    "cudagraph": "regular strict FULL_DECODE_ONLY",
+    "compile_mode": "NONE",
+    "speculative": {
+      "method": "dspark",
+      "K": 6
+    },
+    "moe_backend": "flashinfer_b12x",
+    "kv_cache_dtype": "nvfp4_ds_mla",
+    "profiles": {
+      "systems_quality": "production max_model_len=327680 max_num_seqs=16 batched=16384",
+      "niah": "long-1m max_model_len=1048576 max_num_seqs=1 batched=8192 kv=auto"
+    }
+  },
+  "harness": {
+    "name": "r0b0bench",
+    "version": "1.0.0rc2+quality",
+    "profile": "core-subset"
+  },
+  "scores": {
+    "canary": {
+      "status": "PASS",
+      "checks_passed": 5
+    },
+    "bfcl_mt": {
+      "status": "PASS",
+      "accuracy": 0.755,
+      "correct": 151,
+      "total": 200,
+      "category": "multi_turn_base"
+    },
+    "bfcl_ast": {
+      "status": "PASS",
+      "micro_accuracy": 0.3617,
+      "correct": 217,
+      "total": 600,
+      "categories": {
+        "multiple": 0.38,
+        "parallel": 0.515,
+        "parallel_multiple": 0.19
+      }
+    },
+    "latency": {
+      "status": "PASS",
+      "ttft_ms_mean": 221.8835612584371,
+      "itl_ms_mean": 68.94667228711856,
+      "e2el_ms_mean": 2083.6076527484693
+    },
+    "concurrency": {
+      "status": "PASS",
+      "output_tokens": 512,
+      "ladder_aggregate_tok_s": {
+        "1": 86.93117930952073,
+        "2": 145.8886755804706,
+        "4": 239.31122478331417,
+        "6": 337.7606196168383
+      }
+    },
+    "throughput": {
+      "status": "PASS",
+      "decode_median_client_tok_s": 40.16379738754383,
+      "prefill_median_prompt_tok_s_proxy": 29203.665904568712,
+      "c1_decode_2048_median_tok_s_repro": 79.19
+    },
+    "qa": {
+      "status": "PASS",
+      "accuracy": 0.96,
+      "correct": 384,
+      "n": 400,
+      "dataset": "ARC-Easy test MC"
+    },
+    "ifeval": {
+      "status": "PASS",
+      "accuracy": 0.795,
+      "correct": 159,
+      "n": 200,
+      "method": "lightweight_constraint_scorer",
+      "note": "not full official IFEval package"
+    },
+    "humaneval": {
+      "status": "PASS",
+      "pass@1": 0.9085365853658537,
+      "n": 164
+    },
+    "gsm8k": {
+      "status": "PASS",
+      "accuracy": 0.95,
+      "correct": 190,
+      "n": 200,
+      "method": "0-shot flexible-extract"
+    },
+    "niah": {
+      "status": "PASS",
+      "policy": "25/50/90% of (max_model_len-64)",
+      "max_model_len": 1048576,
+      "kv_cache_size_tokens": 1253213,
+      "depths": [
+        {
+          "depth": 262128,
+          "fraction": 0.25,
+          "status": "PASS",
+          "elapsed_s": 3095.7
+        },
+        {
+          "depth": 524256,
+          "fraction": 0.5,
+          "status": "PASS",
+          "elapsed_s": 4980.7
+        },
+        {
+          "depth": 943660,
+          "fraction": 0.9,
+          "status": "PASS",
+          "elapsed_s": 12561.9
+        }
+      ]
+    }
+  },
+  "infra_errors_total": 0,
+  "invalid_for_publish": false,
+  "disclosures": [
+    "IFEval uses lightweight constraint scorer, not full official IFEval package",
+    "QA pillar measured via ARC-Easy MC n=400 (not full open-domain QA 7715)",
+    "Systems measured on production profile; NIAH on long-1m profile",
+    "Quality pillars are core-subset sizes, not full core 8620-class"
+  ],
+  "artifact_roots_private": [
+    "artifacts/dspark-v026/core-subset-full-20260803T000000Z",
+    "artifacts/dspark-v026/option2-pubsuite-20260803T000000Z",
+    "artifacts/dspark-v026/native-v11-repro-r0b0bench-20260802T000000Z/niah-1m-rerun-b32768"
+  ]
+}

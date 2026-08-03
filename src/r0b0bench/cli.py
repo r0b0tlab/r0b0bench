@@ -212,6 +212,51 @@ def cmd_report(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_results(args: argparse.Namespace) -> int:
+    from r0b0bench import results_ledger as rl
+
+    action = args.results_cmd
+    if action == "list":
+        rows = rl.list_entries()
+        if not rows:
+            print("(no entries)")
+            return 0
+        for e in rows:
+            m = (e.get("model") or {}).get("display_name") or (e.get("model") or {}).get("id")
+            print(f"{e.get('entry_id')}\t{m}\t{(e.get('harness') or {}).get('profile')}\tinvalid={e.get('invalid_for_publish')}")
+        return 0
+    if action == "show":
+        e = rl.show_entry(args.entry_id)
+        print(json.dumps(e, indent=2))
+        return 0
+    if action == "compare":
+        print(rl.compare_entries(args.entry_a, args.entry_b), end="")
+        return 0
+    if action == "rebuild-index":
+        idx, board = rl.rebuild_index()
+        print(f"index: {idx}")
+        print(f"leaderboard: {board}")
+        return 0
+    if action == "add":
+        report_path = Path(args.report)
+        report = json.loads(report_path.read_text(encoding="utf-8"))
+        entry = rl.entry_from_report(
+            report,
+            entry_id=args.entry_id,
+            model_display=args.model_display or None,
+            hardware=args.hardware or None,
+            notes=args.notes or None,
+        )
+        if args.runtime_json:
+            entry["runtime"] = {**(entry.get("runtime") or {}), **json.loads(Path(args.runtime_json).read_text())}
+        path = rl.write_entry(entry, force=args.force)
+        rl.rebuild_index()
+        print(f"wrote {path}")
+        return 0
+    print(f"unknown results action {action}", file=sys.stderr)
+    return 2
+
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="r0b0bench", description="r0b0bench endpoint benchmark client")
     p.add_argument("--version", action="version", version=f"r0b0bench {__version__}")
@@ -234,7 +279,7 @@ def main(argv: list[str] | None = None) -> int:
     sr.add_argument(
         "--only",
         default="",
-        help="comma-separated lane filter (canary,bfcl_mt,bfcl_ast,latency,concurrency,throughput,niah[,perf])",
+        help="comma-separated lane filter (canary,bfcl_mt,bfcl_ast,latency,concurrency,throughput,niah[,perf,qa,...])",
     )
     sr.add_argument("--skip-systems", action="store_true", help="debug only; marks report invalid")
     sr.add_argument("--run-id", default="")
@@ -244,6 +289,34 @@ def main(argv: list[str] | None = None) -> int:
     srep = sub.add_parser("report", help="print report.json")
     srep.add_argument("--run-dir", required=True)
     srep.set_defaults(func=cmd_report)
+
+    sres = sub.add_parser("results", help="record / list / compare package results")
+    sres_sub = sres.add_subparsers(dest="results_cmd", required=True)
+
+    sres_list = sres_sub.add_parser("list", help="list recorded entries")
+    sres_list.set_defaults(func=cmd_results)
+
+    sres_show = sres_sub.add_parser("show", help="print one entry JSON")
+    sres_show.add_argument("entry_id")
+    sres_show.set_defaults(func=cmd_results)
+
+    sres_cmp = sres_sub.add_parser("compare", help="compare two entry_ids")
+    sres_cmp.add_argument("entry_a")
+    sres_cmp.add_argument("entry_b")
+    sres_cmp.set_defaults(func=cmd_results)
+
+    sres_rb = sres_sub.add_parser("rebuild-index", help="rebuild index.json + LEADERBOARD.md")
+    sres_rb.set_defaults(func=cmd_results)
+
+    sres_add = sres_sub.add_parser("add", help="import a package report.json into results/entries")
+    sres_add.add_argument("--report", required=True, help="path to report.json")
+    sres_add.add_argument("--entry-id", required=True)
+    sres_add.add_argument("--model-display", default="")
+    sres_add.add_argument("--hardware", default="")
+    sres_add.add_argument("--notes", default="")
+    sres_add.add_argument("--runtime-json", default="", help="optional JSON merged into runtime")
+    sres_add.add_argument("--force", action="store_true")
+    sres_add.set_defaults(func=cmd_results)
 
     args = p.parse_args(argv)
     return int(args.func(args))

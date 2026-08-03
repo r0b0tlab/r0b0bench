@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "entry_id": "example-model-core-subset-YYYYMMDD",
+  "recorded_utc": "2026-01-01T00:00:00+00:00",
+  "model": {
+    "id": "served-model-name",
+    "display_name": "Human Readable Model Name",
+    "family": "",
+    "revision": "",
+    "quantization": ""
+  },
+  "runtime": {
+    "image_id": "",
+    "image_tag": "",
+    "hardware": "",
+    "notes": ""
+  },
+  "harness": {
+    "name": "r0b0bench",
+    "version": "1.0.0rc2",
+    "profile": "core-subset"
+  },
+  "scores": {
+    "canary": {"status": "PASS"},
+    "bfcl_mt": {"status": "PASS", "accuracy": null, "correct": null, "total": 200},
+    "bfcl_ast": {"status": "PASS", "micro_accuracy": null, "correct": null, "total": 600},
+    "latency": {"status": "PASS", "ttft_ms_mean": null, "itl_ms_mean": null},
+    "concurrency": {"status": "PASS", "ladder_aggregate_tok_s": {}},
+    "throughput": {"status": "PASS", "decode_median_client_tok_s": null},
+    "qa": {"status": "PASS", "accuracy": null, "n": 400},
+    "ifeval": {"status": "PASS", "accuracy": null, "n": 200},
+    "humaneval": {"status": "PASS", "pass@1": null, "n": 164},
+    "gsm8k": {"status": "PASS", "accuracy": null, "n": 200},
+    "niah": {"status": "PASS", "depths": []}
+  },
+  "infra_errors_total": 0,
+  "invalid_for_publish": false,
+  "disclosures": [],
+  "artifact_roots_private": []
+}

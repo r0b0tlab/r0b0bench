@@ -8,13 +8,13 @@ quality:
     n: 400
     population_n: 2376
     dataset: allenai/ai2_arc ARC-Easy test
-    concurrency: 4
+    concurrency: 2
     max_tokens: 32
   ifeval:
     mode: subset
     n: 200
     population_n: 541
-    concurrency: 4
+    concurrency: 2
     max_tokens: 1024
     note: lightweight constraint scorer (not full official IFEval package)
   humaneval:
@@ -26,7 +26,7 @@ quality:
     mode: subset
     n: 200
     population_n: 1319
-    concurrency: 4
+    concurrency: 2
     max_tokens: 512
     note: 0-shot flexible-extract
 lane_order:

@@ -24,28 +24,43 @@ def _env_path(*keys: str, default: str = "") -> str:
 
 
 def _chat(ep: Endpoint, prompt: str, max_tokens: int = 512, temperature: float = 0.0) -> dict[str, Any]:
-    status, body, elapsed = ep.chat_completions(
-        {
-            "messages": [{"role": "user", "content": prompt}],
-            "temperature": temperature,
-            "max_tokens": max_tokens,
-            "chat_template_kwargs": {"thinking": False},
-        }
-    )
-    text = ""
-    finish = None
-    if status == 200 and body.get("choices"):
-        msg = body["choices"][0].get("message") or {}
-        text = (msg.get("content") or "").strip()
-        finish = body["choices"][0].get("finish_reason")
+    last_err = None
+    for attempt in range(4):
+        try:
+            status, body, elapsed = ep.chat_completions(
+                {
+                    "messages": [{"role": "user", "content": prompt}],
+                    "temperature": temperature,
+                    "max_tokens": max_tokens,
+                    "chat_template_kwargs": {"thinking": False},
+                }
+            )
+            text = ""
+            finish = None
+            if status == 200 and body.get("choices"):
+                msg = body["choices"][0].get("message") or {}
+                text = (msg.get("content") or "").strip()
+                finish = body["choices"][0].get("finish_reason")
+            return {
+                "http_status": status,
+                "text": text,
+                "finish_reason": finish,
+                "elapsed_s": elapsed,
+                "ok": status == 200 and bool(text),
+                "usage": body.get("usage") or {},
+                "error": None if status == 200 else str(body)[:500],
+            }
+        except Exception as exc:  # noqa: BLE001
+            last_err = exc
+            time.sleep(min(30, 2 ** attempt))
     return {
-        "http_status": status,
-        "text": text,
-        "finish_reason": finish,
-        "elapsed_s": elapsed,
-        "ok": status == 200 and bool(text),
-        "usage": body.get("usage") or {},
-        "error": None if status == 200 else str(body)[:500],
+        "http_status": 0,
+        "text": "",
+        "finish_reason": None,
+        "elapsed_s": 0.0,
+        "ok": False,
+        "usage": {},
+        "error": str(last_err)[:500] if last_err else "unknown",
     }
 
 
