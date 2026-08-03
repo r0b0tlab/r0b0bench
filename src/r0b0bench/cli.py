@@ -139,6 +139,7 @@ def cmd_run(args: argparse.Namespace) -> int:
     only = args.only.split(",") if args.only else None
     if only:
         only = [x.strip() for x in only if x.strip()]
+    full_lanes = _expand_lanes(profile, None)
     if args.skip_systems:
         only = only or []
         only = [x for x in (_expand_lanes(profile, None)) if x not in SYSTEMS_LANES] if not args.only else [
@@ -146,7 +147,7 @@ def cmd_run(args: argparse.Namespace) -> int:
         ]
         invalid_for_publish = True
     else:
-        invalid_for_publish = False
+        invalid_for_publish = bool(only and set(_expand_lanes(profile, only)) != set(full_lanes))
 
     lanes = _expand_lanes(profile, only)
     timeout = float(args.timeout) if args.timeout else 600.0
@@ -168,6 +169,9 @@ def cmd_run(args: argparse.Namespace) -> int:
     finally:
         ep.close()
 
+    lane_statuses_complete = bool(results) and len(results) == len(lanes) and all(
+        r.get("status") == "PASS" and not int(r.get("infra_errors") or 0) for r in results
+    )
     report = {
         "schema_version": 2,
         "r0b0bench_version": __version__,
@@ -176,7 +180,7 @@ def cmd_run(args: argparse.Namespace) -> int:
         "base_url": args.base_url,
         "model": args.model,
         "systems_lanes": list(SYSTEMS_LANES),
-        "invalid_for_publish": invalid_for_publish or bool(args.skip_systems),
+        "invalid_for_publish": invalid_for_publish or bool(args.skip_systems) or not lane_statuses_complete,
         "started_utc": datetime.now(timezone.utc).isoformat(),
         "elapsed_s": time.perf_counter() - t0,
         "lanes": results,

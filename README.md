@@ -58,6 +58,24 @@ r0b0bench run --profile core-subset \
 
 `--output` must be **outside** the git checkout (or a gitignored `out/` name).
 
+### Official BFCL adapter configuration
+
+The BFCL lanes require the official `bfcl-eval` package plus a model-neutral
+adapter. Set these at run time; no endpoint credentials or private host paths
+belong in the repository:
+
+```bash
+export R0B0BENCH_BFCL_PYTHON=/path/to/bfcl-venv/bin/python
+export R0B0BENCH_BFCL_SCRIPTS="$PWD/scripts/bfcl"   # optional if using the in-repo adapters
+export R0B0BENCH_SERVED_MODEL=served-model-name
+export BFCL_MAX_TOKENS=8192
+```
+
+`scripts/bfcl/` registers the served model with the official OpenAI-compatible
+handler and preserves the canonical BFCL categories. It does not fork or
+replace the official scorer. The BFCL project root is supplied privately by
+the lane runner and is retained only under `--output`.
+
 ## Aquila NVFP4 example
 
 - Weights: https://huggingface.co/r0b0tlab/XYZ-Aquila-mini-NVFP4  

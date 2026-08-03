@@ -6,14 +6,14 @@ This file is for **coding agents** (Hermes, Cursor, etc.).
 
 - **Runnable** OpenAI-compatible **benchmark client** (`r0b0bench` CLI + optional container).
 - **Not** a model server. Do not bake weights into this image.
-- **Exactly two profiles:** `core` | `core-subset`. Both **always** include the systems block.
+- **Exactly three public profiles:** `core` | `core-subset` | `systems`. The first two always include the systems block; `systems` runs only that block.
 
 ## Systems block (every profile)
 
-Order: `canary` → `bfcl_mt` → `bfcl_ast` → `perf` → `niah`
+- Order: `canary` → `bfcl_mt` → `bfcl_ast` → `latency` → `concurrency` → `throughput` → `niah`
 
 - **NIAH** depths = 25% / 50% / 90% of `(max_model_len − 64)` from `/v1/models`. Do not hardcode 8k/16k/28k.
-- **Perf** default backend is portable OpenAI chat concurrency (label method string; never mix with vllm-bench rows).
+- **Latency/concurrency/throughput** use the portable OpenAI chat backend (label method strings; never mix with vllm-bench rows).
 
 ## Hard rules
 
@@ -32,13 +32,13 @@ pip install -e .
 r0b0bench doctor --base-url "$URL" --model "$MODEL"
 r0b0bench run --profile core-subset --base-url "$URL" --model "$MODEL" \
   --tokenizer "$TOK" --output /tmp/r0b0bench-out
-r0b0bench run --profile core-subset --only canary,niah,perf \
+r0b0bench run --profile core-subset --only canary,niah,latency,concurrency,throughput \
   --base-url "$URL" --model "$MODEL" --tokenizer "$TOK" --output /tmp/r0b0bench-out
 ```
 
 ## Definition of done (agent task)
 
-- `r0b0bench profiles` prints only `core` and `core-subset`
+- `r0b0bench profiles` prints `core`, `core-subset`, and `systems`
 - `doctor` green against target endpoint
 - `run` writes `report.json` + per-lane artifacts under `--output`
 - No credentials or absolute private host paths in commits
@@ -46,4 +46,4 @@ r0b0bench run --profile core-subset --only canary,niah,perf \
 
 ## RC1 honesty
 
-Quality lanes (QA/IFEval/HE/GSM8K) may return `NOT_IMPLEMENTED` until scorers land. Systems lanes **canary / niah / perf** are executable; BFCL may be `NOT_IMPLEMENTED` without `[bfcl]` extra or import. Do not pretend unimplemented lanes passed.
+Quality lanes (QA/IFEval/HE/GSM8K) are executable in rc2 when their frozen datasets are configured. Systems lanes **canary / BFCL-MT / BFCL-AST / latency / concurrency / throughput / NIAH** are executable with the official BFCL adapter; missing adapters or scorers must remain explicit `ERROR`/`NOT_IMPLEMENTED`. Do not pretend unimplemented lanes passed.

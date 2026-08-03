@@ -12,13 +12,11 @@ from typing import Any
 from r0b0bench.config import LaneResult, write_json
 from r0b0bench.endpoint import Endpoint
 
-BFCL_PY = Path(os.environ.get("R0B0BENCH_BFCL_PYTHON", "/home/r0b0tdgx/dspark-r2-private/bfcl-venv/bin/python"))
-AQUILA_SCRIPTS = Path(
-    os.environ.get(
-        "R0B0BENCH_AQUILA_SCRIPTS",
-        "/home/r0b0tdgx/projects/xyz-aquila-mini-nvfp4/scripts",
-    )
-)
+BFCL_PY = Path(os.environ.get("R0B0BENCH_BFCL_PYTHON") or os.environ.get("BFCL_PYTHON") or "")
+# Prefer explicit env; otherwise use in-repo official adapter under scripts/bfcl
+_REPO_ROOT = Path(__file__).resolve().parents[3]
+_DEFAULT_SCRIPTS = _REPO_ROOT / "scripts" / "bfcl"
+BFCL_SCRIPTS = Path(os.environ.get("R0B0BENCH_BFCL_SCRIPTS") or (_DEFAULT_SCRIPTS if _DEFAULT_SCRIPTS.is_dir() else ""))
 
 
 def _env(ep: Endpoint, project_root: Path) -> dict[str, str]:
@@ -27,6 +25,7 @@ def _env(ep: Endpoint, project_root: Path) -> dict[str, str]:
     env["OPENAI_API_KEY"] = env.get("OPENAI_API_KEY") or "EMPTY"
     # base_url should be .../v1
     env["OPENAI_BASE_URL"] = ep.base_url.rstrip("/")
+    env["R0B0BENCH_SERVED_MODEL"] = ep.model
     env["PYTHONUNBUFFERED"] = "1"
     # concurrency: default 8 for AST (server max_num_seqs=16); MT often safer at 4
     env.setdefault("BFCL_NUM_THREADS", os.environ.get("BFCL_NUM_THREADS", "8"))
@@ -128,12 +127,13 @@ def _parse_ast_scores(score_dir: Path) -> dict[str, Any]:
 def run_bfcl_mt(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
     t0 = time.perf_counter()
     out_dir.mkdir(parents=True, exist_ok=True)
-    script = AQUILA_SCRIPTS / "bfcl_run.py"
+    script = BFCL_SCRIPTS / "bfcl_run.py"
     if not BFCL_PY.exists() or not script.exists():
         summary = {
             "error": "bfcl runner missing",
             "bfcl_python": str(BFCL_PY),
             "script": str(script),
+            "configuration": "set R0B0BENCH_BFCL_PYTHON and R0B0BENCH_BFCL_SCRIPTS to an official bfcl-eval adapter",
         }
         write_json(out_dir / "bfcl_mt.json", summary)
         return LaneResult(lane_id="bfcl_mt", status="ERROR", summary=summary, infra_errors=1, elapsed_s=time.perf_counter() - t0)
@@ -197,6 +197,18 @@ def run_bfcl_mt(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
     }
     if parsed.get("accuracy") is not None:
         summary["accuracy"] = parsed["accuracy"]
+    if parsed.get("accuracy") is None and not parsed.get("primary"):
+        summary["status"] = "ERROR"
+        summary["error"] = "official BFCL MT score was not parsed"
+        write_json(out_dir / "bfcl_mt.json", summary)
+        return LaneResult(
+            lane_id="bfcl_mt",
+            status="ERROR",
+            summary=summary,
+            artifacts={"bfcl_mt.json": str(out_dir / "bfcl_mt.json"), "log": str(log)},
+            infra_errors=1,
+            elapsed_s=time.perf_counter() - t0,
+        )
     write_json(out_dir / "bfcl_mt.json", summary)
     return LaneResult(
         lane_id="bfcl_mt",
@@ -210,9 +222,13 @@ def run_bfcl_mt(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
 def run_bfcl_ast(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
     t0 = time.perf_counter()
     out_dir.mkdir(parents=True, exist_ok=True)
-    script = AQUILA_SCRIPTS / "bfcl_ast_run.py"
+    script = BFCL_SCRIPTS / "bfcl_ast_run.py"
     if not BFCL_PY.exists() or not script.exists():
-        summary = {"error": "bfcl ast runner missing", "script": str(script)}
+        summary = {
+            "error": "bfcl ast runner missing",
+            "script": str(script),
+            "configuration": "set R0B0BENCH_BFCL_PYTHON and R0B0BENCH_BFCL_SCRIPTS to an official bfcl-eval adapter",
+        }
         write_json(out_dir / "bfcl_ast.json", summary)
         return LaneResult(lane_id="bfcl_ast", status="ERROR", summary=summary, infra_errors=1, elapsed_s=time.perf_counter() - t0)
 
@@ -270,6 +286,18 @@ def run_bfcl_ast(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult
         summary["micro_accuracy"] = parsed["micro_accuracy"]
         summary["micro_correct"] = parsed.get("micro_correct")
         summary["micro_total"] = parsed.get("micro_total")
+    if set(parsed.get("categories", {})) != set(cats) or parsed.get("micro_accuracy") is None:
+        summary["status"] = "ERROR"
+        summary["error"] = "official BFCL AST scores were not parsed for every category"
+        write_json(out_dir / "bfcl_ast.json", summary)
+        return LaneResult(
+            lane_id="bfcl_ast",
+            status="ERROR",
+            summary=summary,
+            artifacts={"bfcl_ast.json": str(out_dir / "bfcl_ast.json"), "log": str(log)},
+            infra_errors=1,
+            elapsed_s=time.perf_counter() - t0,
+        )
     write_json(out_dir / "bfcl_ast.json", summary)
     return LaneResult(
         lane_id="bfcl_ast",
