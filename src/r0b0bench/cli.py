@@ -11,12 +11,13 @@ from pathlib import Path
 from r0b0bench import OPTIONAL_LANES, PROFILES, SYSTEMS_LANES, __version__
 from r0b0bench.config import ensure_outside_checkout, load_profile, write_json
 from r0b0bench.endpoint import Endpoint
-from r0b0bench.lanes.bfcl import run_bfcl_ast, run_bfcl_mt, run_quality_stub
+from r0b0bench.lanes.bfcl import run_bfcl_ast, run_bfcl_mt
 from r0b0bench.lanes.canary import run_canary
 from r0b0bench.lanes.concurrency import run_concurrency
 from r0b0bench.lanes.latency import run_latency
 from r0b0bench.lanes.niah import run_niah
 from r0b0bench.lanes.perf import run_perf
+from r0b0bench.lanes.quality import run_gsm8k, run_humaneval, run_ifeval, run_qa
 from r0b0bench.lanes.throughput import run_throughput
 
 
@@ -102,9 +103,20 @@ def _run_lane(lane: str, ep: Endpoint, lane_dir: Path, systems_cfg: dict, profil
         return run_perf(ep, lane_dir, systems_cfg.get("perf") or {})
     if lane == "niah":
         return run_niah(ep, lane_dir, systems_cfg.get("niah") or {}, tokenizer_path=tokenizer or None)
-    if lane in ("qa", "ifeval", "humaneval", "gsm8k"):
-        q = (profile.get("quality") or {}).get(lane) or {}
-        return run_quality_stub(lane, lane_dir, q)
+    if lane == "qa":
+        q = (profile.get("quality") or {}).get("qa") or {}
+        return run_qa(ep, lane_dir, q)
+    if lane == "ifeval":
+        q = (profile.get("quality") or {}).get("ifeval") or {}
+        return run_ifeval(ep, lane_dir, q)
+    if lane == "humaneval":
+        q = (profile.get("quality") or {}).get("humaneval") or {}
+        return run_humaneval(ep, lane_dir, q)
+    if lane == "gsm8k":
+        q = (profile.get("quality") or {}).get("gsm8k") or {}
+        return run_gsm8k(ep, lane_dir, q)
+    from r0b0bench.lanes.bfcl import run_quality_stub
+
     return run_quality_stub(lane, lane_dir, {"error": "unknown_lane"})
 
 

@@ -6,23 +6,29 @@ quality:
   qa:
     mode: subset
     n: 400
-    population_n: 7715
-    status: not_implemented_in_rc1
+    population_n: 2376
+    dataset: allenai/ai2_arc ARC-Easy test
+    concurrency: 4
+    max_tokens: 32
   ifeval:
     mode: subset
     n: 200
     population_n: 541
-    status: not_implemented_in_rc1
+    concurrency: 4
+    max_tokens: 1024
+    note: lightweight constraint scorer (not full official IFEval package)
   humaneval:
     mode: full
     n: 164
-    status: not_implemented_in_rc1
+    concurrency: 2
+    max_tokens: 512
   gsm8k:
     mode: subset
     n: 200
     population_n: 1319
-    status: not_implemented_in_rc1
-    note: 0-shot flexible-extract when implemented
+    concurrency: 4
+    max_tokens: 512
+    note: 0-shot flexible-extract
 lane_order:
   - systems  # canary, bfcl_mt, bfcl_ast, latency, concurrency, throughput, niah
   - qa
