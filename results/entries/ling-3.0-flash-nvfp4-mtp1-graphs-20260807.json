@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "entry_id": "ling-3.0-flash-nvfp4-mtp1-graphs-20260807",
+  "recorded_utc": "2026-08-07T11:47:37.230201+00:00",
+  "model": {
+    "id": "ling-3.0-flash-nvfp4",
+    "display_name": "Ling-3.0-flash NVFP4 (MTP scale 1, CUDA graphs)"
+  },
+  "runtime": {
+    "hardware": "1x NVIDIA GB10 (SM121)",
+    "base_url_omitted": true,
+    "attention_backend": "triton_mla + flash_attn prefill",
+    "cudagraph_decode": "full_and_piecewise (capture sizes 1-16)",
+    "compilation": "VLLM_COMPILE",
+    "fp4_gemm_backend": "flashinfer_cutlass (native)",
+    "fork_commit": "92c104112",
+    "kv_cache_dtype": "fp8",
+    "max_model_len": 24576,
+    "mamba_cache_mode": "align",
+    "mtp": "enabled, num_speculative_tokens=1",
+    "template_default": "thinking off (harness-compatible override)",
+    "vllm_version": "0.1.dev1+g92c104112"
+  },
+  "harness": {
+    "name": "r0b0bench",
+    "version": "1.0.0rc2",
+    "profile": "core-subset"
+  },
+  "scores": {
+    "canary": {
+      "status": "PASS",
+      "passed": true,
+      "n": 5
+    },
+    "bfcl_mt": {
+      "status": "PASS",
+      "accuracy": 0.62,
+      "correct": 124,
+      "total": 200
+    },
+    "bfcl_ast": {
+      "status": "PASS",
+      "micro_accuracy": 0.30666666666666664,
+      "categories": {
+        "multiple": {
+          "accuracy": 0.19,
+          "correct_count": 38,
+          "path": "/tmp/r0b0bench-out/20260807T092210Z-9238982e/lanes/bfcl_ast/bfcl-ast-project/score/r0b0bench-openai-FC/non_live/BFCL_v4_parallel_multiple_score.json",
+          "raw": {
+            "accuracy": 0.19,
+            "correct_count": 38,
+            "total_count": 200
+          },
+          "total_count": 200
+        },
+        "parallel": {
+          "accuracy": 0.54,
+          "correct_count": 108,
+          "path": "/tmp/r0b0bench-out/20260807T092210Z-9238982e/lanes/bfcl_ast/bfcl-ast-project/score/r0b0bench-openai-FC/non_live/BFCL_v4_parallel_score.json",
+          "raw": {
+            "accuracy": 0.54,
+            "correct_count": 108,
+            "total_count": 200
+          },
+          "total_count": 200
+        },
+        "parallel_multiple": {
+          "accuracy": 0.19,
+          "correct_count": 38,
+          "path": "/tmp/r0b0bench-out/20260807T092210Z-9238982e/lanes/bfcl_ast/bfcl-ast-project/score/r0b0bench-openai-FC/non_live/BFCL_v4_parallel_multiple_score.json",
+          "raw": {
+            "accuracy": 0.19,
+            "correct_count": 38,
+            "total_count": 200
+          },
+          "total_count": 200
+        }
+      }
+    },
+    "latency": {
+      "status": "PASS",
+      "ttft_ms_mean": 227.88450823281892,
+      "itl_ms_mean": 48.623421513902464,
+      "e2el_ms_mean": 2015.6462804879993
+    },
+    "concurrency": {
+      "status": "PASS",
+      "ladder_aggregate_tok_s": {
+        "1": 39.02321325563197,
+        "2": 51.8356183348709,
+        "4": 96.88963058024534,
+        "6": 126.86697349287448
+      }
+    },
+    "throughput": {
+      "status": "PASS",
+      "decode_median_client_tok_s": 32.82997020115795
+    },
+    "qa": {
+      "status": "PASS",
+      "accuracy": 0.96,
+      "correct": 384,
+      "n": 400
+    },
+    "ifeval": {
+      "status": "PASS",
+      "accuracy": 0.83,
+      "correct": 166,
+      "n": 200,
+      "method": "ifeval_lightweight_constraint_scorer"
+    },
+    "humaneval": {
+      "status": "PASS",
+      "pass@1": 0.6585365853658537,
+      "n": 164
+    },
+    "gsm8k": {
+      "status": "PASS",
+      "accuracy": 0.945,
+      "correct": 189,
+      "n": 200,
+      "method": "gsm8k_0shot_flexible_extract"
+    },
+    "niah": {
+      "status": "PASS",
+      "depths": [
+        6080,
+        12160,
+        21888
+      ],
+      "max_model_len": 24576
+    }
+  },
+  "infra_errors_total": 0,
+  "invalid_for_publish": false,
+  "disclosures": [
+    "FINAL canonical row: full core-subset, all lanes PASS (invalid_for_publish=false). 24K max-len (prefill lane passes: no 400s), MTP num_speculative_tokens=1, CUDA graphs FULL_AND_PIECEWISE + VLLM_COMPILE, FP8 KV, mamba align, thinking-off template default. BFCL-MT 0.62 thinking-off vs 0.765 thinking-on (reasoning traces help tool calling; disclosed). Acceptance 73.2%, mean accept length 1.73."
+  ],
+  "artifact_roots_private": []
+}
