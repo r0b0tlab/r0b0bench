@@ -1,0 +1,146 @@
+{
+  "artifact_roots_private": [],
+  "disclosures": [
+    "Baseline greedy decode, no speculative. Marlin FP4/MoE backends."
+  ],
+  "entry_id": "inkling-small-marlin-baseline-20260806",
+  "harness": {
+    "name": "r0b0bench",
+    "profile": "core-subset",
+    "version": "1.0.0rc2"
+  },
+  "infra_errors_total": 1,
+  "invalid_for_publish": true,
+  "model": {
+    "display_name": "Inkling-Small NVFP4 (dual GB10, Marlin)",
+    "family": "inkling-small",
+    "id": "/models/Inkling-Small-NVFP4",
+    "quantization": "modelopt_fp4 (NVFP4)",
+    "revision": "b6a99534467840620d411e4cd4ad5819b2610d9c"
+  },
+  "recorded_utc": "2026-08-07T01:58:41.606635+00:00",
+  "runtime": {
+    "attention_backend": "triton",
+    "base_url_omitted": true,
+    "cudagraph_decode": "full",
+    "cudagraph_prefill": "disabled",
+    "fp4_gemm_backend": "marlin",
+    "hardware": "2x NVIDIA GB10 (SM121), TP=2, socket NCCL",
+    "image": "lmsysorg/sglang:dev-inkling-small-dgx-spark",
+    "kv_cache_dtype": "bf16",
+    "mem_fraction_static": 0.85,
+    "model_revision": "b6a99534467840620d411e4cd4ad5819b2610d9c",
+    "moe_backend": "marlin",
+    "quantization": "modelopt_fp4 (NVFP4)",
+    "sglang_commit": "a74222ef6e690f851e2e4ff1c0be7dc1357be313",
+    "speculative": {
+      "method": "none"
+    }
+  },
+  "schema_version": 1,
+  "scores": {
+    "bfcl_ast": {
+      "categories": {
+        "multiple": {
+          "accuracy": 0.19,
+          "correct_count": 38,
+          "path": "<private>",
+          "raw": {
+            "accuracy": 0.19,
+            "correct_count": 38,
+            "total_count": 200
+          },
+          "total_count": 200
+        },
+        "parallel": {
+          "accuracy": 0.525,
+          "correct_count": 105,
+          "path": "<private>",
+          "raw": {
+            "accuracy": 0.525,
+            "correct_count": 105,
+            "total_count": 200
+          },
+          "total_count": 200
+        },
+        "parallel_multiple": {
+          "accuracy": 0.19,
+          "correct_count": 38,
+          "path": "<private>",
+          "raw": {
+            "accuracy": 0.19,
+            "correct_count": 38,
+            "total_count": 200
+          },
+          "total_count": 200
+        }
+      },
+      "micro_accuracy": 0.3016666666666667,
+      "status": "PASS"
+    },
+    "bfcl_mt": {
+      "accuracy": 0.54,
+      "correct": 108,
+      "status": "PASS",
+      "total": 200
+    },
+    "canary": {
+      "n": 5,
+      "passed": true,
+      "status": "PASS"
+    },
+    "concurrency": {
+      "ladder_aggregate_tok_s": {
+        "1": 14.091118098480779,
+        "2": 26.653336214361307,
+        "4": 46.82806453785662,
+        "6": 48.693735618310306
+      },
+      "status": "PASS"
+    },
+    "gsm8k": {
+      "accuracy": 0.81,
+      "correct": 162,
+      "method": "gsm8k_0shot_flexible_extract",
+      "n": 200,
+      "status": "PASS"
+    },
+    "humaneval": {
+      "n": 164,
+      "pass@1": 0.7317073170731707,
+      "status": "PASS"
+    },
+    "ifeval": {
+      "accuracy": 0.425,
+      "correct": 85,
+      "method": "ifeval_lightweight_constraint_scorer",
+      "n": 200,
+      "status": "PASS"
+    },
+    "latency": {
+      "e2el_ms_mean": 8869.863463987713,
+      "itl_ms_mean": null,
+      "status": "PASS",
+      "ttft_ms_mean": null
+    },
+    "niah": {
+      "depths": [
+        262128,
+        524256,
+        943660
+      ],
+      "max_model_len": 1048576,
+      "status": "ERROR"
+    },
+    "qa": {
+      "accuracy": 0.245,
+      "correct": 98,
+      "n": 400,
+      "status": "PASS"
+    },
+    "throughput": {
+      "decode_median_client_tok_s": 13.779343858388762,
+      "status": "PASS"
+    }
+  }
+}

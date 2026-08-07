@@ -36,36 +36,79 @@ def metric(entry: dict, *path, default=None):
     return default if cur is None else cur
 
 
+def _spec_str(e: dict) -> str:
+    spec = (e.get("runtime") or {}).get("speculative") or {}
+    method = spec.get("method", "none")
+    if method == "none":
+        return "none"
+    parts = [method]
+    if spec.get("K"):
+        parts.append(f"K={spec['K']}")
+    if spec.get("draft_tokens"):
+        parts.append(f"draft={spec['draft_tokens']}")
+    if spec.get("config"):
+        parts.append(spec["config"])
+    return " ".join(parts)
+
+
+def _decode_tok_s(e: dict) -> float | None:
+    return metric(e, "throughput", "decode_median_client_tok_s")
+
+
+def _prefill_tok_s(e: dict) -> float | None:
+    # check common locations
+    v = metric(e, "throughput", "prefill_median_prompt_tok_s")
+    if v is None:
+        v = metric(e, "throughput", "prefill_median_prompt_tok_s_proxy")
+    return v
+
+
+def _conc_ladder(e: dict) -> dict:
+    raw = metric(e, "concurrency", "ladder_aggregate_tok_s")
+    return raw if isinstance(raw, dict) else {}
+
+
 def main() -> int:
     entries = load_entries()
     index = {
-        "schema_version": 1,
+        "schema_version": 2,
         "n_entries": len(entries),
         "entries": [
             {
                 "entry_id": e.get("entry_id"),
                 "file": e.get("_file"),
                 "model": (e.get("model") or {}).get("display_name") or (e.get("model") or {}).get("id"),
+                "model_family": (e.get("model") or {}).get("family", ""),
                 "profile": (e.get("harness") or {}).get("profile"),
+                "hardware": (e.get("runtime") or {}).get("hardware", ""),
+                "speculative": _spec_str(e),
                 "invalid_for_publish": e.get("invalid_for_publish"),
                 "infra_errors_total": e.get("infra_errors_total"),
+                # Quality
                 "gsm8k": metric(e, "gsm8k", "accuracy"),
                 "humaneval_pass1": metric(e, "humaneval", "pass@1"),
                 "qa": metric(e, "qa", "accuracy"),
                 "ifeval": metric(e, "ifeval", "accuracy"),
                 "bfcl_mt": metric(e, "bfcl_mt", "accuracy"),
                 "bfcl_ast_micro": metric(e, "bfcl_ast", "micro_accuracy"),
-                "niah": metric(e, "niah", "status"),
+                # Performance
+                "decode_tok_s": _decode_tok_s(e),
+                "prefill_tok_s": _prefill_tok_s(e),
                 "ttft_ms": metric(e, "latency", "ttft_ms_mean"),
-                "c1_tok_s": (metric(e, "concurrency", "ladder_aggregate_tok_s") or {}).get("1")
-                if isinstance(metric(e, "concurrency", "ladder_aggregate_tok_s"), dict)
-                else None,
+                "e2el_ms": metric(e, "latency", "e2el_ms_mean"),
+                "conc_c1": _conc_ladder(e).get("1"),
+                "conc_c2": _conc_ladder(e).get("2"),
+                "conc_c4": _conc_ladder(e).get("4"),
+                "conc_c6": _conc_ladder(e).get("6"),
+                # Long context
+                "niah": metric(e, "niah", "status"),
             }
             for e in entries
         ],
     }
     INDEX.write_text(json.dumps(index, indent=2) + "\n", encoding="utf-8")
 
+    # --- LEADERBOARD.md ---
     lines = [
         "# r0b0bench leaderboard",
         "",
@@ -73,16 +116,18 @@ def main() -> int:
         "",
         "Comparable only within the same profile and disclosed scorer variants.",
         "",
-        "| entry_id | model | profile | GSM8K | HE@1 | QA | IFEval | BFCL-MT | ASTµ | NIAH | invalid |",
-        "|----------|-------|---------|------:|-----:|---:|-------:|-------:|-----:|------|---------|",
+        "## Quality",
+        "",
+        "| entry_id | model | spec | GSM8K | HE@1 | QA | IFEval | BFCL-MT | ASTµ | NIAH | invalid |",
+        "|----------|-------|------|------:|-----:|---:|-------:|-------:|-----:|------|---------|",
     ]
     for row in index["entries"]:
         lines.append(
-            "| {entry_id} | {model} | {profile} | {gsm8k} | {he} | {qa} | {ife} | {mt} | {ast} | {niah} | {inv} |".format(
-                entry_id=row.get("entry_id"),
-                model=(row.get("model") or "")[:40],
-                profile=row.get("profile"),
-                gsm8k=_fmt(row.get("gsm8k")),
+            "| {eid} | {model} | {spec} | {gsm} | {he} | {qa} | {ife} | {mt} | {ast} | {niah} | {inv} |".format(
+                eid=row.get("entry_id"),
+                model=(row.get("model") or "")[:35],
+                spec=row.get("speculative", ""),
+                gsm=_fmt(row.get("gsm8k")),
                 he=_fmt(row.get("humaneval_pass1")),
                 qa=_fmt(row.get("qa")),
                 ife=_fmt(row.get("ifeval")),
@@ -92,10 +137,37 @@ def main() -> int:
                 inv=row.get("invalid_for_publish"),
             )
         )
+
+    # Performance table
+    lines += [
+        "",
+        "## Performance",
+        "",
+        "| entry_id | model | spec | decode tok/s | prefill tok/s | TTFT ms | c1 agg | c2 agg | c4 agg | c6 agg |",
+        "|----------|-------|------|------------:|-------------:|-------:|-------:|-------:|-------:|-------:|",
+    ]
+    for row in index["entries"]:
+        lines.append(
+            "| {eid} | {model} | {spec} | {dec} | {pre} | {ttft} | {c1} | {c2} | {c4} | {c6} |".format(
+                eid=row.get("entry_id"),
+                model=(row.get("model") or "")[:35],
+                spec=row.get("speculative", ""),
+                dec=_fmt(row.get("decode_tok_s")),
+                pre=_fmt(row.get("prefill_tok_s")),
+                ttft=_fmt(row.get("ttft_ms")),
+                c1=_fmt(row.get("conc_c1")),
+                c2=_fmt(row.get("conc_c2")),
+                c4=_fmt(row.get("conc_c4")),
+                c6=_fmt(row.get("conc_c6")),
+            )
+        )
+
+    # Entry files
     lines += ["", "## Files", ""]
     for e in entries:
         lines.append(f"- [`{e.get('_file')}`](entries/{e.get('_file')}) — {e.get('entry_id')}")
     lines.append("")
+
     BOARD.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"wrote {INDEX} ({len(entries)} entries)")
     print(f"wrote {BOARD}")

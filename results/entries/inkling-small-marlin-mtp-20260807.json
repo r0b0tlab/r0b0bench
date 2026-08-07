@@ -1,0 +1,111 @@
+{
+  "artifact_roots_private": [],
+  "disclosures": [
+    "MTP 8-1-9 multi-layer EAGLE, 8 draft tokens. mem_fraction_static=0.80."
+  ],
+  "entry_id": "inkling-small-marlin-mtp-20260807",
+  "harness": {
+    "name": "r0b0bench",
+    "profile": "core-subset",
+    "version": "1.0.0rc2"
+  },
+  "infra_errors_total": 0,
+  "invalid_for_publish": true,
+  "model": {
+    "display_name": "Inkling-Small NVFP4 MTP 8-1-9 (dual GB10, Marlin)",
+    "family": "inkling-small",
+    "id": "/models/Inkling-Small-NVFP4",
+    "quantization": "modelopt_fp4 (NVFP4)",
+    "revision": "b6a99534467840620d411e4cd4ad5819b2610d9c"
+  },
+  "recorded_utc": "2026-08-07T01:58:41.779103+00:00",
+  "runtime": {
+    "attention_backend": "triton",
+    "base_url_omitted": true,
+    "cudagraph_decode": "full",
+    "cudagraph_prefill": "disabled",
+    "fp4_gemm_backend": "marlin",
+    "hardware": "2x NVIDIA GB10 (SM121), TP=2, socket NCCL",
+    "image": "lmsysorg/sglang:dev-inkling-small-dgx-spark",
+    "kv_cache_dtype": "bf16",
+    "mem_fraction_static": 0.8,
+    "model_revision": "b6a99534467840620d411e4cd4ad5819b2610d9c",
+    "moe_backend": "marlin",
+    "quantization": "modelopt_fp4 (NVFP4)",
+    "sglang_commit": "a74222ef6e690f851e2e4ff1c0be7dc1357be313",
+    "speculative": {
+      "config": "8-1-9",
+      "draft_layers": 8,
+      "draft_tokens": 8,
+      "method": "mtp"
+    }
+  },
+  "schema_version": 1,
+  "scores": {
+    "bfcl_ast": {
+      "categories": null,
+      "micro_accuracy": null,
+      "status": null
+    },
+    "bfcl_mt": {
+      "accuracy": null,
+      "correct": null,
+      "status": null,
+      "total": 200
+    },
+    "canary": {
+      "n": 5,
+      "passed": true,
+      "status": "PASS"
+    },
+    "concurrency": {
+      "ladder_aggregate_tok_s": {
+        "1": 13.682938706123272,
+        "2": 29.25063854677996,
+        "4": 47.36292560866189,
+        "6": 47.18761703434397
+      },
+      "status": "PASS"
+    },
+    "gsm8k": {
+      "accuracy": null,
+      "correct": null,
+      "method": null,
+      "n": null,
+      "status": null
+    },
+    "humaneval": {
+      "n": 164,
+      "pass@1": null,
+      "status": null
+    },
+    "ifeval": {
+      "accuracy": null,
+      "correct": null,
+      "method": null,
+      "n": null,
+      "status": null
+    },
+    "latency": {
+      "e2el_ms_mean": 11712.129282706883,
+      "itl_ms_mean": null,
+      "status": "PASS",
+      "ttft_ms_mean": null
+    },
+    "niah": {
+      "depths": null,
+      "max_model_len": null,
+      "status": null
+    },
+    "qa": {
+      "accuracy": null,
+      "correct": null,
+      "n": null,
+      "status": null
+    },
+    "throughput": {
+      "decode_median_client_tok_s": 16.044400141264337,
+      "status": "PASS"
+    }
+  }
+}
