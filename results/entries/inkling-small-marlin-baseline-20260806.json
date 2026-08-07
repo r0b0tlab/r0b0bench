@@ -1,7 +1,9 @@
 {
   "artifact_roots_private": [],
   "disclosures": [
-    "Baseline greedy decode, no speculative. Marlin FP4/MoE backends."
+    "Context length constrained to 245,000 tokens (physical KV capacity ~261K). Model advertises 1M natively.",
+    "generation_reserve=256 required for reasoning model (64 was insufficient).",
+    "NIAH depths: 25%=61K, 50%=122K, 90%=220K -- all within physical KV capacity."
   ],
   "entry_id": "inkling-small-marlin-baseline-20260806",
   "harness": {
@@ -9,8 +11,8 @@
     "profile": "core-subset",
     "version": "1.0.0rc2"
   },
-  "infra_errors_total": 1,
-  "invalid_for_publish": true,
+  "infra_errors_total": 0,
+  "invalid_for_publish": false,
   "model": {
     "display_name": "Inkling-Small NVFP4 (dual GB10, Marlin)",
     "family": "inkling-small",
@@ -124,13 +126,24 @@
       "ttft_ms_mean": null
     },
     "niah": {
+      "all_passed": true,
       "depths": [
-        262128,
-        524256,
-        943660
+        61186,
+        122372,
+        220269
       ],
-      "max_model_len": 1048576,
-      "status": "ERROR"
+      "fractions": [
+        0.25,
+        0.5,
+        0.9
+      ],
+      "generation_reserve": 256,
+      "kv_capacity_tokens": 260608,
+      "max_model_len": 245000,
+      "note": "Context constrained to 245K (physical KV ceiling ~261K at mem_fraction_static=0.85). All depths PASS.",
+      "pass_count": 3,
+      "status": "PASS",
+      "total": 3
     },
     "qa": {
       "accuracy": 0.245,

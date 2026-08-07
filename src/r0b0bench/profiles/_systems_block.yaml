@@ -67,7 +67,7 @@ perf:
 niah:
   depth_policy: frac_of_max_context
   fractions: [0.25, 0.50, 0.90]
-  generation_reserve: 64
+  generation_reserve: 256
   needle_fraction: 0.5
   request_timeout_s: 7200
   stop_on_infra_error: true

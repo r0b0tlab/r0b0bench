@@ -9,8 +9,8 @@ Comparable only within the same profile and disclosed scorer variants.
 | entry_id | model | spec | GSM8K | HE@1 | QA | IFEval | BFCL-MT | ASTµ | NIAH | invalid |
 |----------|-------|------|------:|-----:|---:|-------:|-------:|-----:|------|---------|
 | dsv4-flash-native-v11-core-subset-20260803 | DeepSeek-V4-Flash DSpark NVFP4 (dua | dspark K=6 | 0.950 | 0.909 | 0.960 | 0.795 | 0.755 | 0.362 | PASS | False |
-| inkling-small-marlin-baseline-20260806 | Inkling-Small NVFP4 (dual GB10, Mar | none | 0.810 | 0.732 | 0.245 | 0.425 | 0.540 | 0.302 | ERROR | True |
-| inkling-small-marlin-mtp-20260807 | Inkling-Small NVFP4 MTP 8-1-9 (dual | mtp draft=8 8-1-9 | — | — | — | — | — | — | — | True |
+| inkling-small-marlin-baseline-20260806 | Inkling-Small NVFP4 (dual GB10, Mar | none | 0.810 | 0.732 | 0.245 | 0.425 | 0.540 | 0.302 | PASS | False |
+| inkling-small-marlin-mtp-20260807 | Inkling-Small NVFP4 MTP 8-1-9 (dual | mtp draft=8 8-1-9 | 0.770 | 0.713 | 0.237 | 0.480 | 0.575 | 0.302 | NOT_RUN | False |
 | ling-3.0-flash-nvfp4-basear-graphs-20260807 | Ling-3.0-flash NVFP4 (base AR, CUDA | none | 0.925 | 0.671 | 0.960 | 0.850 | 0.765 | 0.305 | PASS | True |
 | ling-3.0-flash-nvfp4-mtp1-graphs-20260807 | Ling-3.0-flash NVFP4 (MTP scale 1,  | none | 0.945 | 0.659 | 0.960 | 0.830 | 0.620 | 0.307 | PASS | False |
 
@@ -20,7 +20,7 @@ Comparable only within the same profile and disclosed scorer variants.
 |----------|-------|------|------------:|-------------:|-------:|-------:|-------:|-------:|-------:|
 | dsv4-flash-native-v11-core-subset-20260803 | DeepSeek-V4-Flash DSpark NVFP4 (dua | dspark K=6 | 40.164 | 29203.666 | 221.884 | 86.931 | 145.889 | 239.311 | 337.761 |
 | inkling-small-marlin-baseline-20260806 | Inkling-Small NVFP4 (dual GB10, Mar | none | 13.779 | — | — | 14.091 | 26.653 | 46.828 | 48.694 |
-| inkling-small-marlin-mtp-20260807 | Inkling-Small NVFP4 MTP 8-1-9 (dual | mtp draft=8 8-1-9 | 16.044 | — | — | 13.683 | 29.251 | 47.363 | 47.188 |
+| inkling-small-marlin-mtp-20260807 | Inkling-Small NVFP4 MTP 8-1-9 (dual | mtp draft=8 8-1-9 | 15.831 | — | — | 16.388 | 29.983 | 47.876 | 63.222 |
 | ling-3.0-flash-nvfp4-basear-graphs-20260807 | Ling-3.0-flash NVFP4 (base AR, CUDA | none | 21.423 | — | 228.427 | 21.342 | 46.204 | 86.252 | 111.992 |
 | ling-3.0-flash-nvfp4-mtp1-graphs-20260807 | Ling-3.0-flash NVFP4 (MTP scale 1,  | none | 32.830 | — | 227.885 | 39.023 | 51.836 | 96.890 | 126.867 |
 
