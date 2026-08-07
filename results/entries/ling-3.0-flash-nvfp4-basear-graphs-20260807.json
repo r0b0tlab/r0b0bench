@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "entry_id": "ling-3.0-flash-nvfp4-basear-graphs-20260807",
+  "recorded_utc": "2026-08-07T10:04:01.281259+00:00",
+  "model": {
+    "id": "ling-3.0-flash-nvfp4",
+    "display_name": "Ling-3.0-flash NVFP4 (base AR, CUDA graphs)"
+  },
+  "runtime": {
+    "hardware": "1x NVIDIA GB10 (SM121)",
+    "base_url_omitted": true,
+    "attention_backend": "triton_mla + flash_attn prefill",
+    "cudagraph_decode": "full_and_piecewise (capture sizes 1-16)",
+    "compilation": "VLLM_COMPILE",
+    "fp4_gemm_backend": "flashinfer_cutlass (native)",
+    "fork_commit": "92c104112",
+    "kv_cache_dtype": "fp8",
+    "max_model_len": 16384,
+    "mamba_cache_mode": "align",
+    "mtp": "disabled (base AR)",
+    "template_default": "thinking off (harness-compatible override)",
+    "vllm_version": "0.1.dev1+g92c104112"
+  },
+  "harness": {
+    "name": "r0b0bench",
+    "version": "1.0.0rc2",
+    "profile": "core-subset"
+  },
+  "scores": {
+    "canary": {
+      "status": "PASS",
+      "passed": true,
+      "n": 5
+    },
+    "bfcl_mt": {
+      "status": "PASS",
+      "accuracy": 0.765,
+      "correct": null,
+      "total": 200
+    },
+    "bfcl_ast": {
+      "status": "PASS",
+      "micro_accuracy": 0.305,
+      "categories": null
+    },
+    "latency": {
+      "status": "PASS",
+      "ttft_ms_mean": 228.42697653686628,
+      "itl_ms_mean": 46.450026779727914,
+      "e2el_ms_mean": 3201.205393008422
+    },
+    "concurrency": {
+      "status": "PASS",
+      "ladder_aggregate_tok_s": {
+        "1": 21.34237067330988,
+        "2": 46.20352588009642,
+        "4": 86.2516079307996,
+        "6": 111.99188817760614
+      }
+    },
+    "throughput": {
+      "status": "FAIL",
+      "decode_median_client_tok_s": 21.42261965551203
+    },
+    "qa": {
+      "status": "PASS",
+      "accuracy": 0.96,
+      "correct": 384,
+      "n": 400
+    },
+    "ifeval": {
+      "status": "PASS",
+      "accuracy": 0.85,
+      "correct": 170,
+      "n": 200,
+      "method": "ifeval_lightweight_constraint_scorer"
+    },
+    "humaneval": {
+      "status": "PASS",
+      "pass@1": 0.6707317073170732,
+      "n": 164
+    },
+    "gsm8k": {
+      "status": "PASS",
+      "accuracy": 0.925,
+      "correct": 185,
+      "n": 200,
+      "method": "gsm8k_0shot_flexible_extract"
+    },
+    "niah": {
+      "status": "PASS",
+      "depths": [
+        4080,
+        8160,
+        14688
+      ],
+      "max_model_len": 16384
+    }
+  },
+  "infra_errors_total": 0,
+  "invalid_for_publish": true,
+  "disclosures": [
+    "Merged no-MTP row. Perf lanes (latency/concurrency/throughput) from run 20260807T024929Z (graphs, 16K, no MTP); quality lanes (qa/ifeval/humaneval) from run 20260806T211551Z (thinking-off); canary/bfcl_mt/bfcl_ast/niah/gsm8k from run 20260806T151628Z (thinking-on; bfcl_ast per-category split not retained). CUDA graphs FULL_AND_PIECEWISE + VLLM_COMPILE (fork production path; eager ~2x slower on GB10). Throughput lane FAILs only on prefill reps (HTTP 400: bench ~22.8K prefill prompt > served 16K max-len); decode valid (21.42 tok/s). FP8 KV, mamba align."
+  ],
+  "artifact_roots_private": []
+}
