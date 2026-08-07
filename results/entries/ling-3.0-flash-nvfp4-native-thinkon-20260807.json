@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "entry_id": "ling-3.0-flash-nvfp4-native-thinkon-20260807",
+  "recorded_utc": "2026-08-07T21:55:30.130033+00:00",
+  "model": {
+    "id": "ling-3.0-flash-nvfp4",
+    "display_name": "Ling-3.0-flash NVFP4 (native, thinking on)"
+  },
+  "runtime": {
+    "hardware": "1x NVIDIA GB10 (SM121)",
+    "base_url_omitted": true,
+    "attention_backend": "triton_mla + flash_attn prefill",
+    "cudagraph_decode": "full_and_piecewise (capture sizes 1-16)",
+    "compilation": "VLLM_COMPILE",
+    "fp4_gemm_backend": "flashinfer_cutlass (native)",
+    "fork_commit": "92c104112",
+    "kv_cache_dtype": "fp8",
+    "max_model_len": 24576,
+    "mamba_cache_mode": "align",
+    "mtp": "enabled, num_speculative_tokens=1 (perf lanes); disabled (systems/quality lanes from eager 16K server)",
+    "template_default": "thinking ON (native)",
+    "vllm_version": "0.1.dev1+g92c104112"
+  },
+  "harness": {
+    "name": "r0b0bench",
+    "version": "1.0.0rc2",
+    "profile": "core-subset"
+  },
+  "scores": {
+    "canary": {
+      "status": "PASS",
+      "passed": true,
+      "n": 5
+    },
+    "bfcl_mt": {
+      "status": "PASS",
+      "accuracy": 0.765,
+      "correct": null,
+      "total": 200
+    },
+    "bfcl_ast": {
+      "status": "PASS",
+      "micro_accuracy": 0.305,
+      "categories": null
+    },
+    "latency": {
+      "status": "PASS",
+      "ttft_ms_mean": 211.80562899098732,
+      "itl_ms_mean": 46.01043985717843,
+      "e2el_ms_mean": 3353.4921215032227
+    },
+    "concurrency": {
+      "status": "PASS",
+      "ladder_aggregate_tok_s": {
+        "1": 39.60816277483053,
+        "2": 52.183655801737444,
+        "4": 91.46069189828776,
+        "6": 108.28814610892945
+      }
+    },
+    "throughput": {
+      "status": "PASS",
+      "decode_median_client_tok_s": 35.672570723293546
+    },
+    "qa": {
+      "status": "PASS",
+      "accuracy": 0.205,
+      "correct": 82,
+      "n": 400
+    },
+    "ifeval": {
+      "status": "PASS",
+      "accuracy": 0.49,
+      "correct": 98,
+      "n": 200,
+      "method": "ifeval_lightweight_constraint_scorer"
+    },
+    "humaneval": {
+      "status": "PASS",
+      "pass@1": 0.0,
+      "n": 164
+    },
+    "gsm8k": {
+      "status": "PASS",
+      "accuracy": 0.925,
+      "correct": 185,
+      "n": 200,
+      "method": "gsm8k_0shot_flexible_extract"
+    },
+    "niah": {
+      "status": "PASS",
+      "depths": [
+        4080,
+        8160,
+        14688
+      ],
+      "max_model_len": 16384
+    }
+  },
+  "infra_errors_total": 0,
+  "invalid_for_publish": true,
+  "disclosures": [
+    "NATIVE profile row (thinking on). canary/bfcl_mt/bfcl_ast/niah/gsm8k from run 20260806T151628Z (thinking-on, eager no-MTP 16K server - BFCL 76.5% is the native tool-calling measurement; MTP+thinking+tool-call is pathological on single GB10, documented incident 2026-08-07). perf lanes (latency/concurrency/throughput, 35.67 tok/s) from run 20260807T213831Z (24K MTP1 graphs, thinking on). qa/ifeval/humaneval are DIAGNOSTIC (harness token budgets consumed by reasoning traces: ARC 32-tok -> 20.5%, HE 512-tok -> 0.0%; 96.0%/83.0%/65.9% with thinking off). invalid_for_publish=true: merged provenance + diagnostic lanes."
+  ],
+  "artifact_roots_private": []
+}

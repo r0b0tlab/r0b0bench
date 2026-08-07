@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "n_entries": 5,
+  "n_entries": 6,
   "entries": [
     {
       "entry_id": "dsv4-flash-native-v11-core-subset-20260803",
@@ -130,6 +130,32 @@
       "conc_c2": 51.8356183348709,
       "conc_c4": 96.88963058024534,
       "conc_c6": 126.86697349287448,
+      "niah": "PASS"
+    },
+    {
+      "entry_id": "ling-3.0-flash-nvfp4-native-thinkon-20260807",
+      "file": "ling-3.0-flash-nvfp4-native-thinkon-20260807.json",
+      "model": "Ling-3.0-flash NVFP4 (native, thinking on)",
+      "model_family": "",
+      "profile": "core-subset",
+      "hardware": "1x NVIDIA GB10 (SM121)",
+      "speculative": "none",
+      "invalid_for_publish": true,
+      "infra_errors_total": 0,
+      "gsm8k": 0.925,
+      "humaneval_pass1": 0.0,
+      "qa": 0.205,
+      "ifeval": 0.49,
+      "bfcl_mt": 0.765,
+      "bfcl_ast_micro": 0.305,
+      "decode_tok_s": 35.672570723293546,
+      "prefill_tok_s": null,
+      "ttft_ms": 211.80562899098732,
+      "e2el_ms": 3353.4921215032227,
+      "conc_c1": 39.60816277483053,
+      "conc_c2": 52.183655801737444,
+      "conc_c4": 91.46069189828776,
+      "conc_c6": 108.28814610892945,
       "niah": "PASS"
     }
   ]
