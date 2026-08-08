@@ -22,6 +22,12 @@ def load_entries() -> list[dict]:
         except Exception as exc:  # noqa: BLE001
             print(f"skip {p.name}: {exc}", file=sys.stderr)
             continue
+        # Leaderboard/index list only publish-valid entries. Invalid entries
+        # (merged provenance, diagnostic lanes, infra issues) remain on disk
+        # in results/entries/ as the historical record.
+        if d.get("invalid_for_publish", False):
+            print(f"skip {p.name}: invalid_for_publish=true (kept on disk)", file=sys.stderr)
+            continue
         d["_file"] = p.name
         rows.append(d)
     return rows
