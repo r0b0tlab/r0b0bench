@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "entry_id": "ling-3.0-flash-nvfp4-basear-24k-20260807",
-  "recorded_utc": "2026-08-08T00:02:36.377113+00:00",
+  "recorded_utc": "2026-08-08T00:50:57.230998+00:00",
   "model": {
     "id": "ling-3.0-flash-nvfp4",
     "display_name": "Ling-3.0-flash NVFP4 (base AR, CUDA graphs, 24K)"
@@ -94,7 +94,11 @@
     },
     "throughput": {
       "status": "PASS",
-      "decode_median_client_tok_s": 21.90929336955682
+      "decode_median_client_tok_s": 21.90929336955682,
+      "prefill_median_prompt_tok_s": 12021.780532445864,
+      "prefill_median_prompt_tok_s_proxy": 12021.780532445864,
+      "prefill_mean_prompt_tok_s": 12021.780532445864,
+      "prefill_median_prompt_tokens": 22784.0
     },
     "qa": {
       "status": "PASS",
@@ -134,7 +138,7 @@
   "infra_errors_total": 0,
   "invalid_for_publish": false,
   "disclosures": [
-    "Valid base-AR row: full core-subset, all lanes PASS (invalid_for_publish=false). 24K max-len (prefill lane passes), base AR (no MTP), CUDA graphs FULL_AND_PIECEWISE + VLLM_COMPILE, FP8 KV, mamba align, thinking-off template default. BFCL-MT 0.595 thinking-off (76.5% thinking-on on the native row). Decode 21.91 tok/s."
+    "Valid base-AR row: full core-subset, all lanes PASS. 24K, base AR, graphs + VLLM_COMPILE, FP8 KV, thinking-off. BFCL-MT 0.595 thinking-off. Decode 21.91 tok/s."
   ],
   "artifact_roots_private": []
 }

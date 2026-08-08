@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "entry_id": "ling-3.0-flash-nvfp4-mtp1-graphs-20260807",
-  "recorded_utc": "2026-08-07T11:47:37.230201+00:00",
+  "recorded_utc": "2026-08-08T00:50:57.357924+00:00",
   "model": {
     "id": "ling-3.0-flash-nvfp4",
     "display_name": "Ling-3.0-flash NVFP4 (MTP scale 1, CUDA graphs)"
@@ -94,7 +94,11 @@
     },
     "throughput": {
       "status": "PASS",
-      "decode_median_client_tok_s": 32.82997020115795
+      "decode_median_client_tok_s": 32.82997020115795,
+      "prefill_median_prompt_tok_s": 5952.850222741143,
+      "prefill_median_prompt_tok_s_proxy": 5952.850222741143,
+      "prefill_mean_prompt_tok_s": 5952.850222741143,
+      "prefill_median_prompt_tokens": 22784.0
     },
     "qa": {
       "status": "PASS",
@@ -134,7 +138,7 @@
   "infra_errors_total": 0,
   "invalid_for_publish": false,
   "disclosures": [
-    "FINAL canonical row: full core-subset, all lanes PASS (invalid_for_publish=false). 24K max-len (prefill lane passes: no 400s), MTP num_speculative_tokens=1, CUDA graphs FULL_AND_PIECEWISE + VLLM_COMPILE, FP8 KV, mamba align, thinking-off template default. BFCL-MT 0.62 thinking-off vs 0.765 thinking-on (reasoning traces help tool calling; disclosed). Acceptance 73.2%, mean accept length 1.73."
+    "FINAL canonical row: full core-subset, all lanes PASS. 24K, MTP scale 1, graphs + VLLM_COMPILE, FP8 KV, thinking-off. Acceptance 73.2%, mean accept length 1.73."
   ],
   "artifact_roots_private": []
 }

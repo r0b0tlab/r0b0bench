@@ -145,6 +145,18 @@ def entry_from_report(
                 "decode_median_client_tok_s": (thr.get("decode") or {}).get("median_client_output_tok_s")
                 if isinstance(thr.get("decode"), dict)
                 else thr.get("decode_median_client_tok_s"),
+                "prefill_median_prompt_tok_s": (thr.get("prefill") or {}).get("median_server_prompt_tok_s")
+                if isinstance(thr.get("prefill"), dict)
+                else thr.get("prefill_median_prompt_tok_s"),
+                "prefill_median_prompt_tok_s_proxy": (thr.get("prefill") or {}).get("median_server_prompt_tok_s")
+                if isinstance(thr.get("prefill"), dict)
+                else thr.get("prefill_median_prompt_tok_s_proxy"),
+                "prefill_mean_prompt_tok_s": (thr.get("prefill") or {}).get("mean_server_prompt_tok_s")
+                if isinstance(thr.get("prefill"), dict)
+                else thr.get("prefill_mean_prompt_tok_s"),
+                "prefill_median_prompt_tokens": (thr.get("prefill") or {}).get("median_prompt_tokens")
+                if isinstance(thr.get("prefill"), dict)
+                else thr.get("prefill_median_prompt_tokens"),
             },
             "qa": {
                 "status": _status(report, "qa"),

@@ -21,8 +21,8 @@ Comparable only within the same profile and disclosed scorer variants.
 | dsv4-flash-native-v11-core-subset-20260803 | DeepSeek-V4-Flash DSpark NVFP4 (dua | dspark K=6 | 40.164 | 29203.666 | 221.884 | 86.931 | 145.889 | 239.311 | 337.761 |
 | inkling-small-marlin-baseline-20260806 | Inkling-Small NVFP4 (dual GB10, Mar | none | 13.779 | — | — | 14.091 | 26.653 | 46.828 | 48.694 |
 | inkling-small-marlin-mtp-20260807 | Inkling-Small NVFP4 MTP 8-1-9 (dual | mtp draft=8 8-1-9 | 15.831 | — | — | 16.388 | 29.983 | 47.876 | 63.222 |
-| ling-3.0-flash-nvfp4-basear-24k-20260807 | Ling-3.0-flash NVFP4 (base AR, CUDA | none | 21.909 | — | 232.760 | 21.755 | 47.547 | 88.538 | 113.953 |
-| ling-3.0-flash-nvfp4-mtp1-graphs-20260807 | Ling-3.0-flash NVFP4 (MTP scale 1,  | none | 32.830 | — | 227.885 | 39.023 | 51.836 | 96.890 | 126.867 |
+| ling-3.0-flash-nvfp4-basear-24k-20260807 | Ling-3.0-flash NVFP4 (base AR, CUDA | none | 21.909 | 12021.781 | 232.760 | 21.755 | 47.547 | 88.538 | 113.953 |
+| ling-3.0-flash-nvfp4-mtp1-graphs-20260807 | Ling-3.0-flash NVFP4 (MTP scale 1,  | none | 32.830 | 5952.850 | 227.885 | 39.023 | 51.836 | 96.890 | 126.867 |
 
 ## Files
 
