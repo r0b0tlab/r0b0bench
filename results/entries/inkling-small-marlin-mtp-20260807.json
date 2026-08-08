@@ -143,6 +143,7 @@
     },
     "throughput": {
       "decode_median_client_tok_s": 15.83138247786162,
+      "prefill_median_prompt_tok_s": 13235.307768513248,
       "status": "PASS"
     }
   }
