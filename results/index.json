@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "n_entries": 6,
+  "n_entries": 7,
   "entries": [
     {
       "entry_id": "dsv4-flash-native-v11-core-subset-20260803",
@@ -79,6 +79,32 @@
       "conc_c4": 47.87572454383138,
       "conc_c6": 63.22196522841806,
       "niah": "NOT_RUN"
+    },
+    {
+      "entry_id": "ling-3.0-flash-nvfp4-basear-24k-20260807",
+      "file": "ling-3.0-flash-nvfp4-basear-24k-20260807.json",
+      "model": "Ling-3.0-flash NVFP4 (base AR, CUDA graphs, 24K)",
+      "model_family": "",
+      "profile": "core-subset",
+      "hardware": "1x NVIDIA GB10 (SM121)",
+      "speculative": "none",
+      "invalid_for_publish": false,
+      "infra_errors_total": 0,
+      "gsm8k": 0.92,
+      "humaneval_pass1": 0.7134146341463414,
+      "qa": 0.96,
+      "ifeval": 0.855,
+      "bfcl_mt": 0.595,
+      "bfcl_ast_micro": 0.31,
+      "decode_tok_s": 21.90929336955682,
+      "prefill_tok_s": null,
+      "ttft_ms": 232.75955850840546,
+      "e2el_ms": 3177.340236521559,
+      "conc_c1": 21.755365702820207,
+      "conc_c2": 47.546640172137984,
+      "conc_c4": 88.53758569671709,
+      "conc_c6": 113.9532150719424,
+      "niah": "PASS"
     },
     {
       "entry_id": "ling-3.0-flash-nvfp4-basear-graphs-20260807",
