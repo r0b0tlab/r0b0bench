@@ -1,6 +1,6 @@
 # r0b0bench leaderboard
 
-Entries: **6** · regenerated from `results/entries/*.json`
+Entries: **7** · regenerated from `results/entries/*.json`
 
 Comparable only within the same profile and disclosed scorer variants.
 
@@ -14,6 +14,7 @@ Comparable only within the same profile and disclosed scorer variants.
 | ling-3.0-flash-nvfp4-basear-24k-20260807 | Ling-3.0-flash NVFP4 (base AR, CUDA | none | 0.920 | 0.713 | 0.960 | 0.855 | 0.595 | 0.310 | PASS | False |
 | ling-3.0-flash-nvfp4-mtp1-graphs-20260807 | Ling-3.0-flash NVFP4 (MTP scale 1,  | none | 0.945 | 0.659 | 0.960 | 0.830 | 0.620 | 0.307 | PASS | False |
 | nemotron-lightning-mtp-k1-core-subset-20260810 | NVIDIA Nemotron 3.5 Lightning 30B-A | mtp K=1 | 0.945 | 0.860 | 0.953 | 0.775 | 0.380 | 0.043 | PASS | False |
+| nemotron-lightning-mtp-k1-thinking-on-core-subset-20260810 | NVIDIA Nemotron 3.5 Lightning 30B-A | mtp K=1 | 0.910 | 0.939 | 0.958 | 0.775 | 0.665 | 0.292 | PASS | False |
 
 ## Performance
 
@@ -25,6 +26,7 @@ Comparable only within the same profile and disclosed scorer variants.
 | ling-3.0-flash-nvfp4-basear-24k-20260807 | Ling-3.0-flash NVFP4 (base AR, CUDA | none | 21.909 | 12021.781 | 232.760 | 21.755 | 47.547 | 88.538 | 113.953 |
 | ling-3.0-flash-nvfp4-mtp1-graphs-20260807 | Ling-3.0-flash NVFP4 (MTP scale 1,  | none | 32.830 | 5952.850 | 227.885 | 39.023 | 51.836 | 96.890 | 126.867 |
 | nemotron-lightning-mtp-k1-core-subset-20260810 | NVIDIA Nemotron 3.5 Lightning 30B-A | mtp K=1 | 90.954 | 28815.643 | 92.329 | 103.411 | 180.465 | 304.276 | 376.315 |
+| nemotron-lightning-mtp-k1-thinking-on-core-subset-20260810 | NVIDIA Nemotron 3.5 Lightning 30B-A | mtp K=1 | 89.289 | 2031.666 | 93.628 | 99.470 | 151.647 | 217.046 | 252.004 |
 
 ## Files
 
@@ -34,4 +36,5 @@ Comparable only within the same profile and disclosed scorer variants.
 - [`ling-3.0-flash-nvfp4-basear-24k-20260807.json`](entries/ling-3.0-flash-nvfp4-basear-24k-20260807.json) — ling-3.0-flash-nvfp4-basear-24k-20260807
 - [`ling-3.0-flash-nvfp4-mtp1-graphs-20260807.json`](entries/ling-3.0-flash-nvfp4-mtp1-graphs-20260807.json) — ling-3.0-flash-nvfp4-mtp1-graphs-20260807
 - [`nemotron-lightning-mtp-k1-core-subset-20260810.json`](entries/nemotron-lightning-mtp-k1-core-subset-20260810.json) — nemotron-lightning-mtp-k1-core-subset-20260810
+- [`nemotron-lightning-mtp-k1-thinking-on-core-subset-20260810.json`](entries/nemotron-lightning-mtp-k1-thinking-on-core-subset-20260810.json) — nemotron-lightning-mtp-k1-thinking-on-core-subset-20260810
 
