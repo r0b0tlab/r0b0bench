@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "entry_id": "nemotron-lightning-mtp-k1-core-subset-20260810",
+  "recorded_utc": "2026-08-11T13:24:09.372521+00:00",
+  "model": {
+    "id": "nvidia/nemotron-3.5-lightning-30b-a3b",
+    "display_name": "NVIDIA Nemotron 3.5 Lightning 30B-A3B NVFP4 (MTP K=1, GB10 SM121)"
+  },
+  "runtime": {
+    "hardware": "NVIDIA GB10 (SM121), ARM64",
+    "base_url_omitted": true,
+    "image_id": "sha256:442df05bcaaf4ca33d1e7eb6d18ea0f4272be6b1503b6604dc191acbd4e47640",
+    "image_tag": "nemotron-lightning-vllm:private-sm121-mtp",
+    "vllm": "0.23.1rc1.dev1327+gf25953cc5",
+    "moe_backend": "marlin",
+    "kv_cache_dtype": "fp8",
+    "speculative": {
+      "method": "mtp",
+      "K": 1,
+      "backend": "triton"
+    },
+    "mamba": "flashinfer f16 ssm cache + stochastic rounding (philox 5) + align",
+    "profiles": {
+      "systems_quality": "max_model_len=50016 max_num_seqs=6 batched=8192 util=0.70 prefix-caching on"
+    }
+  },
+  "harness": {
+    "name": "r0b0bench",
+    "version": "1.0.0rc2",
+    "profile": "core-subset"
+  },
+  "scores": {
+    "canary": {
+      "status": "PASS",
+      "passed": true,
+      "n": 5
+    },
+    "bfcl_mt": {
+      "status": "PASS",
+      "accuracy": 0.38,
+      "correct": 76,
+      "total": 200
+    },
+    "bfcl_ast": {
+      "status": "PASS",
+      "micro_accuracy": 0.043333333333333335,
+      "categories": {
+        "multiple": {
+          "accuracy": 0.05,
+          "correct_count": 10,
+          "raw": {
+            "accuracy": 0.05,
+            "correct_count": 10,
+            "total_count": 200
+          },
+          "total_count": 200
+        },
+        "parallel": {
+          "accuracy": 0.03,
+          "correct_count": 6,
+          "raw": {
+            "accuracy": 0.03,
+            "correct_count": 6,
+            "total_count": 200
+          },
+          "total_count": 200
+        },
+        "parallel_multiple": {
+          "accuracy": 0.05,
+          "correct_count": 10,
+          "raw": {
+            "accuracy": 0.05,
+            "correct_count": 10,
+            "total_count": 200
+          },
+          "total_count": 200
+        }
+      }
+    },
+    "latency": {
+      "status": "PASS",
+      "ttft_ms_mean": 92.32905600038066,
+      "itl_ms_mean": 18.544845285347773,
+      "e2el_ms_mean": 1127.051439252682
+    },
+    "concurrency": {
+      "status": "PASS",
+      "ladder_aggregate_tok_s": {
+        "1": 103.4110380693415,
+        "2": 180.46525700241665,
+        "4": 304.27641444286087,
+        "6": 376.3154235825983
+      }
+    },
+    "throughput": {
+      "status": "PASS",
+      "decode_median_client_tok_s": 90.95360678348186,
+      "prefill_median_prompt_tok_s": 28815.64292954854,
+      "prefill_median_prompt_tok_s_proxy": 28815.64292954854,
+      "prefill_mean_prompt_tok_s": 28815.64292954854,
+      "prefill_median_prompt_tokens": 24541.0
+    },
+    "qa": {
+      "status": "PASS",
+      "accuracy": 0.9525,
+      "correct": 381,
+      "n": 400
+    },
+    "ifeval": {
+      "status": "PASS",
+      "accuracy": 0.775,
+      "correct": 155,
+      "n": 200,
+      "method": "ifeval_lightweight_constraint_scorer"
+    },
+    "humaneval": {
+      "status": "PASS",
+      "pass@1": 0.8597560975609756,
+      "n": 164
+    },
+    "gsm8k": {
+      "status": "PASS",
+      "accuracy": 0.945,
+      "correct": 189,
+      "n": 200,
+      "method": "gsm8k_0shot_flexible_extract"
+    },
+    "niah": {
+      "status": "PASS",
+      "depths": [
+        12440,
+        24880,
+        44784
+      ],
+      "max_model_len": 50016
+    }
+  },
+  "infra_errors_total": 0,
+  "invalid_for_publish": false,
+  "disclosures": [
+    "Primary eligible row (thinking off): all 11 lanes PASS, zero infra errors, invalid_for_publish=false. Repro: https://github.com/r0b0tlab/nemotron-3.5-lightning-sm121-nvfp4"
+  ],
+  "artifact_roots_private": []
+}

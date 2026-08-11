@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "entry_id": "nemotron-lightning-niah-1m-75pct-20260811",
+  "recorded_utc": "2026-08-11T13:24:09.492550+00:00",
+  "model": {
+    "id": "nvidia/nemotron-3.5-lightning-30b-a3b",
+    "display_name": "NVIDIA Nemotron 3.5 Lightning 30B-A3B NVFP4 (MTP K=1, GB10 SM121)"
+  },
+  "runtime": {
+    "hardware": "NVIDIA GB10 (SM121), ARM64",
+    "base_url_omitted": true,
+    "image_id": "sha256:442df05bcaaf4ca33d1e7eb6d18ea0f4272be6b1503b6604dc191acbd4e47640",
+    "image_tag": "nemotron-lightning-vllm:private-sm121-mtp",
+    "vllm": "0.23.1rc1.dev1327+gf25953cc5",
+    "moe_backend": "marlin",
+    "kv_cache_dtype": "fp8",
+    "speculative": {
+      "method": "mtp",
+      "K": 1,
+      "backend": "triton"
+    },
+    "profiles": {
+      "niah_capacity": "long-1m max_model_len=1000000 max_num_seqs=1 batched=8192 util=0.80 prefix-caching off"
+    }
+  },
+  "harness": {
+    "name": "r0b0bench",
+    "version": "1.0.0rc2",
+    "profile": "core-subset"
+  },
+  "scores": {
+    "canary": {
+      "status": null
+    },
+    "bfcl_mt": {
+      "status": null,
+      "accuracy": null,
+      "correct": null,
+      "total": 200
+    },
+    "bfcl_ast": {
+      "status": null,
+      "micro_accuracy": null,
+      "categories": null
+    },
+    "latency": {
+      "status": null,
+      "ttft_ms_mean": null,
+      "itl_ms_mean": null,
+      "e2el_ms_mean": null
+    },
+    "concurrency": {
+      "status": null,
+      "ladder_aggregate_tok_s": {}
+    },
+    "throughput": {
+      "status": null,
+      "decode_median_client_tok_s": null,
+      "prefill_median_prompt_tok_s": null,
+      "prefill_median_prompt_tok_s_proxy": null,
+      "prefill_mean_prompt_tok_s": null,
+      "prefill_median_prompt_tokens": null
+    },
+    "qa": {
+      "status": null,
+      "accuracy": null,
+      "correct": null,
+      "n": null
+    },
+    "ifeval": {
+      "status": null,
+      "accuracy": null,
+      "correct": null,
+      "n": null,
+      "method": null
+    },
+    "humaneval": {
+      "status": null,
+      "pass@1": null,
+      "n": 164
+    },
+    "gsm8k": {
+      "status": null,
+      "accuracy": null,
+      "correct": null,
+      "n": null,
+      "method": null
+    },
+    "niah": {
+      "status": "PASS",
+      "depths": [
+        749808
+      ],
+      "max_model_len": 1000000
+    }
+  },
+  "infra_errors_total": 0,
+  "invalid_for_publish": true,
+  "disclosures": [
+    "Filtered single-lane capacity probe (--only niah): invalid_for_publish=true by contract. NIAH PASS at 749,808 tokens = 75% of usable 1M window; single depth, 90-100% untested. Evidence: results/evidence/niah-1m-75pct/ in the repro repo."
+  ],
+  "artifact_roots_private": []
+}

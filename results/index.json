@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "n_entries": 5,
+  "n_entries": 6,
   "entries": [
     {
       "entry_id": "dsv4-flash-native-v11-core-subset-20260803",
@@ -130,6 +130,32 @@
       "conc_c2": 51.8356183348709,
       "conc_c4": 96.88963058024534,
       "conc_c6": 126.86697349287448,
+      "niah": "PASS"
+    },
+    {
+      "entry_id": "nemotron-lightning-mtp-k1-core-subset-20260810",
+      "file": "nemotron-lightning-mtp-k1-core-subset-20260810.json",
+      "model": "NVIDIA Nemotron 3.5 Lightning 30B-A3B NVFP4 (MTP K=1, GB10 SM121)",
+      "model_family": "",
+      "profile": "core-subset",
+      "hardware": "NVIDIA GB10 (SM121), ARM64",
+      "speculative": "mtp K=1",
+      "invalid_for_publish": false,
+      "infra_errors_total": 0,
+      "gsm8k": 0.945,
+      "humaneval_pass1": 0.8597560975609756,
+      "qa": 0.9525,
+      "ifeval": 0.775,
+      "bfcl_mt": 0.38,
+      "bfcl_ast_micro": 0.043333333333333335,
+      "decode_tok_s": 90.95360678348186,
+      "prefill_tok_s": 28815.64292954854,
+      "ttft_ms": 92.32905600038066,
+      "e2el_ms": 1127.051439252682,
+      "conc_c1": 103.4110380693415,
+      "conc_c2": 180.46525700241665,
+      "conc_c4": 304.27641444286087,
+      "conc_c6": 376.3154235825983,
       "niah": "PASS"
     }
   ]
