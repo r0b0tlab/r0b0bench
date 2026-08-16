@@ -21,6 +21,9 @@ def test_bfcl_transport_applies_muse_generation_controls(monkeypatch) -> None:
     module = load_bfcl_run_module()
     monkeypatch.setenv("BFCL_MAX_TOKENS", "8192")
     monkeypatch.setenv("R0B0BENCH_REASONING_STRENGTH", "low")
+    monkeypatch.setenv(
+        "R0B0BENCH_CHAT_TEMPLATE_KWARGS", '{"enable_thinking":false}'
+    )
 
     handler = module.R0b0OpenAICompletionsHandler.__new__(
         module.R0b0OpenAICompletionsHandler
@@ -38,7 +41,10 @@ def test_bfcl_transport_applies_muse_generation_controls(monkeypatch) -> None:
     assert kwargs["model"] == "muse"
     assert kwargs["max_tokens"] == 8192
     assert kwargs["extra_body"] == {
-        "chat_template_kwargs": {"reasoning_strength": "low"}
+        "chat_template_kwargs": {
+            "enable_thinking": False,
+            "reasoning_strength": "low",
+        }
     }
     assert kwargs["tools"] == inference_data["tools"]
     assert "inference_input_log" in inference_data

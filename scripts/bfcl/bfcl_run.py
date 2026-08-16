@@ -44,19 +44,22 @@ class R0b0OpenAICompletionsHandler(OpenAICompletionsHandler):
             "message": repr(message),
             "tools": tools,
         }
+        template_kwargs: dict[str, object] = {}
+        if raw_template_kwargs := os.environ.get("R0B0BENCH_CHAT_TEMPLATE_KWARGS"):
+            parsed = json.loads(raw_template_kwargs)
+            if not isinstance(parsed, dict):
+                raise ValueError("R0B0BENCH_CHAT_TEMPLATE_KWARGS must decode to an object")
+            template_kwargs.update(parsed)
+        template_kwargs.setdefault(
+            "reasoning_strength", os.environ["R0B0BENCH_REASONING_STRENGTH"]
+        )
         kwargs = {
             "messages": message,
             "model": self.model_name,
             "temperature": self.temperature,
             "store": False,
             "max_tokens": int(os.environ["BFCL_MAX_TOKENS"]),
-            "extra_body": {
-                "chat_template_kwargs": {
-                    "reasoning_strength": os.environ[
-                        "R0B0BENCH_REASONING_STRENGTH"
-                    ]
-                }
-            },
+            "extra_body": {"chat_template_kwargs": template_kwargs},
         }
         if tools:
             kwargs["tools"] = tools
