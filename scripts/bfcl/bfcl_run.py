@@ -16,9 +16,10 @@ from types import SimpleNamespace
 os.environ.setdefault("OPENAI_API_KEY", "EMPTY")
 os.environ.setdefault("OPENAI_BASE_URL", "http://127.0.0.1:30000/v1")
 os.environ.setdefault("BFCL_NUM_THREADS", "4")
-os.environ.setdefault("BFCL_HTTP_TIMEOUT", "3600")
-os.environ.setdefault("BFCL_MAX_RETRIES", "3")
+os.environ.setdefault("BFCL_HTTP_TIMEOUT", "600")
+os.environ.setdefault("BFCL_MAX_RETRIES", "1")
 os.environ.setdefault("BFCL_MAX_TOKENS", "8192")
+os.environ.setdefault("R0B0BENCH_REASONING_STRENGTH", "low")
 
 from bfcl_eval._llm_response_generation import main as generation_main  # type: ignore[import-not-found]
 from bfcl_eval.constants.eval_config import RESULT_PATH, SCORE_PATH, TEST_IDS_TO_GENERATE_PATH  # type: ignore[import-not-found]
@@ -31,6 +32,35 @@ CATEGORY = "multi_turn_base"
 EXPECTED_ROWS = 200
 REGISTRY = os.environ.get("R0B0BENCH_BFCL_MODEL_REGISTRY", "r0b0bench-openai-FC")
 MODEL_NAME = os.environ.get("R0B0BENCH_SERVED_MODEL", "openai-compatible-model")
+
+
+class R0b0OpenAICompletionsHandler(OpenAICompletionsHandler):
+    """Official BFCL OpenAI transport with explicit generation controls."""
+
+    def _query_FC(self, inference_data: dict):  # type: ignore[no-untyped-def]
+        message: list[dict] = inference_data["message"]
+        tools = inference_data["tools"]
+        inference_data["inference_input_log"] = {
+            "message": repr(message),
+            "tools": tools,
+        }
+        kwargs = {
+            "messages": message,
+            "model": self.model_name,
+            "temperature": self.temperature,
+            "store": False,
+            "max_tokens": int(os.environ["BFCL_MAX_TOKENS"]),
+            "extra_body": {
+                "chat_template_kwargs": {
+                    "reasoning_strength": os.environ[
+                        "R0B0BENCH_REASONING_STRENGTH"
+                    ]
+                }
+            },
+        }
+        if tools:
+            kwargs["tools"] = tools
+        return self.generate_with_backoff(**kwargs)
 
 
 def _patch_timeout() -> None:
@@ -60,7 +90,7 @@ def register_model() -> None:
         url=os.environ.get("R0B0BENCH_BFCL_MODEL_URL", "local://openai-compatible"),
         org=os.environ.get("R0B0BENCH_BFCL_MODEL_ORG", "r0b0tlab"),
         license=os.environ.get("R0B0BENCH_BFCL_MODEL_LICENSE", "MIT"),
-        model_handler=OpenAICompletionsHandler,
+        model_handler=R0b0OpenAICompletionsHandler,  # type: ignore[arg-type]
         input_price=None,
         output_price=None,
         is_fc_model=True,

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import time
 from typing import Any, Iterator
@@ -31,6 +32,20 @@ class Endpoint:
 
     def _url(self, path: str) -> str:
         return urljoin(self.base_url, path.lstrip("/"))
+
+    def _chat_body(self, payload: dict[str, Any]) -> dict[str, Any]:
+        body = {"model": self.model, **payload}
+        raw = os.getenv("R0B0BENCH_CHAT_TEMPLATE_KWARGS")
+        if raw:
+            override = json.loads(raw)
+            if not isinstance(override, dict):
+                raise ValueError(
+                    "R0B0BENCH_CHAT_TEMPLATE_KWARGS must decode to an object"
+                )
+            template_kwargs = dict(body.get("chat_template_kwargs") or {})
+            template_kwargs.update(override)
+            body["chat_template_kwargs"] = template_kwargs
+        return body
 
     def health(self) -> dict[str, Any]:
         errors = []
@@ -95,7 +110,7 @@ class Endpoint:
         return int(m.group(1)) if m else None
 
     def chat_completions(self, payload: dict[str, Any]) -> tuple[int, dict[str, Any], float]:
-        body = {"model": self.model, **payload}
+        body = self._chat_body(payload)
         t0 = time.perf_counter()
         r = self._client.post(self._url("chat/completions"), json=body)
         elapsed = time.perf_counter() - t0
@@ -118,11 +133,7 @@ class Endpoint:
 
     def chat_render(self, messages: list[dict[str, Any]], **kwargs: Any) -> dict[str, Any]:
         """Server-side chat template render → token_ids (vLLM render endpoint)."""
-        body = {
-            "model": self.model,
-            "messages": messages,
-            **kwargs,
-        }
+        body = self._chat_body({"messages": messages, **kwargs})
         r = self._client.post(self._url("chat/completions/render"), json=body)
         r.raise_for_status()
         return r.json()
@@ -132,7 +143,11 @@ class Endpoint:
         payload: dict[str, Any],
     ) -> tuple[int, dict[str, Any]]:
         """Streaming chat completion; returns status + latency stats + assembled text."""
-        body = {"model": self.model, "stream": True, "stream_options": {"include_usage": True}, **payload}
+        body = self._chat_body({
+            "stream": True,
+            "stream_options": {"include_usage": True},
+            **payload,
+        })
         t0 = time.perf_counter()
         ttft = None
         token_times: list[float] = []
@@ -173,12 +188,17 @@ class Endpoint:
                     continue
                 delta = choices[0].get("delta") or {}
                 content = delta.get("content") or ""
-                # also count reasoning if present for timing only
-                if not content and delta.get("reasoning_content"):
-                    content = ""  # don't measure reasoning as completion tokens by default
+                reasoning = (
+                    delta.get("reasoning")
+                    or delta.get("reasoning_content")
+                    or ""
+                )
+                # A reasoning delta is a real first generated token for TTFT,
+                # but it is not user-visible completion text and must not be
+                # included in completion-chunk or ITL accounting.
+                if ttft is None and (content or reasoning):
+                    ttft = now - t0
                 if content:
-                    if ttft is None:
-                        ttft = now - t0
                     token_times.append(now)
                     texts.append(content)
                 if choices[0].get("finish_reason"):

@@ -27,10 +27,13 @@ def _env(ep: Endpoint, project_root: Path) -> dict[str, str]:
     env["OPENAI_BASE_URL"] = ep.base_url.rstrip("/")
     env["R0B0BENCH_SERVED_MODEL"] = ep.model
     env["PYTHONUNBUFFERED"] = "1"
-    # concurrency: default 8 for AST (server max_num_seqs=16); MT often safer at 4
-    env.setdefault("BFCL_NUM_THREADS", os.environ.get("BFCL_NUM_THREADS", "8"))
-    env.setdefault("BFCL_HTTP_TIMEOUT", os.environ.get("BFCL_HTTP_TIMEOUT", "3600"))
-    env.setdefault("BFCL_MAX_RETRIES", os.environ.get("BFCL_MAX_RETRIES", "3"))
+    # GB10 unified memory: BFCL at C=8 can trigger concurrent CUDA compilation
+    # and globally OOM the serving host. The public safe default is C=4 with a
+    # bounded request lifetime and no retry fan-out; explicit env values remain
+    # an intentional profile override.
+    env.setdefault("BFCL_NUM_THREADS", os.environ.get("BFCL_NUM_THREADS", "4"))
+    env.setdefault("BFCL_HTTP_TIMEOUT", os.environ.get("BFCL_HTTP_TIMEOUT", "600"))
+    env.setdefault("BFCL_MAX_RETRIES", os.environ.get("BFCL_MAX_RETRIES", "1"))
     return env
 
 

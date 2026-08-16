@@ -5,16 +5,16 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import time
 from pathlib import Path
 from types import SimpleNamespace
 
 os.environ.setdefault("OPENAI_API_KEY", "EMPTY")
 os.environ.setdefault("OPENAI_BASE_URL", "http://127.0.0.1:30000/v1")
-os.environ.setdefault("BFCL_NUM_THREADS", "12")
-os.environ.setdefault("BFCL_HTTP_TIMEOUT", "3600")
-os.environ.setdefault("BFCL_MAX_RETRIES", "3")
+os.environ.setdefault("BFCL_NUM_THREADS", "4")
+os.environ.setdefault("BFCL_HTTP_TIMEOUT", "600")
+os.environ.setdefault("BFCL_MAX_RETRIES", "1")
 os.environ.setdefault("BFCL_MAX_TOKENS", "8192")
+os.environ.setdefault("R0B0BENCH_REASONING_STRENGTH", "low")
 
 from bfcl_eval._llm_response_generation import main as generation_main  # type: ignore[import-not-found]
 from bfcl_eval.constants.eval_config import RESULT_PATH, SCORE_PATH, TEST_IDS_TO_GENERATE_PATH  # type: ignore[import-not-found]
@@ -22,6 +22,7 @@ from bfcl_eval.constants.model_config import MODEL_CONFIG_MAPPING, ModelConfig  
 from bfcl_eval.eval_checker.eval_runner import main as evaluation_main  # type: ignore[import-not-found]
 from bfcl_eval.model_handler.api_inference.openai_completion import OpenAICompletionsHandler  # type: ignore[import-not-found]
 from bfcl_eval.utils import get_directory_structure_by_category, get_file_name_by_category, load_dataset_entry  # type: ignore[import-not-found]
+from bfcl_run import R0b0OpenAICompletionsHandler
 
 CATEGORIES = ("multiple", "parallel", "parallel_multiple")
 EXPECTED_PER_CATEGORY = 200
@@ -56,7 +57,7 @@ def register_model() -> None:
         url=os.environ.get("R0B0BENCH_BFCL_MODEL_URL", "local://openai-compatible"),
         org=os.environ.get("R0B0BENCH_BFCL_MODEL_ORG", "r0b0tlab"),
         license=os.environ.get("R0B0BENCH_BFCL_MODEL_LICENSE", "MIT"),
-        model_handler=OpenAICompletionsHandler,
+        model_handler=R0b0OpenAICompletionsHandler,  # type: ignore[arg-type]
         input_price=None,
         output_price=None,
         is_fc_model=True,
