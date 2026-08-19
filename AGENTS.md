@@ -15,6 +15,16 @@ This file is for **coding agents** (Hermes, Cursor, etc.).
 - **NIAH** depths = 25% / 50% / 90% of `(max_model_len − 64)` from `/v1/models`. Do not hardcode 8k/16k/28k.
 - **Latency/concurrency/throughput** use the portable OpenAI chat backend (label method strings; never mix with vllm-bench rows).
 
+## Chat-template control (runtime variable)
+
+Lanes never set `chat_template_kwargs`. The only channel is the runtime env
+`R0B0BENCH_CHAT_TEMPLATE_KWARGS` (JSON object), merged into every chat request
+by `endpoint._chat_body` and into the BFCL adapters via `extra_body`. With the
+variable unset, no template kwargs are sent and the model's served template
+default applies (e.g. thinking ON for thinking-default models). Record the
+exact value used in every run manifest; rows measured under different template
+states are separate ledger entries.
+
 ## Hard rules
 
 1. **Output outside checkout** — `--output` must not be inside the git tree (except gitignored `out/`). Private evidence must not be committed.
