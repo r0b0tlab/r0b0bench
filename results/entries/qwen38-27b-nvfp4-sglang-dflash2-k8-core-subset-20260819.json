@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "entry_id": "qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-20260819",
+  "recorded_utc": "2026-08-19T06:14:55.453828+00:00",
+  "model": {
+    "id": "qwen38-27b",
+    "display_name": "Qwen3.8-27B NVFP4 (r0b0tlab 4-of-4) SGLang DFlash2 block8 SM121"
+  },
+  "runtime": {
+    "hardware": "1x NVIDIA GB10 (DGX Spark), SGLang dflash2-0.2.0, fp8 KV auto, mem 0.73, think-off",
+    "base_url_omitted": true
+  },
+  "harness": {
+    "name": "r0b0bench",
+    "version": "1.0.0rc2",
+    "profile": "core-subset"
+  },
+  "scores": {
+    "canary": {
+      "status": "PASS",
+      "passed": true,
+      "n": 5
+    },
+    "bfcl_mt": {
+      "status": "PASS",
+      "accuracy": 0.69,
+      "correct": 138,
+      "total": 200
+    },
+    "bfcl_ast": {
+      "status": "PASS",
+      "micro_accuracy": 0.2733333333333333,
+      "categories": {
+        "multiple": {
+          "accuracy": 0.18,
+          "correct_count": 36,
+          "raw": {
+            "accuracy": 0.18,
+            "correct_count": 36,
+            "total_count": 200
+          },
+          "total_count": 200
+        },
+        "parallel": {
+          "accuracy": 0.46,
+          "correct_count": 92,
+          "raw": {
+            "accuracy": 0.46,
+            "correct_count": 92,
+            "total_count": 200
+          },
+          "total_count": 200
+        },
+        "parallel_multiple": {
+          "accuracy": 0.18,
+          "correct_count": 36,
+          "raw": {
+            "accuracy": 0.18,
+            "correct_count": 36,
+            "total_count": 200
+          },
+          "total_count": 200
+        }
+      }
+    },
+    "latency": {
+      "status": "PASS",
+      "ttft_ms_mean": 214.60942200792488,
+      "itl_ms_mean": 113.13476741945904,
+      "e2el_ms_mean": 3382.6583257468883
+    },
+    "concurrency": {
+      "status": "PASS",
+      "ladder_aggregate_tok_s": {
+        "1": 68.60959161369667,
+        "2": 124.30507470485705,
+        "4": 211.98051503472675,
+        "6": 276.4496816706426
+      }
+    },
+    "throughput": {
+      "status": "PASS",
+      "decode_median_client_tok_s": 26.02170826593329,
+      "prefill_median_prompt_tok_s": 22662.779825345267,
+      "prefill_median_prompt_tok_s_proxy": 22662.779825345267,
+      "prefill_mean_prompt_tok_s": 22662.779825345267,
+      "prefill_median_prompt_tokens": 22774.0
+    },
+    "qa": {
+      "status": "PASS",
+      "accuracy": 0.9625,
+      "correct": 385,
+      "n": 400
+    },
+    "ifeval": {
+      "status": "PASS",
+      "accuracy": 0.82,
+      "correct": 164,
+      "n": 200,
+      "method": "ifeval_lightweight_constraint_scorer"
+    },
+    "humaneval": {
+      "status": "PASS",
+      "pass@1": 0.8719512195121951,
+      "n": 164
+    },
+    "gsm8k": {
+      "status": "PASS",
+      "accuracy": 0.865,
+      "correct": 173,
+      "n": 200,
+      "method": "gsm8k_0shot_flexible_extract"
+    },
+    "niah": {
+      "status": "PASS",
+      "depths": [
+        65472,
+        130944,
+        235699
+      ],
+      "max_model_len": 262144
+    }
+  },
+  "infra_errors_total": 0,
+  "invalid_for_publish": false,
+  "disclosures": [
+    "disclosures: --enable-metrics added; mem 0.73 for full-M NIAH KV; IFEval lightweight scorer; AST misses model-side (parser decoded >=197/200/cat); K sweep block{6,7,8,9} -> K*=8; NIAH 65472/130944/235699 all PASS"
+  ],
+  "artifact_roots_private": [
+    "evidence/qwen38-dflash2-r0b0bench-20260819T031439Z"
+  ]
+}

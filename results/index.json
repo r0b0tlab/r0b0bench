@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "n_entries": 7,
+  "n_entries": 8,
   "entries": [
     {
       "entry_id": "dsv4-flash-native-v11-core-subset-20260803",
@@ -182,6 +182,32 @@
       "conc_c2": 151.6469698457452,
       "conc_c4": 217.0458356879143,
       "conc_c6": 252.00408605883925,
+      "niah": "PASS"
+    },
+    {
+      "entry_id": "qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-20260819",
+      "file": "qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-20260819.json",
+      "model": "Qwen3.8-27B NVFP4 (r0b0tlab 4-of-4) SGLang DFlash2 block8 SM121",
+      "model_family": "",
+      "profile": "core-subset",
+      "hardware": "1x NVIDIA GB10 (DGX Spark), SGLang dflash2-0.2.0, fp8 KV auto, mem 0.73, think-off",
+      "speculative": "none",
+      "invalid_for_publish": false,
+      "infra_errors_total": 0,
+      "gsm8k": 0.865,
+      "humaneval_pass1": 0.8719512195121951,
+      "qa": 0.9625,
+      "ifeval": 0.82,
+      "bfcl_mt": 0.69,
+      "bfcl_ast_micro": 0.2733333333333333,
+      "decode_tok_s": 26.02170826593329,
+      "prefill_tok_s": 22662.779825345267,
+      "ttft_ms": 214.60942200792488,
+      "e2el_ms": 3382.6583257468883,
+      "conc_c1": 68.60959161369667,
+      "conc_c2": 124.30507470485705,
+      "conc_c4": 211.98051503472675,
+      "conc_c6": 276.4496816706426,
       "niah": "PASS"
     }
   ]
