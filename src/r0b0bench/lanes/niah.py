@@ -126,7 +126,7 @@ def run_niah(
     messages = [{"role": "user", "content": instruction}]
     template_source = "unknown"
     try:
-        rendered = ep.chat_render(messages, chat_template_kwargs={"thinking": False})
+        rendered = ep.chat_render(messages)
         base_ids = list(rendered.get("token_ids") or [])
         if not base_ids:
             raise RuntimeError("render returned empty token_ids")
@@ -138,8 +138,14 @@ def run_niah(
 
             hf = AutoTokenizer.from_pretrained(tokenizer_path, trust_remote_code=True)
             try:
+                import os
+
+                env_kwargs = json.loads(os.environ.get("R0B0BENCH_CHAT_TEMPLATE_KWARGS") or "{}")
+                tmpl_kw = {}
+                if "enable_thinking" in env_kwargs:
+                    tmpl_kw["enable_thinking"] = env_kwargs["enable_thinking"]
                 text = hf.apply_chat_template(
-                    messages, tokenize=False, add_generation_prompt=True, enable_thinking=False
+                    messages, tokenize=False, add_generation_prompt=True, **tmpl_kw
                 )
             except TypeError:
                 text = hf.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)

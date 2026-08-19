@@ -32,7 +32,6 @@ def _chat(ep: Endpoint, prompt: str, max_tokens: int = 512, temperature: float =
                     "messages": [{"role": "user", "content": prompt}],
                     "temperature": temperature,
                     "max_tokens": max_tokens,
-                    "chat_template_kwargs": {"thinking": False},
                 }
             )
             text = ""

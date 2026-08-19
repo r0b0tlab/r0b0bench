@@ -29,7 +29,6 @@ def run_latency(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
                 "messages": [{"role": "user", "content": prompt}],
                 "temperature": temperature,
                 "max_tokens": max_tokens,
-                "chat_template_kwargs": {"thinking": False},
             }
         )
         row = {"rep": rep, "http_status": status, **stats}
@@ -43,7 +42,6 @@ def run_latency(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
                 "messages": [{"role": "user", "content": prompt}],
                 "temperature": temperature,
                 "max_tokens": max_tokens,
-                "chat_template_kwargs": {"thinking": False},
             }
         )
         usage = body.get("usage") or {}

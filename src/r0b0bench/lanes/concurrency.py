@@ -16,7 +16,6 @@ def _one(ep: Endpoint, prompt: str, max_tokens: int, temperature: float) -> dict
             "messages": [{"role": "user", "content": prompt}],
             "temperature": temperature,
             "max_tokens": max_tokens,
-            "chat_template_kwargs": {"thinking": False},
         }
     )
     usage = body.get("usage") or {}

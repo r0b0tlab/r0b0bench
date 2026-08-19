@@ -15,7 +15,6 @@ def _chat(ep: Endpoint, prompt: str, max_tokens: int) -> dict[str, Any]:
             "messages": [{"role": "user", "content": prompt}],
             "temperature": 0,
             "max_tokens": max_tokens,
-            "chat_template_kwargs": {"thinking": False},
         }
     )
     usage = body.get("usage") or {}
