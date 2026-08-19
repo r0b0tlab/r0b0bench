@@ -1,6 +1,6 @@
 # r0b0bench leaderboard
 
-Entries: **8** · regenerated from `results/entries/*.json`
+Entries: **9** · regenerated from `results/entries/*.json`
 
 Comparable only within the same profile and disclosed scorer variants.
 
@@ -16,6 +16,7 @@ Comparable only within the same profile and disclosed scorer variants.
 | nemotron-lightning-mtp-k1-core-subset-20260810 | NVIDIA Nemotron 3.5 Lightning 30B-A | mtp K=1 | 0.945 | 0.860 | 0.953 | 0.775 | 0.380 | 0.043 | PASS | False |
 | nemotron-lightning-mtp-k1-thinking-on-core-subset-20260810 | NVIDIA Nemotron 3.5 Lightning 30B-A | mtp K=1 | 0.910 | 0.939 | 0.958 | 0.775 | 0.665 | 0.292 | PASS | False |
 | qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-20260819 | Qwen3.8-27B NVFP4 (r0b0tlab 4-of-4) | dflash2 K=8 draft=8 block=8, think-off | 0.865 | 0.872 | 0.963 | 0.820 | 0.690 | 0.273 | PASS | False |
+| qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-thinkon-low-20260819 | Qwen3.8-27B NVFP4 (r0b0tlab 4-of-4) | dflash2 K=8 draft=8 block=8, think-on reasoning_effort=low | 0.970 | 0.976 | 0.960 | 0.845 | 0.715 | 0.305 | PASS | False |
 
 ## Performance
 
@@ -29,6 +30,7 @@ Comparable only within the same profile and disclosed scorer variants.
 | nemotron-lightning-mtp-k1-core-subset-20260810 | NVIDIA Nemotron 3.5 Lightning 30B-A | mtp K=1 | 90.954 | 28815.643 | 92.329 | 103.411 | 180.465 | 304.276 | 376.315 |
 | nemotron-lightning-mtp-k1-thinking-on-core-subset-20260810 | NVIDIA Nemotron 3.5 Lightning 30B-A | mtp K=1 | 89.289 | 2031.666 | 93.628 | 99.470 | 151.647 | 217.046 | 252.004 |
 | qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-20260819 | Qwen3.8-27B NVFP4 (r0b0tlab 4-of-4) | dflash2 K=8 draft=8 block=8, think-off | 26.022 | 22662.780 | 214.609 | 68.610 | 124.305 | 211.981 | 276.450 |
+| qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-thinkon-low-20260819 | Qwen3.8-27B NVFP4 (r0b0tlab 4-of-4) | dflash2 K=8 draft=8 block=8, think-on reasoning_effort=low | 30.453 | 26320.080 | 216.447 | 61.063 | 113.852 | 187.481 | 252.588 |
 
 ## Files
 
@@ -40,4 +42,5 @@ Comparable only within the same profile and disclosed scorer variants.
 - [`nemotron-lightning-mtp-k1-core-subset-20260810.json`](entries/nemotron-lightning-mtp-k1-core-subset-20260810.json) — nemotron-lightning-mtp-k1-core-subset-20260810
 - [`nemotron-lightning-mtp-k1-thinking-on-core-subset-20260810.json`](entries/nemotron-lightning-mtp-k1-thinking-on-core-subset-20260810.json) — nemotron-lightning-mtp-k1-thinking-on-core-subset-20260810
 - [`qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-20260819.json`](entries/qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-20260819.json) — qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-20260819
+- [`qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-thinkon-low-20260819.json`](entries/qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-thinkon-low-20260819.json) — qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-thinkon-low-20260819
 
