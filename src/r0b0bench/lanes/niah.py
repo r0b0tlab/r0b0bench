@@ -141,9 +141,7 @@ def run_niah(
                 import os
 
                 env_kwargs = json.loads(os.environ.get("R0B0BENCH_CHAT_TEMPLATE_KWARGS") or "{}")
-                tmpl_kw = {}
-                if "enable_thinking" in env_kwargs:
-                    tmpl_kw["enable_thinking"] = env_kwargs["enable_thinking"]
+                tmpl_kw = dict(env_kwargs) if isinstance(env_kwargs, dict) else {}
                 text = hf.apply_chat_template(
                     messages, tokenize=False, add_generation_prompt=True, **tmpl_kw
                 )
