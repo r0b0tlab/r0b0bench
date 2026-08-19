@@ -8,7 +8,14 @@
   },
   "runtime": {
     "hardware": "1x NVIDIA GB10 (DGX Spark), SGLang dflash2-0.2.0, fp8 KV auto, mem 0.73, think-off",
-    "base_url_omitted": true
+    "base_url_omitted": true,
+    "speculative": {
+      "method": "dflash2",
+      "K": 7,
+      "draft_tokens": 8,
+      "config": "block=8, think-off"
+    },
+    "template_default": "thinking off (chat_template_kwargs thinking+enable_thinking=false)"
   },
   "harness": {
     "name": "r0b0bench",

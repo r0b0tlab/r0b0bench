@@ -191,7 +191,7 @@
       "model_family": "",
       "profile": "core-subset",
       "hardware": "1x NVIDIA GB10 (DGX Spark), SGLang dflash2-0.2.0, fp8 KV auto, mem 0.73, think-off",
-      "speculative": "none",
+      "speculative": "dflash2 K=7 draft=8 block=8, think-off",
       "invalid_for_publish": false,
       "infra_errors_total": 0,
       "gsm8k": 0.865,

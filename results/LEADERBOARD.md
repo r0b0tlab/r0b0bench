@@ -15,7 +15,7 @@ Comparable only within the same profile and disclosed scorer variants.
 | ling-3.0-flash-nvfp4-mtp1-graphs-20260807 | Ling-3.0-flash NVFP4 (MTP scale 1,  | none | 0.945 | 0.659 | 0.960 | 0.830 | 0.620 | 0.307 | PASS | False |
 | nemotron-lightning-mtp-k1-core-subset-20260810 | NVIDIA Nemotron 3.5 Lightning 30B-A | mtp K=1 | 0.945 | 0.860 | 0.953 | 0.775 | 0.380 | 0.043 | PASS | False |
 | nemotron-lightning-mtp-k1-thinking-on-core-subset-20260810 | NVIDIA Nemotron 3.5 Lightning 30B-A | mtp K=1 | 0.910 | 0.939 | 0.958 | 0.775 | 0.665 | 0.292 | PASS | False |
-| qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-20260819 | Qwen3.8-27B NVFP4 (r0b0tlab 4-of-4) | none | 0.865 | 0.872 | 0.963 | 0.820 | 0.690 | 0.273 | PASS | False |
+| qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-20260819 | Qwen3.8-27B NVFP4 (r0b0tlab 4-of-4) | dflash2 K=7 draft=8 block=8, think-off | 0.865 | 0.872 | 0.963 | 0.820 | 0.690 | 0.273 | PASS | False |
 
 ## Performance
 
@@ -28,7 +28,7 @@ Comparable only within the same profile and disclosed scorer variants.
 | ling-3.0-flash-nvfp4-mtp1-graphs-20260807 | Ling-3.0-flash NVFP4 (MTP scale 1,  | none | 32.830 | 5952.850 | 227.885 | 39.023 | 51.836 | 96.890 | 126.867 |
 | nemotron-lightning-mtp-k1-core-subset-20260810 | NVIDIA Nemotron 3.5 Lightning 30B-A | mtp K=1 | 90.954 | 28815.643 | 92.329 | 103.411 | 180.465 | 304.276 | 376.315 |
 | nemotron-lightning-mtp-k1-thinking-on-core-subset-20260810 | NVIDIA Nemotron 3.5 Lightning 30B-A | mtp K=1 | 89.289 | 2031.666 | 93.628 | 99.470 | 151.647 | 217.046 | 252.004 |
-| qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-20260819 | Qwen3.8-27B NVFP4 (r0b0tlab 4-of-4) | none | 26.022 | 22662.780 | 214.609 | 68.610 | 124.305 | 211.981 | 276.450 |
+| qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-20260819 | Qwen3.8-27B NVFP4 (r0b0tlab 4-of-4) | dflash2 K=7 draft=8 block=8, think-off | 26.022 | 22662.780 | 214.609 | 68.610 | 124.305 | 211.981 | 276.450 |
 
 ## Files
 
