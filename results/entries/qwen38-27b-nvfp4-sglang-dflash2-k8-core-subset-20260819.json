@@ -11,7 +11,7 @@
     "base_url_omitted": true,
     "speculative": {
       "method": "dflash2",
-      "K": 7,
+      "K": 8,
       "draft_tokens": 8,
       "config": "block=8, think-off"
     },
