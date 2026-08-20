@@ -103,7 +103,7 @@ class R0b0OpenAICompletionsHandler(OpenAICompletionsHandler):
             kwargs["tools"] = tools
         started = time.perf_counter()
         try:
-            response = self.generate_with_backoff(**kwargs)
+            raw_response = self.generate_with_backoff(**kwargs)
         except Exception as exc:
             _record_timing(
                 {
@@ -114,12 +114,18 @@ class R0b0OpenAICompletionsHandler(OpenAICompletionsHandler):
                 }
             )
             raise
+        sdk_elapsed = None
+        if isinstance(raw_response, tuple) and len(raw_response) == 2:
+            response, sdk_elapsed = raw_response
+        else:
+            response = raw_response
         elapsed = time.perf_counter() - started
         timing = _response_timing(response)
         timing.update(
             {
                 "case_id": inference_data.get("id") or inference_data.get("test_id"),
                 "elapsed_s": elapsed,
+                "sdk_elapsed_s": float(sdk_elapsed) if sdk_elapsed is not None else None,
                 "e2e_output_tok_s": (
                     float(timing["completion_tokens"]) / elapsed
                     if int(timing["completion_tokens"]) and elapsed > 0

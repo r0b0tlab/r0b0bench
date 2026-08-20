@@ -62,15 +62,18 @@ def test_bfcl_transport_writes_e2e_timing_sidecar(monkeypatch, tmp_path) -> None
     handler = module.R0b0OpenAICompletionsHandler.__new__(module.R0b0OpenAICompletionsHandler)
     handler.model_name = "model"
     handler.temperature = 0.001
-    handler.generate_with_backoff = lambda **kwargs: {
-        "choices": [
-            {
-                "finish_reason": "stop",
-                "message": {"content": "ok", "tool_calls": []},
-            }
-        ],
-        "usage": {"prompt_tokens": 10, "completion_tokens": 4},
-    }
+    handler.generate_with_backoff = lambda **kwargs: (
+        {
+            "choices": [
+                {
+                    "finish_reason": "stop",
+                    "message": {"content": "ok", "tool_calls": []},
+                }
+            ],
+            "usage": {"prompt_tokens": 10, "completion_tokens": 4},
+        },
+        0.001,
+    )
     handler._query_FC({"id": "base_0", "message": [{"role": "user", "content": "x"}], "tools": []})
 
     row = json.loads(timing.read_text().splitlines()[0])
