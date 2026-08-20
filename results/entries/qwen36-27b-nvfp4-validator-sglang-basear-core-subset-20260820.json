@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "entry_id": "qwen36-27b-nvfp4-validator-sglang-basear-core-subset-20260820",
+  "recorded_utc": "2026-08-20T01:04:59.372492+00:00",
+  "model": {
+    "id": "qwen36-27b-nvfp4-validator",
+    "display_name": "Qwen3.6-27B-NVFP4 (Ornith-1.5-397B validator, qwen3_5 family)"
+  },
+  "runtime": {
+    "hardware": "GB10/SM121 (DGX Spark)",
+    "base_url_omitted": true,
+    "engine": "sglang 0.0.0.dev0+qwen38.27b.g561c8f3 (fork image lmsysorg/sglang:qwen38-27b)",
+    "serve_profile": "validator-35b-gb10 (repo r0b0tlab/ornith-15-397b-nvfp4-sglang)",
+    "spec_decode": "none (base-AR row)",
+    "context_length": 262144,
+    "kv_cache_tokens": 338465,
+    "quantization": "modelopt_mixed (W4A16 experts + FP8 attn + FP8 KV)",
+    "thinking": "off (chat_template_kwargs thinking+enable_thinking false)",
+    "checkpoint": "nvidia/Qwen3.6-27B-NVFP4 (validator for ornith-ai/Ornith-1.5-397B-NVFP4, same qwen3_5 family)"
+  },
+  "harness": {
+    "name": "r0b0bench",
+    "version": "1.0.0rc2",
+    "profile": "core-subset"
+  },
+  "scores": {
+    "canary": {
+      "status": "PASS",
+      "passed": true,
+      "n": 5
+    },
+    "bfcl_mt": {
+      "status": "PASS",
+      "accuracy": 0.705,
+      "correct": 141,
+      "total": 200
+    },
+    "bfcl_ast": {
+      "status": "PASS",
+      "micro_accuracy": 0.195,
+      "categories": {
+        "multiple": {
+          "accuracy": 0.195,
+          "correct_count": 39,
+          "path": "/home/r0b0tdgx/ornith15-row1-repair-20260819T203314Z/20260819T203314Z-996019ca/lanes/bfcl_ast/bfcl-ast-project/score/r0b0bench-openai-FC/non_live/BFCL_v4_parallel_multiple_score.json",
+          "raw": {
+            "accuracy": 0.195,
+            "correct_count": 39,
+            "total_count": 200
+          },
+          "total_count": 200
+        },
+        "parallel": {
+          "accuracy": 0.195,
+          "correct_count": 39,
+          "path": "/home/r0b0tdgx/ornith15-row1-repair-20260819T203314Z/20260819T203314Z-996019ca/lanes/bfcl_ast/bfcl-ast-project/score/r0b0bench-openai-FC/non_live/BFCL_v4_parallel_multiple_score.json",
+          "raw": {
+            "accuracy": 0.195,
+            "correct_count": 39,
+            "total_count": 200
+          },
+          "total_count": 200
+        },
+        "parallel_multiple": {
+          "accuracy": 0.195,
+          "correct_count": 39,
+          "path": "/home/r0b0tdgx/ornith15-row1-repair-20260819T203314Z/20260819T203314Z-996019ca/lanes/bfcl_ast/bfcl-ast-project/score/r0b0bench-openai-FC/non_live/BFCL_v4_parallel_multiple_score.json",
+          "raw": {
+            "accuracy": 0.195,
+            "correct_count": 39,
+            "total_count": 200
+          },
+          "total_count": 200
+        }
+      }
+    },
+    "latency": {
+      "status": "PASS",
+      "ttft_ms_mean": 126.16483600140782,
+      "itl_ms_mean": 80.14145524450194,
+      "e2el_ms_mean": 7500.79562549945
+    },
+    "concurrency": {
+      "status": "PASS",
+      "ladder_aggregate_tok_s": {
+        "1": 12.439681797593984,
+        "2": 23.593533562936702,
+        "4": 44.8283677014657,
+        "6": 64.85994208370052
+      }
+    },
+    "throughput": {
+      "status": "PASS",
+      "decode_median_client_tok_s": 12.426013681787381,
+      "prefill_median_prompt_tok_s": 3254.5583678746607,
+      "prefill_median_prompt_tok_s_proxy": 3254.5583678746607,
+      "prefill_mean_prompt_tok_s": 3254.5583678746607,
+      "prefill_median_prompt_tokens": 22774.0
+    },
+    "qa": {
+      "status": "PASS",
+      "accuracy": 0.9625,
+      "correct": 385,
+      "n": 400
+    },
+    "ifeval": {
+      "status": "PASS",
+      "accuracy": 0.825,
+      "correct": 165,
+      "n": 200,
+      "method": "ifeval_lightweight_constraint_scorer"
+    },
+    "humaneval": {
+      "status": "PASS",
+      "pass@1": 0.9207317073170732,
+      "n": 164
+    },
+    "gsm8k": {
+      "status": "PASS",
+      "accuracy": 0.895,
+      "correct": 179,
+      "n": 200,
+      "method": "gsm8k_0shot_flexible_extract"
+    },
+    "niah": {
+      "status": "PASS",
+      "depths": [
+        65472,
+        130944,
+        235699
+      ],
+      "max_model_len": 262144
+    }
+  },
+  "infra_errors_total": 4,
+  "invalid_for_publish": true,
+  "disclosures": [
+    "MERGED row (per-lane provenance in report merge_provenance): row1-full + row1-repair + row1-solo. 11/11 PASS. Thinking-off. Validator proves the ornith-15-397b-nvfp4-sglang serving package, NOT 397B numbers. ARC 96.25 / IFEval 82.5 / GSM8K 89.5 / BFCL-MT 70.5 / AST-mu 19.5 (think-off). Decode 12.43 tok/s c1; c6 64.83 agg; prefill 3260 tok/s; TTFT 122.9ms; NIAH 65472/130944/235699 all PASS. Solo-boot KV 338465; starved-boot lanes replaced (see evidence MEMORY_ADMISSION_CORRECTION)."
+  ],
+  "artifact_roots_private": []
+}
