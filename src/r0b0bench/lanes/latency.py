@@ -7,6 +7,7 @@ from typing import Any
 
 from r0b0bench.config import LaneResult, write_json
 from r0b0bench.endpoint import Endpoint
+from r0b0bench.thinking import effective_max_tokens
 
 
 def run_latency(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
@@ -15,7 +16,7 @@ def run_latency(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
     out_dir.mkdir(parents=True, exist_ok=True)
     reps = int(cfg.get("reps") or 5)
     drop_first = bool(cfg.get("drop_first_rep", True))
-    max_tokens = int(cfg.get("output_tokens") or 128)
+    max_tokens = effective_max_tokens(int(cfg.get("output_tokens") or 128), "latency")
     prompt = str(
         cfg.get("prompt")
         or "Write a short factual paragraph about copper conductivity. Keep it under 80 words."

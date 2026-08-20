@@ -7,6 +7,7 @@ from typing import Any
 
 from r0b0bench.config import LaneResult, write_json
 from r0b0bench.endpoint import Endpoint
+from r0b0bench.thinking import effective_max_tokens
 
 
 def _chat(ep: Endpoint, prompt: str, max_tokens: int) -> dict[str, Any]:
@@ -40,11 +41,11 @@ def run_throughput(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResu
     """
     t0 = time.perf_counter()
     out_dir.mkdir(parents=True, exist_ok=True)
-    decode_out = int(cfg.get("decode_output_tokens") or 2048)
+    decode_out = effective_max_tokens(int(cfg.get("decode_output_tokens") or 2048), "throughput")
     decode_reps = int(cfg.get("decode_reps") or 5)
     drop_first = bool(cfg.get("drop_first_rep", True))
     prefill_target_tokens = int(cfg.get("prefill_prompt_tokens") or 14000)
-    prefill_out = int(cfg.get("prefill_output_tokens") or 16)
+    prefill_out = effective_max_tokens(int(cfg.get("prefill_output_tokens") or 16), "throughput")
     prefill_reps = int(cfg.get("prefill_reps") or 3)
 
     decode_prompt = str(

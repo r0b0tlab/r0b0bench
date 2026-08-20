@@ -8,6 +8,7 @@ from typing import Any
 
 from r0b0bench.config import LaneResult, write_json
 from r0b0bench.endpoint import Endpoint
+from r0b0bench.thinking import effective_generation_reserve
 
 
 def _find_subseq(hay: list[int], needle: list[int]) -> int:
@@ -90,7 +91,7 @@ def run_niah(
         )
 
     fractions = list(cfg.get("fractions") or [0.25, 0.5, 0.9])
-    gen_reserve = int(cfg.get("generation_reserve") or 64)
+    gen_reserve = effective_generation_reserve(int(cfg.get("generation_reserve") or 64))
     needle_frac = float(cfg.get("needle_fraction") or 0.5)
     code = str(cfg.get("code") or "R0B0-NIAH-7K3M")
     # Always max-context against advertised max_model_len (NIAH is the capacity test).

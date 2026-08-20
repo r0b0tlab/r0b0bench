@@ -5,14 +5,14 @@ import json
 import os
 import random
 import re
-import tempfile
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 from r0b0bench.config import LaneResult, write_json, wilson_ci
 from r0b0bench.endpoint import Endpoint
+from r0b0bench.thinking import effective_max_tokens
 
 
 def _env_path(*keys: str, default: str = "") -> str:
@@ -111,7 +111,7 @@ def run_gsm8k(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
         )
     n = int(cfg.get("n") or 200)
     conc = int(cfg.get("concurrency") or 4)
-    max_tokens = int(cfg.get("max_tokens") or 512)
+    max_tokens = effective_max_tokens(int(cfg.get("max_tokens") or 512), "gsm8k")
     seed = int(cfg.get("seed") or 0)
     rows_in = _load_jsonl(data, n=None)
     # deterministic head for subset (not random) — stable core-subset lock
@@ -183,7 +183,7 @@ def run_humaneval(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResul
     )
     n = int(cfg.get("n") or 164)
     conc = int(cfg.get("concurrency") or 2)
-    max_tokens = int(cfg.get("max_tokens") or 512)
+    max_tokens = effective_max_tokens(int(cfg.get("max_tokens") or 512), "humaneval")
     rows_in = _load_jsonl(data)[:n]
     samples = []
     infra = 0
@@ -366,7 +366,7 @@ def run_ifeval(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
         )
     n = int(cfg.get("n") or 200)
     conc = int(cfg.get("concurrency") or 4)
-    max_tokens = int(cfg.get("max_tokens") or 1024)
+    max_tokens = effective_max_tokens(int(cfg.get("max_tokens") or 1024), "ifeval")
     rows_in = _load_jsonl(data)[:n]
     results = []
     infra = 0
@@ -445,7 +445,7 @@ def run_qa(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
         )
     n = int(cfg.get("n") or 400)
     conc = int(cfg.get("concurrency") or 4)
-    max_tokens = int(cfg.get("max_tokens") or 32)
+    max_tokens = effective_max_tokens(int(cfg.get("max_tokens") or 32), "qa")
     rows_in = _load_jsonl(data)[:n]
     results = []
     infra = 0

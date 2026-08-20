@@ -8,6 +8,7 @@ from typing import Any
 
 from r0b0bench.config import LaneResult, write_json
 from r0b0bench.endpoint import Endpoint
+from r0b0bench.thinking import effective_max_tokens
 
 
 def _one(ep: Endpoint, prompt: str, max_tokens: int, temperature: float) -> dict[str, Any]:
@@ -37,7 +38,7 @@ def run_concurrency(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneRes
     levels = [int(x) for x in (cfg.get("levels") or [1, 2, 4, 6])]
     reps = int(cfg.get("reps") or 3)
     drop_first = bool(cfg.get("drop_first_rep", True))
-    out_tok = int(cfg.get("output_tokens") or 512)
+    out_tok = effective_max_tokens(int(cfg.get("output_tokens") or 512), "concurrency")
     temperature = float(cfg.get("temperature") or 0)
     # short prompt; concurrency measures decode scaling under load
     prompt = str(

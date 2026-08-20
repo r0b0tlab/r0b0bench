@@ -64,13 +64,13 @@ def run_canary(ep: Endpoint, out_dir: Path, cfg: dict[str, Any] | None = None) -
         {
             "id": "identity",
             "messages": [{"role": "user", "content": "Reply with exactly R0B0BENCH_OK and nothing else."}],
-            "max_tokens": 256,
+            "max_tokens": 8192,
             "expect": "R0B0BENCH_OK",
         },
         {
             "id": "zh_arithmetic",
             "messages": [{"role": "user", "content": "只回答数字：17乘以19等于多少？"}],
-            "max_tokens": 256,
+            "max_tokens": 8192,
             "expect": "323",
         },
         {
@@ -91,7 +91,7 @@ def run_canary(ep: Endpoint, out_dir: Path, cfg: dict[str, Any] | None = None) -
             "messages": [{"role": "user", "content": "What is the current weather in Tokyo? Use the provided tool."}],
             "tools": tools,
             "tool_choice": "auto",
-            "max_tokens": 512,
+            "max_tokens": 8192,
             "expect_tool": True,
         },
         {
@@ -105,7 +105,7 @@ def run_canary(ep: Endpoint, out_dir: Path, cfg: dict[str, Any] | None = None) -
                     + "What is the verification code? Reply with only the code.",
                 }
             ],
-            "max_tokens": 256,
+            "max_tokens": 8192,
             "expect": "A9Q7",
         },
     ]
