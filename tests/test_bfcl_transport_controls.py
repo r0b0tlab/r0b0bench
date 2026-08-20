@@ -31,14 +31,15 @@ def test_bfcl_transport_applies_muse_generation_controls(monkeypatch) -> None:
     )
     handler.model_name = "muse"
     handler.temperature = 0.001
-    handler.generate_with_backoff = lambda **kwargs: kwargs
+    handler.generate_with_backoff = lambda **kwargs: (kwargs, 0.25)
     inference_data = {
         "message": [{"role": "user", "content": "call the tool"}],
         "tools": [{"type": "function", "function": {"name": "lookup"}}],
     }
 
-    kwargs = handler._query_FC(inference_data)
+    kwargs, elapsed = handler._query_FC(inference_data)
 
+    assert elapsed == 0.25
     assert kwargs["model"] == "muse"
     assert kwargs["max_tokens"] == 8192
     assert kwargs["extra_body"] == {
@@ -74,7 +75,9 @@ def test_bfcl_transport_writes_e2e_timing_sidecar(monkeypatch, tmp_path) -> None
         },
         0.001,
     )
-    handler._query_FC({"id": "base_0", "message": [{"role": "user", "content": "x"}], "tools": []})
+    response, elapsed = handler._query_FC({"id": "base_0", "message": [{"role": "user", "content": "x"}], "tools": []})
+    assert response["choices"][0]["message"]["content"] == "ok"
+    assert elapsed == 0.001
 
     row = json.loads(timing.read_text().splitlines()[0])
     assert row["case_id"] == "base_0"

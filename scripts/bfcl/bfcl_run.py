@@ -134,7 +134,7 @@ class R0b0OpenAICompletionsHandler(OpenAICompletionsHandler):
             }
         )
         _record_timing(timing)
-        return response
+        return response, (float(sdk_elapsed) if sdk_elapsed is not None else elapsed)
 
 
 def _patch_timeout() -> None:
