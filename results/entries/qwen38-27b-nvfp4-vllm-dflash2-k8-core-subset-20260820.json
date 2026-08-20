@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "entry_id": "qwen38-27b-nvfp4-vllm-dflash2-k8-core-subset-20260820",
+  "recorded_utc": "2026-08-20T20:50:00+00:00",
+  "model": {
+    "id": "qwen38-27b",
+    "display_name": "Qwen3.8-27B NVFP4 (r0b0tlab 4-of-4) vLLM DFlash2 K8 SM121"
+  },
+  "runtime": {
+    "hardware": "1x NVIDIA GB10 (DGX Spark) node2, vLLM v0.27.2rc0-sm121 overlay (PR #52816 @ 19c93519 + clamps) image qwen38-27b-vllm-dflash2-sm121:0.1.1, fp8 KV auto, mem 0.73, think-off",
+    "base_url_omitted": true,
+    "speculative": {
+      "method": "dflash2",
+      "K": 8,
+      "draft_tokens": 8,
+      "config": "num_speculative_tokens=8, z-lab Qwen3.8-27B-DFlash2 draft, think-off"
+    },
+    "template_default": "thinking off (chat_template_kwargs thinking+enable_thinking=false)"
+  },
+  "harness": {
+    "name": "r0b0bench",
+    "version": "1.0.0rc2",
+    "profile": "core-subset"
+  },
+  "scores": {
+    "canary": {
+      "status": "PASS",
+      "passed": true,
+      "n": 5
+    },
+    "bfcl_mt": {
+      "status": "PASS",
+      "accuracy": 0.565,
+      "total": 200
+    },
+    "bfcl_ast": {
+      "status": "PASS",
+      "micro_accuracy": 0.27,
+      "micro_correct": 162,
+      "micro_total": 600
+    },
+    "latency": {
+      "status": "PASS",
+      "ttft_ms_mean": 259.07426049525384,
+      "itl_ms_mean": 127.38470957556274,
+      "e2el_ms_mean": 4080.8066717727343
+    },
+    "concurrency": {
+      "status": "PASS",
+      "ladder_aggregate_tok_s": {
+        "1": 67.05702044848799,
+        "2": 121.49186341674279,
+        "4": 211.52343682779964,
+        "6": 279.24969576595013
+      }
+    },
+    "throughput": {
+      "status": "PASS",
+      "decode_median_client_tok_s": 21.77,
+      "prefill_median_prompt_tok_s": 826.4,
+      "prefill_median_prompt_tok_s_proxy": true
+    },
+    "qa": {
+      "status": "PASS",
+      "accuracy": 0.9625,
+      "correct": 385,
+      "n": 400
+    },
+    "ifeval": {
+      "status": "PASS",
+      "accuracy": 0.825,
+      "correct": 165,
+      "n": 200,
+      "method": "ifeval_lightweight_constraint_scorer"
+    },
+    "humaneval": {
+      "status": "PASS",
+      "pass@1": 0.8902439024390244,
+      "n": 164
+    },
+    "gsm8k": {
+      "status": "PASS",
+      "accuracy": 0.87,
+      "correct": 174,
+      "n": 200,
+      "method": "gsm8k_0shot_flexible_extract"
+    },
+    "niah": {
+      "status": "PASS",
+      "depths": [
+        65472,
+        130944,
+        235699
+      ],
+      "max_model_len": 262144
+    }
+  },
+  "infra_errors_total": 0,
+  "invalid_for_publish": false,
+  "disclosures": [
+    "disclosures: vLLM DFlash2 via overlay image 0.1.1 (published v0.27.2rc0-sm121 wheel + surgical PR #52816 hunks; no wheel rebuild); selector-walk BLOCK_K clamp + candidate-id clamps fix the C>=2 BFCL CUDA device-side assert (target embed OOB from garbage draft ids); flashinfer autotune + jit/cutedsl warmup off (dummy metadata != DFlash 9-query layout); profile-dummy selector skip; quantized lm_head apply path (stock PR rejects W4A16 head); V2 runner forced; GDN attention stock; BFCL threads=4; prefill is e2e wall proxy (not run_perf_suite pure prefill; SGLang row used 22663 pure-prefill methodology); IFEval lightweight scorer; AST micro 0.27 with misses unclassified model-vs-parser"
+  ],
+  "artifact_roots_private": [
+    "evidence/qwen38-vllm-dflash2-20260819T175844Z/core-subset-thinkoff-node2/run-20260820T153819Z"
+  ]
+}
