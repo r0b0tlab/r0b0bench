@@ -9,6 +9,39 @@ from r0b0bench.config import LaneResult, write_json
 from r0b0bench.endpoint import Endpoint
 
 
+def _check_case(case: dict[str, Any], status: int, body: dict[str, Any]) -> bool:
+    """Return a strict semantic verdict for one canary response.
+
+    A response that exhausts its budget before producing the required visible
+    structure is a failure. It must not be downgraded to an excluded artifact:
+    the canary is the admission gate for the exact benchmark protocol.
+    """
+    ok = status == 200 and bool(body.get("choices"))
+    msg = body.get("choices", [{}])[0].get("message", {}) if ok else {}
+    content = (msg.get("content") or "").strip()
+    blob = "\n".join(
+        x
+        for x in (content, str(msg.get("reasoning") or ""), str(msg.get("reasoning_content") or ""))
+        if x
+    )
+    if case.get("expect"):
+        return ok and case["expect"] in blob
+    if case.get("expect_json"):
+        if not ok:
+            return False
+        for candidate in (content, blob):
+            try:
+                s, e = candidate.find("{"), candidate.rfind("}")
+                if s >= 0 and e > s and json.loads(candidate[s : e + 1]) == case["expect_json"]:
+                    return True
+            except Exception:
+                pass
+        return False
+    if case.get("expect_tool"):
+        return ok and bool(msg.get("tool_calls"))
+    return ok
+
+
 def run_canary(ep: Endpoint, out_dir: Path, cfg: dict[str, Any] | None = None) -> LaneResult:
     t0 = time.perf_counter()
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -48,10 +81,9 @@ def run_canary(ep: Endpoint, out_dir: Path, cfg: dict[str, Any] | None = None) -
                     "content": "Return one compact JSON object with keys alpha and beta, set to integers 2 and 3. No prose.",
                 }
             ],
-            # 4096: thinking models spend the budget on reasoning_content before
-            # emitting JSON. 256 truncates inside the thought trace (known
-            # artifact; root-cause fix 2026-08-20, verified think-on EAGLE row).
-            "max_tokens": 4096,
+            # Reasoning models may spend tokens before emitting JSON; the
+            # canary must report that as a real failure, never exclude it.
+            "max_tokens": 8192,
             "expect_json": {"alpha": 2, "beta": 3},
         },
         {
@@ -90,55 +122,14 @@ def run_canary(ep: Endpoint, out_dir: Path, cfg: dict[str, Any] | None = None) -
                 payload[k] = case[k]
         status, body, elapsed = ep.chat_completions(payload)
         results.append({"id": case["id"], "http_status": status, "elapsed_s": elapsed, "response": body})
-        ok = status == 200 and bool(body.get("choices"))
-        msg = body.get("choices", [{}])[0].get("message", {}) if ok else {}
-        content = (msg.get("content") or "").strip()
-        blob = "\n".join(
-            x
-            for x in (content, str(msg.get("reasoning") or ""), str(msg.get("reasoning_content") or ""))
-            if x
-        )
-        if case.get("expect"):
-            ok = ok and case["expect"] in blob
-        elif case.get("expect_json"):
-            parsed_ok = False
-            for candidate in (content, blob):
-                try:
-                    s, e = candidate.find("{"), candidate.rfind("}")
-                    if s >= 0 and e > s and json.loads(candidate[s : e + 1]) == case["expect_json"]:
-                        parsed_ok = True
-                        break
-                except Exception:
-                    pass
-            ok = ok and parsed_ok
-            # Known-artifact exclusion: thinking models can spend the whole
-            # budget on reasoning_content before emitting the JSON
-            # (finish_reason=length, empty content, reasoning present). This
-            # is a budget/protocol artifact, not a JSON defect — exclude it
-            # from the failure verdict until the lane budget is validated
-            # against that model class. Evidence stays in canary.json.
-            usage = (body.get("usage") or {}) if ok else {}
-            reasoning_toks = usage.get("reasoning_tokens") or 0
-            if (
-                not ok
-                and case["id"] == "structured"
-                and status == 200
-                and (body.get("choices") or [{}])[0].get("finish_reason") == "length"
-                and not content
-                and reasoning_toks > 0
-            ):
-                ok = None  # excluded artifact
-        elif case.get("expect_tool"):
-            ok = ok and bool(msg.get("tool_calls"))
-        checks[case["id"]] = ok  # True/False, or None for excluded known-artifact
+        ok = _check_case(case, status, body)
+        checks[case["id"]] = ok
 
-    excluded = [cid for cid, v in checks.items() if v is None]
-    scored = {cid: v for cid, v in checks.items() if v is not None}
     summary = {
         "checks": checks,
-        "excluded_known_artifacts": excluded,
-        "passed": all(scored.values()),
-        "n": len(scored),
+        "excluded_known_artifacts": [],
+        "passed": all(checks.values()),
+        "n": len(checks),
     }
     write_json(out_dir / "canary.json", {"summary": summary, "results": results})
     status = "PASS" if summary["passed"] else "FAIL"
