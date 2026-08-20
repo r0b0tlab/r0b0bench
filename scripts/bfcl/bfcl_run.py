@@ -10,8 +10,11 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import threading
+import time
 from pathlib import Path
 from types import SimpleNamespace
+from typing import Any
 
 os.environ.setdefault("OPENAI_API_KEY", "EMPTY")
 os.environ.setdefault("OPENAI_BASE_URL", "http://127.0.0.1:30000/v1")
@@ -32,6 +35,41 @@ CATEGORY = "multi_turn_base"
 EXPECTED_ROWS = 200
 REGISTRY = os.environ.get("R0B0BENCH_BFCL_MODEL_REGISTRY", "r0b0bench-openai-FC")
 MODEL_NAME = os.environ.get("R0B0BENCH_SERVED_MODEL", "openai-compatible-model")
+_TIMING_LOCK = threading.Lock()
+
+
+def _field(value: Any, name: str, default: Any = None) -> Any:
+    if isinstance(value, dict):
+        return value.get(name, default)
+    return getattr(value, name, default)
+
+
+def _record_timing(row: dict[str, object]) -> None:
+    path = os.environ.get("R0B0BENCH_BFCL_TIMING_PATH")
+    if not path:
+        return
+    target = Path(path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    with _TIMING_LOCK:
+        with target.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
+            handle.flush()
+
+
+def _response_timing(response: Any) -> dict[str, Any]:
+    usage = _field(response, "usage", {}) or {}
+    choices = _field(response, "choices", []) or []
+    choice = choices[0] if choices else {}
+    details = _field(usage, "completion_tokens_details", {}) or {}
+    tool_calls = _field(_field(choice, "message", {}) or {}, "tool_calls", []) or []
+    return {
+        "http_status": 200,
+        "prompt_tokens": int(_field(usage, "prompt_tokens", 0) or 0),
+        "completion_tokens": int(_field(usage, "completion_tokens", 0) or 0),
+        "reasoning_tokens": int(_field(details, "reasoning_tokens", 0) or 0),
+        "finish_reason": _field(choice, "finish_reason"),
+        "tool_calls": len(tool_calls),
+    }
 
 
 class R0b0OpenAICompletionsHandler(OpenAICompletionsHandler):
@@ -63,7 +101,34 @@ class R0b0OpenAICompletionsHandler(OpenAICompletionsHandler):
         }
         if tools:
             kwargs["tools"] = tools
-        return self.generate_with_backoff(**kwargs)
+        started = time.perf_counter()
+        try:
+            response = self.generate_with_backoff(**kwargs)
+        except Exception as exc:
+            _record_timing(
+                {
+                    "case_id": inference_data.get("id") or inference_data.get("test_id"),
+                    "http_status": 0,
+                    "elapsed_s": time.perf_counter() - started,
+                    "error": type(exc).__name__,
+                }
+            )
+            raise
+        elapsed = time.perf_counter() - started
+        timing = _response_timing(response)
+        timing.update(
+            {
+                "case_id": inference_data.get("id") or inference_data.get("test_id"),
+                "elapsed_s": elapsed,
+                "e2e_output_tok_s": (
+                    float(timing["completion_tokens"]) / elapsed
+                    if int(timing["completion_tokens"]) and elapsed > 0
+                    else 0.0
+                ),
+            }
+        )
+        _record_timing(timing)
+        return response
 
 
 def _patch_timeout() -> None:

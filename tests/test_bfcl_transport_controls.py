@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib
 import importlib.util
+import json
 from pathlib import Path
 
 from r0b0bench.endpoint import Endpoint
@@ -50,7 +51,34 @@ def test_bfcl_transport_applies_muse_generation_controls(monkeypatch) -> None:
     assert "inference_input_log" in inference_data
 
 
-def test_bfcl_ast_registers_shared_transport(monkeypatch) -> None:
+def test_bfcl_transport_writes_e2e_timing_sidecar(monkeypatch, tmp_path) -> None:
+    module = load_bfcl_run_module()
+    monkeypatch.setenv("BFCL_MAX_TOKENS", "8192")
+    monkeypatch.setenv("R0B0BENCH_REASONING_STRENGTH", "low")
+    monkeypatch.setenv("R0B0BENCH_CHAT_TEMPLATE_KWARGS", '{"enable_thinking":true}')
+    timing = tmp_path / "e2e-requests.jsonl"
+    monkeypatch.setenv("R0B0BENCH_BFCL_TIMING_PATH", str(timing))
+
+    handler = module.R0b0OpenAICompletionsHandler.__new__(module.R0b0OpenAICompletionsHandler)
+    handler.model_name = "model"
+    handler.temperature = 0.001
+    handler.generate_with_backoff = lambda **kwargs: {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "message": {"content": "ok", "tool_calls": []},
+            }
+        ],
+        "usage": {"prompt_tokens": 10, "completion_tokens": 4},
+    }
+    handler._query_FC({"id": "base_0", "message": [{"role": "user", "content": "x"}], "tools": []})
+
+    row = json.loads(timing.read_text().splitlines()[0])
+    assert row["case_id"] == "base_0"
+    assert row["http_status"] == 200
+    assert row["completion_tokens"] == 4
+    assert row["elapsed_s"] > 0
+    assert row["e2e_output_tok_s"] > 0
     script_dir = Path(__file__).parents[1] / "scripts/bfcl"
     monkeypatch.syspath_prepend(str(script_dir))
     bfcl_run = importlib.import_module("bfcl_run")

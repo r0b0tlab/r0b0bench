@@ -5,6 +5,7 @@ import json
 import os
 import random
 import re
+import statistics
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -13,6 +14,31 @@ from typing import Any
 from r0b0bench.config import LaneResult, write_json, wilson_ci
 from r0b0bench.endpoint import Endpoint
 from r0b0bench.thinking import effective_max_tokens
+
+
+def _with_e2e(row: dict[str, Any]) -> dict[str, Any]:
+    usage = row.get("usage") or {}
+    completion_tokens = int(row.get("completion_tokens") or usage.get("completion_tokens") or 0)
+    elapsed_s = float(row.get("elapsed_s") or 0.0)
+    out = dict(row)
+    out["completion_tokens"] = completion_tokens
+    out["e2e_output_tok_s"] = (completion_tokens / elapsed_s) if completion_tokens and elapsed_s > 0 else 0.0
+    return out
+
+
+def _e2e_summary(rows: list[dict[str, Any]], wall_s: float) -> dict[str, Any]:
+    enriched = [_with_e2e(row) for row in rows]
+    rates = [float(row["e2e_output_tok_s"]) for row in enriched if row["e2e_output_tok_s"] > 0]
+    completion_tokens = sum(int(row["completion_tokens"]) for row in enriched)
+    return {
+        "requests": len(enriched),
+        "completed_requests": sum(1 for row in enriched if row.get("http_status") == 200),
+        "completion_tokens": completion_tokens,
+        "wall_s": wall_s,
+        "aggregate_e2e_output_tok_s": (completion_tokens / wall_s) if completion_tokens and wall_s > 0 else 0.0,
+        "median_request_e2e_output_tok_s": statistics.median(rates) if rates else None,
+        "mean_request_e2e_output_tok_s": statistics.mean(rates) if rates else None,
+    }
 
 
 def _env_path(*keys: str, default: str = "") -> str:
@@ -141,7 +167,7 @@ def run_gsm8k(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
             if row.get("http_status") != 200:
                 infra += 1
 
-    ordered = [results[i] for i in range(len(rows_in))]
+    ordered = [_with_e2e(results[i]) for i in range(len(rows_in))]
     correct = sum(1 for r in ordered if r.get("correct"))
     total = len(ordered)
     acc = correct / total if total else 0.0
@@ -155,6 +181,7 @@ def run_gsm8k(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
         "data_path": str(data),
         "infra_http_errors": infra,
         "seed": seed,
+        "e2e_throughput": _e2e_summary(ordered, time.perf_counter() - t0),
     }
     write_json(out_dir / "gsm8k.json", {"summary": summary, "rows": ordered})
     status = "PASS" if total and infra == 0 else ("ERROR" if infra == total else "FAIL")
@@ -210,6 +237,7 @@ def run_humaneval(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResul
             "http_status": r["http_status"],
             "ok": r["ok"],
             "elapsed_s": r["elapsed_s"],
+            "completion_tokens": int((r.get("usage") or {}).get("completion_tokens") or 0),
         }
 
     with ThreadPoolExecutor(max_workers=conc) as pool:
@@ -220,6 +248,7 @@ def run_humaneval(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResul
             if s.get("http_status") != 200:
                 infra += 1
 
+    samples = [_with_e2e(sample) for sample in samples]
     samples_path = out_dir / "samples.jsonl"
     with samples_path.open("w") as f:
         for s in samples:
@@ -244,6 +273,7 @@ def run_humaneval(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResul
         "eval_error": eval_err,
         "data_path": str(data),
         "concurrency": conc,
+        "e2e_throughput": _e2e_summary(samples, time.perf_counter() - t0),
     }
     write_json(out_dir / "humaneval.json", {"summary": summary, "samples_meta": samples})
     status = "PASS" if pass_at is not None and infra < len(samples) else ("ERROR" if infra == len(samples) else "FAIL")
@@ -391,6 +421,7 @@ def run_ifeval(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
             "checks": checks,
             "passed": passed and r["ok"],
             "elapsed_s": r["elapsed_s"],
+            "completion_tokens": int((r.get("usage") or {}).get("completion_tokens") or 0),
         }
 
     with ThreadPoolExecutor(max_workers=conc) as pool:
@@ -401,6 +432,7 @@ def run_ifeval(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
             if row.get("http_status") != 200:
                 infra += 1
 
+    results = [_with_e2e(row) for row in results]
     total = len(results)
     correct = sum(1 for r in results if r.get("passed"))
     summary = {
@@ -413,6 +445,7 @@ def run_ifeval(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
         "infra_http_errors": infra,
         "data_path": str(data),
         "concurrency": conc,
+        "e2e_throughput": _e2e_summary(results, time.perf_counter() - t0),
     }
     write_json(out_dir / "ifeval.json", {"summary": summary, "rows": results})
     status = "PASS" if total and infra < total else "ERROR"
@@ -473,6 +506,7 @@ def run_qa(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
             "http_status": r["http_status"],
             "response": r["text"][:200],
             "elapsed_s": r["elapsed_s"],
+            "completion_tokens": int((r.get("usage") or {}).get("completion_tokens") or 0),
         }
 
     with ThreadPoolExecutor(max_workers=conc) as pool:
@@ -483,6 +517,7 @@ def run_qa(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
             if row.get("http_status") != 200:
                 infra += 1
 
+    results = [_with_e2e(row) for row in results]
     total = len(results)
     correct = sum(1 for r in results if r.get("correct"))
     summary = {
@@ -495,6 +530,7 @@ def run_qa(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
         "infra_http_errors": infra,
         "data_path": str(data),
         "concurrency": conc,
+        "e2e_throughput": _e2e_summary(results, time.perf_counter() - t0),
     }
     write_json(out_dir / "qa.json", {"summary": summary, "rows": results})
     status = "PASS" if total and infra < total else "ERROR"

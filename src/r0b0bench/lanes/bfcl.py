@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import json
 import os
-import re
 import shutil
+import statistics
 import subprocess
 import time
 from pathlib import Path
@@ -27,6 +27,7 @@ def _env(ep: Endpoint, project_root: Path) -> dict[str, str]:
     env["OPENAI_BASE_URL"] = ep.base_url.rstrip("/")
     env["R0B0BENCH_SERVED_MODEL"] = ep.model
     env["PYTHONUNBUFFERED"] = "1"
+    env["R0B0BENCH_BFCL_TIMING_PATH"] = str(project_root / "e2e-requests.jsonl")
     # GB10 unified memory: BFCL at C=8 can trigger concurrent CUDA compilation
     # and globally OOM the serving host. The public safe default is C=4 with a
     # bounded request lifetime and no retry fan-out; explicit env values remain
@@ -111,7 +112,6 @@ def _parse_ast_scores(score_dir: Path) -> dict[str, Any]:
             except Exception:
                 continue
     # micro
-    accs = []
     correct = total = 0
     for cat, info in out["categories"].items():
         if info.get("correct_count") is not None and info.get("total_count"):
@@ -125,6 +125,42 @@ def _parse_ast_scores(score_dir: Path) -> dict[str, Any]:
         out["micro_correct"] = correct
         out["micro_total"] = total
     return out
+
+
+def _parse_e2e_timing(path: Path) -> dict[str, Any]:
+    rows: list[dict[str, Any]] = []
+    malformed = 0
+    if path.exists():
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            try:
+                row = json.loads(line)
+                if not isinstance(row, dict):
+                    raise ValueError("timing row is not an object")
+                rows.append(row)
+            except Exception:
+                malformed += 1
+    valid = [r for r in rows if int(r.get("http_status") or 0) == 200 and float(r.get("elapsed_s") or 0) > 0]
+    infra = [r for r in rows if int(r.get("http_status") or 0) != 200 or r.get("error")]
+    elapsed = [float(r["elapsed_s"]) for r in valid]
+    completion = [int(r.get("completion_tokens") or 0) for r in valid]
+    total_elapsed = sum(elapsed)
+    total_completion = sum(completion)
+    per_request = [c / e for c, e in zip(completion, elapsed) if c and e > 0]
+    return {
+        "path": str(path),
+        "requests": len(rows),
+        "valid_requests": len(valid),
+        "malformed_rows": malformed,
+        "infra_errors": len(infra),
+        "completion_tokens": total_completion,
+        "elapsed_s_sum": total_elapsed,
+        "aggregate_e2e_output_tok_s": (total_completion / total_elapsed) if total_elapsed else 0.0,
+        "median_request_e2e_output_tok_s": statistics.median(per_request) if per_request else None,
+        "mean_request_e2e_output_tok_s": statistics.mean(per_request) if per_request else None,
+        "reasoning_tokens": sum(int(r.get("reasoning_tokens") or 0) for r in valid),
+    }
 
 
 def run_bfcl_mt(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
@@ -189,6 +225,8 @@ def run_bfcl_mt(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
             except Exception:
                 pass
 
+    timing_path = project / "e2e-requests.jsonl"
+    timing = _parse_e2e_timing(timing_path)
     summary = {
         "status": "PASS",
         "category": cfg.get("category", "multi_turn_base"),
@@ -197,7 +235,11 @@ def run_bfcl_mt(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
         "score": parsed,
         "model": ep.model,
         "base_url": ep.base_url,
+        "e2e_throughput": timing,
     }
+    if timing["requests"] == 0 or timing["malformed_rows"] or timing["infra_errors"]:
+        summary["status"] = "ERROR"
+        summary["error"] = "BFCL E2E timing sidecar is missing, malformed, or has transport errors"
     if parsed.get("accuracy") is not None:
         summary["accuracy"] = parsed["accuracy"]
     if parsed.get("accuracy") is None and not parsed.get("primary"):
@@ -212,12 +254,30 @@ def run_bfcl_mt(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult:
             infra_errors=1,
             elapsed_s=time.perf_counter() - t0,
         )
+    if summary["status"] == "ERROR":
+        write_json(out_dir / "bfcl_mt.json", summary)
+        return LaneResult(
+            lane_id="bfcl_mt",
+            status="ERROR",
+            summary=summary,
+            artifacts={
+                "bfcl_mt.json": str(out_dir / "bfcl_mt.json"),
+                "log": str(log),
+                "e2e_timing": str(timing_path),
+            },
+            infra_errors=1,
+            elapsed_s=time.perf_counter() - t0,
+        )
     write_json(out_dir / "bfcl_mt.json", summary)
     return LaneResult(
         lane_id="bfcl_mt",
         status="PASS",
         summary=summary,
-        artifacts={"bfcl_mt.json": str(out_dir / "bfcl_mt.json"), "log": str(log)},
+        artifacts={
+            "bfcl_mt.json": str(out_dir / "bfcl_mt.json"),
+            "log": str(log),
+            "e2e_timing": str(timing_path),
+        },
         elapsed_s=time.perf_counter() - t0,
     )
 
@@ -277,6 +337,8 @@ def run_bfcl_ast(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult
             except Exception:
                 pass
 
+    timing_path = project / "e2e-requests.jsonl"
+    timing = _parse_e2e_timing(timing_path)
     summary = {
         "status": "PASS",
         "categories": cats,
@@ -284,11 +346,15 @@ def run_bfcl_ast(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult
         "score": parsed,
         "model": ep.model,
         "base_url": ep.base_url,
+        "e2e_throughput": timing,
     }
     if parsed.get("micro_accuracy") is not None:
         summary["micro_accuracy"] = parsed["micro_accuracy"]
         summary["micro_correct"] = parsed.get("micro_correct")
         summary["micro_total"] = parsed.get("micro_total")
+    if timing["requests"] == 0 or timing["malformed_rows"] or timing["infra_errors"]:
+        summary["status"] = "ERROR"
+        summary["error"] = "BFCL AST E2E timing sidecar is missing, malformed, or has transport errors"
     if set(parsed.get("categories", {})) != set(cats) or parsed.get("micro_accuracy") is None:
         summary["status"] = "ERROR"
         summary["error"] = "official BFCL AST scores were not parsed for every category"
@@ -301,12 +367,30 @@ def run_bfcl_ast(ep: Endpoint, out_dir: Path, cfg: dict[str, Any]) -> LaneResult
             infra_errors=1,
             elapsed_s=time.perf_counter() - t0,
         )
+    if summary["status"] == "ERROR":
+        write_json(out_dir / "bfcl_ast.json", summary)
+        return LaneResult(
+            lane_id="bfcl_ast",
+            status="ERROR",
+            summary=summary,
+            artifacts={
+                "bfcl_ast.json": str(out_dir / "bfcl_ast.json"),
+                "log": str(log),
+                "e2e_timing": str(timing_path),
+            },
+            infra_errors=1,
+            elapsed_s=time.perf_counter() - t0,
+        )
     write_json(out_dir / "bfcl_ast.json", summary)
     return LaneResult(
         lane_id="bfcl_ast",
         status="PASS",
         summary=summary,
-        artifacts={"bfcl_ast.json": str(out_dir / "bfcl_ast.json"), "log": str(log)},
+        artifacts={
+            "bfcl_ast.json": str(out_dir / "bfcl_ast.json"),
+            "log": str(log),
+            "e2e_timing": str(timing_path),
+        },
         elapsed_s=time.perf_counter() - t0,
     )
 
