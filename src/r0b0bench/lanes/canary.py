@@ -78,7 +78,11 @@ def run_canary(ep: Endpoint, out_dir: Path, cfg: dict[str, Any] | None = None) -
             "messages": [
                 {
                     "role": "user",
-                    "content": "Return one compact JSON object with keys alpha and beta, set to integers 2 and 3. No prose.",
+                    "content": (
+                        "Do not think or reason at all. Do not write any prose. "
+                        "Immediately output ONLY this exact JSON object, nothing else:\n"
+                        '{"alpha": 2, "beta": 3}'
+                    ),
                 }
             ],
             # Reasoning models may spend tokens before emitting JSON; the

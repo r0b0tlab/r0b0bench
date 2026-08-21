@@ -9,25 +9,25 @@ quality:
     population_n: 2376
     dataset: allenai/ai2_arc ARC-Easy test
     concurrency: 2
-    max_tokens: 32
+    max_tokens: 1024
   ifeval:
     mode: subset
     n: 200
     population_n: 541
     concurrency: 2
-    max_tokens: 1024
+    max_tokens: 4096
     note: lightweight constraint scorer (not full official IFEval package)
   humaneval:
     mode: full
     n: 164
     concurrency: 2
-    max_tokens: 512
+    max_tokens: 4096
   gsm8k:
     mode: subset
     n: 200
     population_n: 1319
     concurrency: 2
-    max_tokens: 512
+    max_tokens: 4096
     note: 0-shot flexible-extract
 lane_order:
   - systems  # canary, bfcl_mt, bfcl_ast, latency, concurrency, throughput, niah
