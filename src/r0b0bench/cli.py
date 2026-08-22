@@ -13,6 +13,7 @@ from r0b0bench.config import ensure_outside_checkout, load_profile, write_json
 from r0b0bench.endpoint import Endpoint
 from r0b0bench.lanes.bfcl import run_bfcl_ast, run_bfcl_mt
 from r0b0bench.lanes.canary import run_canary
+from r0b0bench.lanes.multichallenge import run_multichallenge
 from r0b0bench.lanes.concurrency import run_concurrency
 from r0b0bench.lanes.latency import run_latency
 from r0b0bench.lanes.niah import run_niah
@@ -89,6 +90,11 @@ def _expand_lanes(profile: dict, only: list[str] | None) -> list[str]:
 def _run_lane(lane: str, ep: Endpoint, lane_dir: Path, systems_cfg: dict, profile: dict, tokenizer: str):
     if lane == "canary":
         return run_canary(ep, lane_dir, systems_cfg.get("canary"))
+    if lane == "canary_end":
+        # end-of-run health gate (hard-subset profile): same checks as canary
+        return run_canary(ep, lane_dir, systems_cfg.get("canary"))
+    if lane == "multichallenge":
+        return run_multichallenge(ep, lane_dir, profile.get("multichallenge") or {})
     if lane == "bfcl_mt":
         return run_bfcl_mt(ep, lane_dir, systems_cfg.get("bfcl_mt") or {})
     if lane == "bfcl_ast":

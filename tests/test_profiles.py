@@ -3,7 +3,7 @@ from r0b0bench import PROFILES, SYSTEMS_LANES
 
 
 def test_profiles_include_public_rc2_profiles():
-    assert PROFILES == ("core", "core-subset", "systems")
+    assert PROFILES == ("core", "core-subset", "systems", "hard-subset")
     for name in PROFILES:
         p = load_profile(name)
         if p.get("profile") in ("core", "core-subset"):

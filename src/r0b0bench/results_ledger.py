@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import json
 import re
-import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -86,6 +85,7 @@ def entry_from_report(
     he = S("humaneval")
     gsm = S("gsm8k")
     niah = S("niah")
+    multichallenge = S("multichallenge")
 
     # AST micro from nested score if needed
     micro = ast.get("micro_accuracy")
@@ -115,6 +115,19 @@ def entry_from_report(
         },
         "scores": {
             "canary": {"status": _status(report, "canary"), **{k: S("canary").get(k) for k in ("passed", "n") if k in S("canary")}},
+            "canary_end": {"status": _status(report, "canary_end"), **{k: S("canary_end").get(k) for k in ("passed", "n") if k in S("canary_end")}},
+            "multichallenge": {
+                "status": _status(report, "multichallenge"),
+                "accuracy": multichallenge.get("accuracy"),
+                "correct": multichallenge.get("correct"),
+                "total": multichallenge.get("rows"),
+                "by_axis": multichallenge.get("by_axis"),
+                "judge_models": multichallenge.get("judge_models"),
+                "judge_providers": multichallenge.get("judge_providers"),
+                "data_revision": multichallenge.get("data_revision"),
+                "dataset_sha256": multichallenge.get("dataset_sha256"),
+                "comparable_only_with_same_judge": multichallenge.get("comparable_only_with_same_judge"),
+            },
             "bfcl_mt": {
                 "status": _status(report, "bfcl_mt"),
                 "accuracy": mt.get("accuracy") or (mt.get("score") or {}).get("accuracy"),
@@ -240,6 +253,7 @@ def compare_entries(a_id: str, b_id: str) -> str:
         ("humaneval", "pass@1"),
         ("qa", "accuracy"),
         ("ifeval", "accuracy"),
+        ("multichallenge", "accuracy"),
         ("bfcl_mt", "accuracy"),
         ("bfcl_ast", "micro_accuracy"),
         ("latency", "ttft_ms_mean"),

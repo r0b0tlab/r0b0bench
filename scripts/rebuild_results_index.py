@@ -95,6 +95,7 @@ def main() -> int:
                 "humaneval_pass1": metric(e, "humaneval", "pass@1"),
                 "qa": metric(e, "qa", "accuracy"),
                 "ifeval": metric(e, "ifeval", "accuracy"),
+                "multichallenge": metric(e, "multichallenge", "accuracy"),
                 "bfcl_mt": metric(e, "bfcl_mt", "accuracy"),
                 "bfcl_ast_micro": metric(e, "bfcl_ast", "micro_accuracy"),
                 # Performance
@@ -124,12 +125,12 @@ def main() -> int:
         "",
         "## Quality",
         "",
-        "| entry_id | model | spec | GSM8K | HE@1 | QA | IFEval | BFCL-MT | ASTµ | NIAH | invalid |",
-        "|----------|-------|------|------:|-----:|---:|-------:|-------:|-----:|------|---------|",
+        "| entry_id | model | spec | GSM8K | HE@1 | QA | IFEval | MultiChallenge | BFCL-MT | ASTµ | NIAH | invalid |",
+        "|----------|-------|------|------:|-----:|---:|-------:|---------------:|-------:|-----:|------|---------|",
     ]
     for row in index["entries"]:
         lines.append(
-            "| {eid} | {model} | {spec} | {gsm} | {he} | {qa} | {ife} | {mt} | {ast} | {niah} | {inv} |".format(
+            "| {eid} | {model} | {spec} | {gsm} | {he} | {qa} | {ife} | {mc} | {mt} | {ast} | {niah} | {inv} |".format(
                 eid=row.get("entry_id"),
                 model=(row.get("model") or "")[:35],
                 spec=row.get("speculative", ""),
@@ -137,6 +138,7 @@ def main() -> int:
                 he=_fmt(row.get("humaneval_pass1")),
                 qa=_fmt(row.get("qa")),
                 ife=_fmt(row.get("ifeval")),
+                mc=_fmt(row.get("multichallenge")),
                 mt=_fmt(row.get("bfcl_mt")),
                 ast=_fmt(row.get("bfcl_ast_micro")),
                 niah=row.get("niah") or "—",

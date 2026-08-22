@@ -1,0 +1,29 @@
+# Profile: hard-subset — hard multiturn quality (MultiChallenge + BFCL MT)
+profile: hard-subset
+description: >-
+  Hard multiturn quality profile: MultiChallenge (ScaleAI test split, full
+  266 rows, independent LLM judge with the released instance-level YES/NO
+  rubric) + BFCL V4 multi_turn_base (official bfcl-eval). Think-on is enforced via
+  R0B0BENCH_CHAT_TEMPLATE_KWARGS (lanes never set it); per-lane max_tokens
+  floors guarantee completion budget for thinking models. Canary gates at
+  both ends. (τ²-bench airline/retail/telecom subsets were removed from this
+  eval set by user decision 2026-08-21.)
+lane_order:
+  - canary
+  - multichallenge
+  - bfcl_mt
+  - canary_end
+
+multichallenge:
+  benchmark: ScaleAI/MultiChallenge (test split, full)
+  dataset: ~/.cache/r0b0bench/datasets/multichallenge-test.parquet
+  dataset_sha256: 2711646aba61f814823297714aaf757e3a1b71c66c501402231de48490650515
+  revision: 670fd81f270314d0f8f82b34fcfe2187fd28f699
+  n_rows: null            # null = full 266 (decision 3)
+  expected_rows: 266
+  concurrency: 6
+  temperature: 0.0
+  max_tokens: 4096        # floored to 8192 when thinking is on
+  seed: 300
+  judge_protocol: independent instance-level-rubric LLM judge
+  judge_reference: Scale leaderboard uses Gemini 2.5 Pro as of 2026-02-03

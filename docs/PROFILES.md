@@ -1,6 +1,6 @@
 # Profiles
 
-The public CLI exposes three profiles:
+The public CLI exposes four profiles:
 
 ## `core-subset` (default RC path)
 
@@ -16,6 +16,34 @@ The public CLI exposes three profiles:
 
 - Systems block only; useful for serving/configuration diagnostics
 - Never use a systems-only report as a core quality claim
+
+## `hard-subset` (hard multiturn quality)
+
+- Lanes: `canary` → `multichallenge` → `bfcl_mt` → `canary_end`
+- `multichallenge` — ScaleAI MultiChallenge test split (full 266 rows):
+  generate from the released conversation, then grade the response with an
+  independent LLM using the released instance-level YES/NO rubric. Scores are
+  comparable only when the judge identity is the same. The lane fails closed
+  if no independent judge (or hash-bound imported judgments) is configured.
+- `bfcl_mt` — official BFCL V4 multi_turn_base ×200 (shared systems config).
+- `canary_end` — end-of-run canary replay (fail-closed if the endpoint
+  degraded during the run).
+- This profile does NOT include the full systems block (no AST/latency/
+  concurrency/throughput/NIAH) — it is a quality profile, not a systems
+  profile. τ²-bench airline/retail/telecom subsets were removed by user
+  decision on 2026-08-21.
+- Think-on is enforced by the runtime env `R0B0BENCH_CHAT_TEMPLATE_KWARGS`;
+  per-lane `max_tokens` floors (8_192 when thinking is on) guarantee the
+  model has room to finish answers.
+- MultiChallenge judge configuration:
+  `R0B0BENCH_MULTICHALLENGE_JUDGE_BASE_URL`,
+  `R0B0BENCH_MULTICHALLENGE_JUDGE_MODEL`, and optionally
+  `R0B0BENCH_MULTICHALLENGE_JUDGE_API_KEY`. For a two-stage/offline judge,
+  use the hash-bound `R0B0BENCH_MULTICHALLENGE_RESPONSES_PATH` and
+  `R0B0BENCH_MULTICHALLENGE_JUDGMENTS_PATH` inputs.
+- Stage the pinned 266-row parquet at the profile path or set
+  `R0B0BENCH_MULTICHALLENGE_DATASET`; the lane verifies the profile's SHA-256
+  before sending any target requests.
 
 ## Systems block
 

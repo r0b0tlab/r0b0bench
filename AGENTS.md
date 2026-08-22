@@ -6,7 +6,7 @@ This file is for **coding agents** (Hermes, Cursor, etc.).
 
 - **Runnable** OpenAI-compatible **benchmark client** (`r0b0bench` CLI + optional container).
 - **Not** a model server. Do not bake weights into this image.
-- **Exactly three public profiles:** `core` | `core-subset` | `systems`. The first two always include the systems block; `systems` runs only that block.
+- **Exactly four public profiles:** `core` | `core-subset` | `systems` | `hard-subset`. The first two always include the systems block; `systems` runs only that block; `hard-subset` is the hard-multiturn quality profile (MultiChallenge + BFCL-MT with canary gates at both ends, no full systems block; τ²-bench lanes removed 2026-08-22 — no value added).
 
 ## Systems block (every profile)
 
@@ -48,7 +48,7 @@ r0b0bench run --profile core-subset --only canary,niah,latency,concurrency,throu
 
 ## Definition of done (agent task)
 
-- `r0b0bench profiles` prints `core`, `core-subset`, and `systems`
+- `r0b0bench profiles` prints `core`, `core-subset`, `systems`, and `hard-subset`
 - `doctor` green against target endpoint
 - `run` writes `report.json` + per-lane artifacts under `--output`
 - No credentials or absolute private host paths in commits

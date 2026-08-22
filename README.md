@@ -2,7 +2,7 @@
 
 Reproducible **OpenAI-compatible endpoint** benchmarks for humans and agents.
 
-> **Status:** `v1.0.0rc2` client package. Profiles: **`core`**, **`core-subset`**, **`systems`**.  
+> **Status:** `v1.0.0rc2` client package. Profiles: **`core`**, **`core-subset`**, **`systems`**, **`hard-subset`**.  
 > Systems package: canary, BFCL-MT, BFCL-AST, **latency**, **concurrency**, **throughput**, max-context **NIAH**.  
 > Quality lanes (QA / IFEval / HumanEval / GSM8K) are executable in rc2 (subset sizes on `core-subset`).  
 > Private campaign dumps are not automatically r0b0bench results — run through this package (or hash-valid import).
@@ -14,6 +14,7 @@ Reproducible **OpenAI-compatible endpoint** benchmarks for humans and agents.
 | **`core-subset`** | canary + BFCL-MT 200 + BFCL AST-600 + latency + concurrency + throughput + NIAH@max-context | QA@400, IFEval@200, HE@164, GSM8K@200 |
 | **`core`** | **same systems block** | Full 8,620-class pillars (when datasets configured) |
 | **`systems`** | systems only | — |
+| **`hard-subset`** | canary gates + BFCL-MT 200 | MultiChallenge 266 (independent rubric judge) |
 
 ### Systems block (mandatory on core profiles)
 
@@ -56,6 +57,10 @@ r0b0bench run --profile core-subset \
   --output /tmp/r0b0bench-out
 ```
 
+`hard-subset` requires the pinned MultiChallenge parquet and an independent
+judge model. See [docs/PROFILES.md](docs/PROFILES.md) for the dataset hash,
+judge environment variables, and two-stage imported-judgment workflow.
+
 `--output` must be **outside** the git checkout (or a gitignored `out/` name).
 
 ### Official BFCL adapter configuration
@@ -89,7 +94,7 @@ Aquila is an **example endpoint**, not a third profile.
 ```text
 r0b0bench profiles
 r0b0bench doctor --base-url URL --model NAME
-r0b0bench run --profile core|core-subset|systems --base-url URL --model NAME --output DIR
+r0b0bench run --profile core|core-subset|systems|hard-subset --base-url URL --model NAME --output DIR
 r0b0bench report --run-dir DIR
 r0b0bench results list|show|compare|add|rebuild-index
 ```

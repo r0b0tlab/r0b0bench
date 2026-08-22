@@ -2,7 +2,7 @@
 
 __version__ = "1.0.0rc2"
 
-PROFILES = ("core", "core-subset", "systems")
+PROFILES = ("core", "core-subset", "systems", "hard-subset")
 
 # Standard systems package (expanded from profile lane_order entry "systems")
 SYSTEMS_LANES = (

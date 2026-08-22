@@ -18,6 +18,10 @@ projects and datasets. Their own licenses and terms continue to apply:
   https://arxiv.org/abs/2311.07911
 - HumanEval:
   https://github.com/openai/human-eval
+- ScaleAI MultiChallenge dataset and methodology (data is fetched separately,
+  not vendored):
+  https://huggingface.co/datasets/ScaleAI/MultiChallenge
+  https://arxiv.org/abs/2501.17399
 - Public task datasets named in the implementation plan, including GSM8K,
   ARC-Challenge, PIQA, Winogrande, TruthfulQA, and MMLU.
 
