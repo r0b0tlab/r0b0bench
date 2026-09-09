@@ -62,3 +62,21 @@ Shared YAML: `src/r0b0bench/profiles/_systems_block.yaml`
 A filtered `--only` run is diagnostic and is marked `invalid_for_publish` by
 `report.json`. A claim-bearing core report must contain every listed lane with
 status `PASS` and zero infrastructure errors.
+
+## Campaign protocols (non-CLI)
+
+Frozen protocols run alongside the four CLI profiles are documented in
+[`PROCEDURES.md`](PROCEDURES.md) and recorded in the ledger under their own
+`harness.profile` values:
+
+| protocol | profile id | artifacts |
+|---|---|---|
+| Q200v2 — frozen `quality-text-180-v2` + official BFCL `multi_turn_base` structural-hard20 | `q200v2` | kit scripts + manual-evidence contract (`PROCEDURES.md` §1) |
+| r0b0bench-vision v1.0 — 4 suites / 4,703 rows, deterministic graders | `vision` | [`scripts/vision/`](../scripts/vision/README.md) |
+| NIAH advertised-window ladder (25/50/90 % + multi-key 33/66) | lane variant | `PROCEDURES.md` §2 (includes the GB10 wedge-safe serve config) |
+| e2e throughput + telemetry sampling | method | `PROCEDURES.md` §4 |
+
+These are **not** CLI profiles: they are frozen, hash-bound procedures with their own identity
+bindings, used for campaign claims and cross-model comparisons. The four CLI profiles remain
+`core`, `core-subset`, `systems`, `hard-subset`.
+

@@ -108,7 +108,16 @@ def main() -> int:
                 "conc_c4": _conc_ladder(e).get("4"),
                 "conc_c6": _conc_ladder(e).get("6"),
                 # Long context
-                "niah": metric(e, "niah", "status"),
+                "niah": metric(e, "niah", "status") or metric(e, "niah_advertised", "status"),
+                # Campaign protocols (q200v2 / vision)
+                "q200v2_text180_accuracy": metric(e, "q200v2_text180", "accuracy_transported"),
+                "q200v2_combined_accuracy": metric(e, "q200v2_combined", "accuracy"),
+                "bfcl_hard20_accuracy": metric(e, "bfcl_hard20", "accuracy"),
+                "vision_total_accuracy": metric(e, "total", "accuracy"),
+                "vision_cvbench": metric(e, "cvbench", "accuracy"),
+                "vision_mmvp_paired": metric(e, "mmvp", "paired", "paired_accuracy"),
+                "vision_realworldqa": metric(e, "realworldqa", "accuracy"),
+                "vision_ocrbench": metric(e, "ocrbench", "accuracy"),
             }
             for e in entries
         ],
@@ -169,6 +178,40 @@ def main() -> int:
                 c6=_fmt(row.get("conc_c6")),
             )
         )
+
+    # Campaign protocol table (q200v2 / vision entries, 2026-09-09)
+    proto = [e for e in index["entries"] if e.get("profile") in {"q200v2", "vision"}]
+    if proto:
+        lines += [
+            "",
+            "## Campaign protocols",
+            "",
+            "Frozen campaign protocols documented in [`docs/PROCEDURES.md`](../docs/PROCEDURES.md).",
+            "",
+            "| entry_id | profile | headline | detail |",
+            "|----------|---------|----------|--------|",
+        ]
+        for row in proto:
+            if row.get("profile") == "q200v2":
+                headline = _fmt(row.get("q200v2_combined_accuracy"))
+                detail = "text180 {t}; BFCL-hard20 {b}; NIAH {n}".format(
+                    t=_fmt(row.get("q200v2_text180_accuracy")),
+                    b=_fmt(row.get("bfcl_hard20_accuracy")),
+                    n=row.get("niah") or "—",
+                )
+            else:
+                headline = _fmt(row.get("vision_total_accuracy"))
+                detail = "cvbench {c}; mmvp-paired {m}; rwqa {r}; ocrbench {o}".format(
+                    c=_fmt(row.get("vision_cvbench")),
+                    m=_fmt(row.get("vision_mmvp_paired")),
+                    r=_fmt(row.get("vision_realworldqa")),
+                    o=_fmt(row.get("vision_ocrbench")),
+                )
+            lines.append(
+                "| {eid} | {p} | {h} | {d} |".format(
+                    eid=row.get("entry_id"), p=row.get("profile"), h=headline, d=detail
+                )
+            )
 
     # Entry files
     lines += ["", "## Files", ""]

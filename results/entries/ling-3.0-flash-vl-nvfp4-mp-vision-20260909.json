@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "entry_id": "ling-3.0-flash-vl-nvfp4-mp-vision-20260909",
+  "recorded_utc": "2026-09-09T22:40:00Z",
+  "model": {
+    "id": "ling-3.0-flash-vl-nvfp4-mp",
+    "display_name": "Ling-3.0-flash-VL NVFP4-MP (single GB10, SM121)",
+    "family": "Ling-3.0-flash-VL",
+    "revision": "cbad00ad3b5a5fb33f7b364ddab34d52f453da27",
+    "quantization": "NVFP4 W4A4 + FP8 per-channel-per-token attention (ModelOpt 0.48)"
+  },
+  "runtime": {
+    "hardware": "1x NVIDIA GB10 (SM121)",
+    "base_url_omitted": true,
+    "fork_commit": "e2e5751a5d01f4755a07c026f1acd8480ca6ceae",
+    "image_id": "sha256:32fe4064526e8c3fd5df3992ac45bc8a6cf0b148efdec11c1f03b88173b88954",
+    "profile_id": "82718c2ceb21bc9a9797149e8db434377c1733ccc2cbcc70a82192d3fab0a707",
+    "candidate_id": "mp-single-gb10-auto-32k",
+    "max_model_len": 32768,
+    "max_num_seqs": 4,
+    "kv_cache_dtype": "fp8",
+    "mamba_cache_mode": "align",
+    "gpu_memory_utilization": 0.85,
+    "template_kwargs": {"enable_thinking": false},
+    "temperature": 0.0,
+    "workers": 4
+  },
+  "harness": {
+    "name": "r0b0bench",
+    "version": "r0b0bench-vision 1.0.0",
+    "profile": "vision"
+  },
+  "scores": {
+    "cvbench": {
+      "status": "PASS",
+      "correct": 2082,
+      "total": 2638,
+      "accuracy": 0.7892,
+      "wilson95": [0.7733, 0.8044],
+      "license": "Apache-2.0",
+      "revision": "bc284db50d036958861cb60cdd7b77612052ce0d",
+      "subaxes": {
+        "Count": {"n": 788, "correct": 529, "accuracy": 0.6713},
+        "Relation": {"n": 650, "correct": 549, "accuracy": 0.8446},
+        "Depth": {"n": 600, "correct": 557, "accuracy": 0.9283},
+        "Distance": {"n": 600, "correct": 447, "accuracy": 0.745}
+      }
+    },
+    "mmvp": {
+      "status": "PASS",
+      "correct": 246,
+      "total": 300,
+      "accuracy": 0.82,
+      "wilson95": [0.7726, 0.8593],
+      "paired": {"pairs": 150, "both_correct": 100, "paired_accuracy": 0.6667},
+      "license": "MIT",
+      "revision": "37eafecab8a3940c50c2ade5b36de69dbc99a8cf"
+    },
+    "realworldqa": {
+      "status": "PASS",
+      "correct": 599,
+      "total": 765,
+      "accuracy": 0.783,
+      "wilson95": [0.7524, 0.8108],
+      "license": "CC-BY-ND-4.0",
+      "revision": "17e7f75e092e47169732462ea3cdfebe911105dd"
+    },
+    "ocrbench": {
+      "status": "PASS",
+      "correct": 874,
+      "total": 1000,
+      "accuracy": 0.874,
+      "wilson95": [0.852, 0.8931],
+      "official_composite": 874,
+      "official_type_scores": {
+        "Regular Text Recognition": 49,
+        "Irregular Text Recognition": 47,
+        "Artistic Text Recognition": 49,
+        "Handwriting Recognition": 43,
+        "Digit String Recognition": 42,
+        "Non-Semantic Text Recognition": 50,
+        "Scene Text-centric VQA": 174,
+        "Doc-oriented VQA": 182,
+        "Key Information Extraction": 182,
+        "Handwritten Mathematical Expression Recognition": 56
+      },
+      "license": "MIT",
+      "revision": "92a54bd1384387c178d5a07140a2d85e0a3d12e1"
+    },
+    "total": {
+      "status": "PASS",
+      "correct": 3801,
+      "total": 4703,
+      "accuracy": 0.8082,
+      "wilson95": [0.7967, 0.8192],
+      "mean_row_seconds": 1.849,
+      "wall_seconds": 2179
+    }
+  },
+  "infra_errors_total": 0,
+  "invalid_for_publish": false,
+  "disclosures": [
+    "r0b0bench-vision v1.0: 4,703 rows across 4 suites; contract hash-bound (scripts/vision/benchmark.json) and recorded in the run summary as contract_sha256.",
+    "Protocol: thinking-off (chat_template_kwargs {enable_thinking: false}), temperature 0, max_tokens 32 (64 for OCRBench), 4 workers, single image per request.",
+    "MMVP's paired metric has 150 pairs -> +/-8 pp at p=0.5; treat its headline as directional. Paired accuracy 100/150 = 66.7% vs question-level 82.0%.",
+    "OCRBench uses the official containment scorer (HME100k additionally strips spaces); the HME100k subscore (56/100) is strict because the frozen golds are boxed-form LaTeX.",
+    "RealWorldQA is CC-BY-ND-4.0: scores published, no image redistribution.",
+    "Video benchmarks are out of scope: the Ling-3.0-flash-VL fork's VL path is image-only."
+  ]
+}

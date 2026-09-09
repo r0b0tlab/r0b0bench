@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "entry_id": "ling-3.0-flash-vl-nvfp4-mp-q200v2-20260909",
+  "recorded_utc": "2026-09-09T22:40:00Z",
+  "model": {
+    "id": "ling-3.0-flash-vl-nvfp4-mp",
+    "display_name": "Ling-3.0-flash-VL NVFP4-MP (single GB10, SM121)",
+    "family": "Ling-3.0-flash-VL",
+    "revision": "cbad00ad3b5a5fb33f7b364ddab34d52f453da27",
+    "quantization": "NVFP4 W4A4 + FP8 per-channel-per-token attention (ModelOpt 0.48; 61,567 NVFP4 / 280 FP8 modules; 72.62 GB / 64 shards)"
+  },
+  "runtime": {
+    "hardware": "1x NVIDIA GB10 (SM121)",
+    "base_url_omitted": true,
+    "fork_commit": "e2e5751a5d01f4755a07c026f1acd8480ca6ceae",
+    "image_id": "sha256:32fe4064526e8c3fd5df3992ac45bc8a6cf0b148efdec11c1f03b88173b88954",
+    "profile_id": "16159b88dabf6553a5178837695b9ed83641887010fa21305ec61389a4f884a4",
+    "candidate_id": "mp-single-gb10-auto-16k",
+    "max_model_len": 16384,
+    "max_num_seqs": 8,
+    "kv_cache_dtype": "fp8",
+    "mamba_cache_mode": "align",
+    "gpu_memory_utilization": 0.85,
+    "moe_backend": "auto (FLASHINFER_CUTLASS)",
+    "linear_backend": "auto",
+    "attention_backend": "TRITON_MLA",
+    "template_kwargs": {"enable_thinking": true},
+    "bfcl_serve": {"profile_id": "82718c2ceb21bc9a9797149e8db434377c1733ccc2cbcc70a82192d3fab0a707", "max_model_len": 32768, "max_num_seqs": 4}
+  },
+  "harness": {
+    "name": "r0b0bench",
+    "version": "q200v2-kit + bfcl_eval 2025.12.17",
+    "profile": "q200v2"
+  },
+  "scores": {
+    "q200v2_text180": {
+      "status": "INCOMPLETE_DISCLOSED",
+      "rows": 180,
+      "transported": 179,
+      "correct": 176,
+      "accuracy_transported": 0.9832,
+      "families": {
+        "gsm8k": {"n": 80, "correct": 78, "accuracy": 0.975},
+        "humaneval": {"n": 40, "correct": 40, "accuracy": 1.0},
+        "ifeval": {"n": 40, "correct": 38, "accuracy": 0.95},
+        "hard_reasoning": {"n": 20, "correct": 20, "accuracy": 1.0, "method": "independent_manual_review"}
+      },
+      "e2e_tok_s": {"mean": 42.64, "p50": 42.73, "aggregate": 43.13, "n": 180},
+      "telemetry_load": {
+        "power_w_mean": 38.05,
+        "power_w_max": 42.17,
+        "temperature_c_mean": 68.3,
+        "temperature_c_max": 75.0,
+        "mem_available_gib_min": 5.07,
+        "cadence_s": 2
+      }
+    },
+    "bfcl_hard20": {
+      "status": "SCORED",
+      "correct": 17,
+      "total": 20,
+      "accuracy": 0.85,
+      "bfcl_eval_version": "2025.12.17",
+      "category": "multi_turn_base",
+      "subset": "structural-hard20 (frozen, model-independent selection)"
+    },
+    "q200v2_combined": {"correct": 193, "transported": 199, "accuracy": 0.9698},
+    "niah_advertised": {
+      "status": "PASS",
+      "retrieved": 15,
+      "total": 15,
+      "ladder_targets": [32768, 65536, 131008],
+      "depths": [0.25, 0.5, 0.9],
+      "multikey": [0.33, 0.66],
+      "infra_errors": 0
+    }
+  },
+  "infra_errors_total": 0,
+  "invalid_for_publish": false,
+  "disclosures": [
+    "text180: one row (ifeval-031) exceeded the frozen 8192-token cap (finish_reason=length) and is excluded by the fail-closed transport gate; its grader passed. Two re-rolls also truncated. Reported as transported-correct/transported.",
+    "hard_reasoning (20 rows) graded by independent manual review via the kit's manual-evidence path (reviewer distinct from the evaluated model); two frozen dataset references are themselves incorrect (p^3-p IS divisible by 24 for odd p; the x^2-y^2=105 reference omits (13,8)) and the model was right — recorded in the evidence rationales.",
+    "BFCL lane served at max_model_len 32768 (a 16K serve 400s on multi-turn prompts + 8192 output); separate profile_id recorded above.",
+    "NIAH ladder ran with the GB10 wedge-safe profile: swapoff + vm.swappiness=0, gpu_memory_utilization 0.78, max_num_batched_tokens 4096, max_num_seqs 1; a single-shot 131072 prefill at 0.85 with swap on hard-wedged the node (power cycle required).",
+    "e2e throughput is per-row completion_tokens/elapsed on a co-located client (workers=1); telemetry sampled on the serve host and summarized load-only (util>0).",
+    "Node clock was ~5h behind until an NTP correction mid-campaign; timestamps in raw evidence may carry the pre-correction node clock. No effect on scored outputs."
+  ]
+}
