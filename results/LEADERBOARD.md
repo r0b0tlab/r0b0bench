@@ -1,6 +1,6 @@
 # r0b0bench leaderboard
 
-Entries: **14** · regenerated from `results/entries/*.json`
+Entries: **15** · regenerated from `results/entries/*.json`
 
 Comparable only within the same profile and disclosed scorer variants.
 
@@ -11,6 +11,7 @@ Comparable only within the same profile and disclosed scorer variants.
 | dsv4-flash-native-v11-core-subset-20260803 | DeepSeek-V4-Flash DSpark NVFP4 (dua | dspark K=6 | 0.950 | 0.909 | 0.960 | 0.795 | — | 0.755 | 0.362 | PASS | False |
 | glm53-flash-nvfp4-dflash2-niah-126k-20260910 | GLM-5.3-Flash-NVFP4 (NVIDIA ModelOp | dflash | — | — | — | — | — | — | — | PASS | None |
 | glm53-flash-nvfp4-dflash2-q200v2-20260910 | GLM-5.3-Flash-NVFP4 (NVIDIA ModelOp | dflash | — | — | — | — | — | — | — | — | None |
+| glm53-flash-nvfp4-dflash2-vision-20260910 | GLM-5.3-Flash-NVFP4 (NVIDIA ModelOp | dflash | — | — | — | — | — | — | — | — | None |
 | inkling-small-marlin-baseline-20260806 | Inkling-Small NVFP4 (dual GB10, Mar | none | 0.810 | 0.732 | 0.245 | 0.425 | — | 0.540 | 0.302 | PASS | False |
 | inkling-small-marlin-mtp-20260807 | Inkling-Small NVFP4 MTP 8-1-9 (dual | mtp draft=8 8-1-9 | 0.770 | 0.713 | 0.237 | 0.480 | — | 0.575 | 0.302 | NOT_RUN | False |
 | ling-3.0-flash-nvfp4-basear-24k-20260807 | Ling-3.0-flash NVFP4 (base AR, CUDA | none | 0.920 | 0.713 | 0.960 | 0.855 | — | 0.595 | 0.310 | PASS | False |
@@ -30,6 +31,7 @@ Comparable only within the same profile and disclosed scorer variants.
 | dsv4-flash-native-v11-core-subset-20260803 | DeepSeek-V4-Flash DSpark NVFP4 (dua | dspark K=6 | 40.164 | 29203.666 | 221.884 | 86.931 | 145.889 | 239.311 | 337.761 |
 | glm53-flash-nvfp4-dflash2-niah-126k-20260910 | GLM-5.3-Flash-NVFP4 (NVIDIA ModelOp | dflash | — | — | — | — | — | — | — |
 | glm53-flash-nvfp4-dflash2-q200v2-20260910 | GLM-5.3-Flash-NVFP4 (NVIDIA ModelOp | dflash | — | — | — | — | — | — | — |
+| glm53-flash-nvfp4-dflash2-vision-20260910 | GLM-5.3-Flash-NVFP4 (NVIDIA ModelOp | dflash | — | — | — | — | — | — | — |
 | inkling-small-marlin-baseline-20260806 | Inkling-Small NVFP4 (dual GB10, Mar | none | 13.779 | 14109.463 | — | 14.091 | 26.653 | 46.828 | 48.694 |
 | inkling-small-marlin-mtp-20260807 | Inkling-Small NVFP4 MTP 8-1-9 (dual | mtp draft=8 8-1-9 | 15.831 | 13235.308 | — | 16.388 | 29.983 | 47.876 | 63.222 |
 | ling-3.0-flash-nvfp4-basear-24k-20260807 | Ling-3.0-flash NVFP4 (base AR, CUDA | none | 21.909 | 12021.781 | 232.760 | 21.755 | 47.547 | 88.538 | 113.953 |
@@ -49,6 +51,7 @@ Frozen campaign protocols documented in [`docs/PROCEDURES.md`](../docs/PROCEDURE
 | entry_id | profile | headline | detail |
 |----------|---------|----------|--------|
 | glm53-flash-nvfp4-dflash2-q200v2-20260910 | q200v2 | — | text180 0.955; BFCL-hard20 0.700; NIAH — |
+| glm53-flash-nvfp4-dflash2-vision-20260910 | vision | — | cvbench —; mmvp-paired —; rwqa —; ocrbench — |
 | ling-3.0-flash-vl-nvfp4-mp-q200v2-20260909 | q200v2 | 0.970 | text180 0.983; BFCL-hard20 0.850; NIAH PASS |
 | ling-3.0-flash-vl-nvfp4-mp-vision-20260909 | vision | 0.808 | cvbench 0.789; mmvp-paired 0.667; rwqa 0.783; ocrbench 0.874 |
 
@@ -57,6 +60,7 @@ Frozen campaign protocols documented in [`docs/PROCEDURES.md`](../docs/PROCEDURE
 - [`dsv4-flash-native-v11-core-subset-20260803.json`](entries/dsv4-flash-native-v11-core-subset-20260803.json) — dsv4-flash-native-v11-core-subset-20260803
 - [`glm53-flash-nvfp4-dflash2-niah-126k-20260910.json`](entries/glm53-flash-nvfp4-dflash2-niah-126k-20260910.json) — glm53-flash-nvfp4-dflash2-niah-126k-20260910
 - [`glm53-flash-nvfp4-dflash2-q200v2-20260910.json`](entries/glm53-flash-nvfp4-dflash2-q200v2-20260910.json) — glm53-flash-nvfp4-dflash2-q200v2-20260910
+- [`glm53-flash-nvfp4-dflash2-vision-20260910.json`](entries/glm53-flash-nvfp4-dflash2-vision-20260910.json) — glm53-flash-nvfp4-dflash2-vision-20260910
 - [`inkling-small-marlin-baseline-20260806.json`](entries/inkling-small-marlin-baseline-20260806.json) — inkling-small-marlin-baseline-20260806
 - [`inkling-small-marlin-mtp-20260807.json`](entries/inkling-small-marlin-mtp-20260807.json) — inkling-small-marlin-mtp-20260807
 - [`ling-3.0-flash-nvfp4-basear-24k-20260807.json`](entries/ling-3.0-flash-nvfp4-basear-24k-20260807.json) — ling-3.0-flash-nvfp4-basear-24k-20260807

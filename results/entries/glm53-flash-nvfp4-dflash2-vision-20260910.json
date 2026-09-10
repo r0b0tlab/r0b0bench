@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "entry_id": "glm53-flash-nvfp4-dflash2-vision-20260910",
+  "recorded_utc": "2026-09-10T08:40:00Z",
+  "model": {
+    "id": "glm53-flash-nvfp4-dflash2",
+    "display_name": "GLM-5.3-Flash-NVFP4 (NVIDIA ModelOpt) on 2x GB10 SM121 — DFlash2 K=7",
+    "family": "GLM-5.3-Flash",
+    "revision": "423acf37583782c51c142d145aef733d72943d93"
+  },
+  "runtime": {
+    "hardware": "2x NVIDIA GB10 (SM121) TP=2",
+    "base_url_omitted": true,
+    "image_id": "sha256:3fceaf69a626569e6063bcaf63277e68b2b954aa099ecf2b5cb782943d446c17",
+    "profile_id": "dflash2-k7-bf16kv-126k-max",
+    "candidate_id": "glm53-dflash2",
+    "max_model_len": 126720,
+    "kv_cache_dtype": "bfloat16",
+    "speculative": {"method": "dflash", "num_speculative_tokens": 7},
+    "template_kwargs": {"reasoning_effort": "max"}
+  },
+  "harness": {"name": "r0b0bench", "version": "vision-glm53max (v1.0.0-derived)", "profile": "vision"},
+  "scores": {
+    "r0b0bench_vision": {
+      "status": "SCORED_BOUNDED",
+      "total": {"rows": 1237, "correct": 1013, "accuracy": 0.8189},
+      "suites": {
+        "cvbench": {"rows": 337, "correct": 224, "accuracy": 0.6647,
+                    "note": "Count subaxis only in the first-300 bound"},
+        "mmvp": {"rows": 300, "correct": 262, "accuracy": 0.8733},
+        "realworldqa": {"rows": 300, "correct": 241, "accuracy": 0.8033},
+        "ocrbench": {"rows": 300, "correct": 286, "accuracy": 0.9533}
+      },
+      "bounded": "deterministic first-300 rows per suite of the frozen 4,703-row r0b0bench-vision v1.0.0; thinking=max at budgets 1024/1024/1024/2048 (the model cannot disable thinking). Ling full-suite reference: 80.82 %; this bound: 81.89 %.",
+      "mean_row_seconds": 23.0
+    }
+  }
+}
