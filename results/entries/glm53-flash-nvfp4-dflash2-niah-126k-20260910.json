@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "entry_id": "glm53-flash-nvfp4-dflash2-niah-126k-20260910",
+  "recorded_utc": "2026-09-10T08:05:00Z",
+  "model": {
+    "id": "glm53-flash-nvfp4-dflash2",
+    "display_name": "GLM-5.3-Flash-NVFP4 (NVIDIA ModelOpt) on 2x GB10 SM121 — DFlash2 K=7",
+    "family": "GLM-5.3-Flash",
+    "revision": "423acf37583782c51c142d145aef733d72943d93"
+  },
+  "runtime": {
+    "hardware": "2x NVIDIA GB10 (SM121) TP=2",
+    "base_url_omitted": true,
+    "image_id": "sha256:3fceaf69a626569e6063bcaf63277e68b2b954aa099ecf2b5cb782943d446c17",
+    "profile_id": "dflash2-k7-bf16kv-126k-max",
+    "candidate_id": "glm53-dflash2",
+    "max_model_len": 126720,
+    "kv_cache_dtype": "bfloat16",
+    "speculative": {"method": "dflash", "num_speculative_tokens": 7}
+  },
+  "harness": {"name": "r0b0bench", "version": "niah-advertised + multikey", "profile": "niah"},
+  "scores": {
+    "niah": {
+      "status": "PASS",
+      "cases": 5,
+      "passed": 5,
+      "labels": ["25%", "50%", "90%", "mk33", "mk66"],
+      "approx_prompt_tokens": 120100,
+      "served_window": 126720,
+      "per_case_seconds": [152.8, 132.6, 126.5, 150.4, 140.4],
+      "note": "constructed prompts land at ~120.1K tokens on the 126,720 window (filler rounding, disclosed); multi-key cases embed 3 needles with distractors at 33/66/90% and retrieve the probe nonce."
+    }
+  }
+}

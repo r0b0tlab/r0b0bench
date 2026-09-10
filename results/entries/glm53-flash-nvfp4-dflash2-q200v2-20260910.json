@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "entry_id": "glm53-flash-nvfp4-dflash2-q200v2-20260910",
+  "recorded_utc": "2026-09-10T08:05:00Z",
+  "model": {
+    "id": "glm53-flash-nvfp4-dflash2",
+    "display_name": "GLM-5.3-Flash-NVFP4 (NVIDIA ModelOpt) on 2x GB10 SM121 — DFlash2 K=7",
+    "family": "GLM-5.3-Flash",
+    "revision": "423acf37583782c51c142d145aef733d72943d93",
+    "quantization": "NVIDIA official ModelOpt NVFP4 (routed experts + dense MLP only; 36,297 NVFP4 modules; MTP layer BF16; no re-quantization by us)"
+  },
+  "runtime": {
+    "hardware": "2x NVIDIA GB10 (SM121) TP=2",
+    "base_url_omitted": true,
+    "image_id": "sha256:3fceaf69a626569e6063bcaf63277e68b2b954aa099ecf2b5cb782943d446c17",
+    "base_image": "vllm/vllm-openai@sha256:b0501f99fec5136f248f78d5850977a2ec32d55cd9a665f4a9ffef24cbdf7fe5 (vLLM 0.28.1rc1.dev580, FlashInfer 0.6.18)",
+    "profile_id": "dflash2-k7-bf16kv-126k-max",
+    "candidate_id": "glm53-dflash2",
+    "max_model_len": 126720,
+    "max_num_seqs": 4,
+    "kv_cache_dtype": "bfloat16",
+    "gpu_memory_utilization": 0.86,
+    "attention_backend": "FLASHINFER_MLA_SPARSE_SM90 (SM121 enablement)",
+    "moe_backend": "auto (FLASHINFER_CUTLASS)",
+    "compilation": "{\"mode\":0,\"cudagraph_mode\":\"FULL_DECODE_ONLY\"}",
+    "speculative": {"method": "dflash", "num_speculative_tokens": 7,
+                    "drafter": "incoai/GLM-5.3-Flash-DFlash2"},
+    "template_kwargs": {"reasoning_effort": "max"},
+    "reasoning_parser": "deepseek_r1"
+  },
+  "harness": {
+    "name": "r0b0bench",
+    "version": "q200v2-kit + bfcl_eval 2025.12.17",
+    "profile": "q200v2"
+  },
+  "scores": {
+    "q200v2_text180": {
+      "status": "INCOMPLETE_DISCLOSED",
+      "rows": 180,
+      "transported": 178,
+      "correct": 170,
+      "accuracy_transported": 0.9551,
+      "families": {
+        "gsm8k": {"n": 80, "correct": 78, "accuracy": 0.975},
+        "humaneval": {"n": 40, "correct": 39, "accuracy": 0.975, "grader": "local subprocess"},
+        "ifeval": {"n": 40, "correct": 35, "accuracy": 0.875},
+        "hard_reasoning": {"n": 20, "correct": 18, "accuracy": 0.9,
+                           "method": "independent_manual_review",
+                           "transport_excluded": 2,
+                           "note": "2 rows hit the 8192-token ceiling (finish_reason=length, empty content); excluded by the frozen transport gate. Review found the model correct on (13,8) which the dataset reference itself omits."}
+      },
+      "e2e_tok_s": {"mean": 28.74, "aggregate": 23.03, "n": 180},
+      "campaign_wall_seconds": 7096.8
+    },
+    "bfcl_hard20": {
+      "status": "SCORED",
+      "correct": 14,
+      "total": 20,
+      "accuracy": 0.7,
+      "errors": 0,
+      "method": "bfcl_eval 2025.12.17 official, multi_turn_base structural-hard20, thinking=max"
+    }
+  }
+}
