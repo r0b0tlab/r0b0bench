@@ -1,0 +1,81 @@
+{
+  "schema": "r0b0bench.subset.q200v2.v1",
+  "name": "Q200v2",
+  "frozen": true,
+  "protocol": "docs/PROCEDURES.md#1-q200v2--frozen-quality-kit-text180--bfcl-structural-hard20",
+  "published_from": {
+    "campaign_kit": "qwen38-flash-next-w4a16/q200v2ar-20260829T141533Z-runner",
+    "campaign_kit_revision": "20260829T141533Z",
+    "note": "files are byte-frozen as used by the campaigns; the only edit is the documented path redaction in artifacts/quality-200.manifest.json"
+  },
+  "artifacts": {
+    "quality-text-180-v2.jsonl": {
+      "sha256": "74623ab9b075120cd6f7a93059cc16d8817a6039dd20118b8f0350279f8b1ed6",
+      "rows": 180,
+      "families": {
+        "gsm8k": 80,
+        "humaneval": 40,
+        "ifeval": 40,
+        "hard_reasoning": 20
+      },
+      "row_schema": [
+        "id",
+        "family",
+        "grade",
+        "prompt",
+        "reference"
+      ],
+      "identity_role": "this hash is the dataset_sha256 cited in docs/PROCEDURES.md section 1"
+    },
+    "quality-200.jsonl": {
+      "sha256": "ca35650e0bf4c9997772276c15a7116afd553a305b10c88182f52f050b76e066",
+      "rows": 200,
+      "note": "parent set; quality-text-180-v2 is its exact projection minus the agentic_coding family (asserted by tests/test_q200_v2.py)"
+    },
+    "quality-200.manifest.json": {
+      "original_file_sha256": "2b1b898e3eabacbb2c5ff5abaa463538d6db813ca78df4ca1ffeb62bf2c00a83",
+      "path_sanitized": true,
+      "note": "absolute campaign path in the source field replaced with a relative one; all other bytes unchanged"
+    },
+    "bfcl-v4-multi-turn-hard20-v1.json": {
+      "sha256": "0860da504a3db2c3cd73647ecdc2a5ecdb1793d7a5cf3f4f004912f0ef314d4e",
+      "cases": 20,
+      "category": "multi_turn_base",
+      "bfcl_eval_version": "2025.12.17",
+      "model_independent_selection": true,
+      "interpretation": "deterministic structural-complexity proxy subset; not the 20 semantically hardest cases and not an official full-category leaderboard score",
+      "boundary_disclosed": true,
+      "selection_provenance": {
+        "canonical_selected_ids_sha256": "28158003bca5abf7e6922a8aa460d0bed208b3636757349460000b85812b384f",
+        "canonical_selected_feature_projection_sha256": "65c7889c2f78f29bd71e2d74854a11234a20dbb02e83186ae7a4c9050b79cbca",
+        "canonical_selector_policy_sha256": "03999d7f8e22669d5ec51a9920d0e79a6350005f95f7d305e5835e18479dc0f2"
+      }
+    }
+  },
+  "harness": {
+    "scripts/run_quality_set.py": "text-quality lane (writes <run-id>.rows.jsonl + <run-id>.summary.json in the working directory)",
+    "scripts/close_q200_v2.py": "combines text + BFCL summaries into one closure record",
+    "scripts/run_bfcl_hard20.py": "official bfcl-eval wrapper for the 20-id selection (modes: inspect|run|resume|evaluate|status)",
+    "scripts/score_flex_gsm8k.py": "local GSM8K grader (flex variants)",
+    "docker/q200_sandbox_driver.py": "humaneval sandbox driver, expected inside the candidate image at /opt/r0b0tlab/q200_sandbox_driver.py",
+    "requirements-bfcl.txt": "bfcl-eval==2025.12.17, soundfile"
+  },
+  "verification": [
+    "sha256sum -c subsets/q200v2/MANIFEST.sha256",
+    "pytest subsets/q200v2/tests"
+  ],
+  "licenses": {
+    "kit": "MIT (r0b0tlab)",
+    "upstream": {
+      "BFCL (gorilla)": "Apache-2.0",
+      "GSM8K": "MIT",
+      "HumanEval": "MIT",
+      "IFEval": "Apache-2.0"
+    }
+  },
+  "rules": [
+    "frozen contract accepts only finish_reason == stop; length-truncated rows are transport-failed and must be disclosed",
+    "hard_reasoning rows are manual-review by design (--manual-evidence) and stay ungraded otherwise",
+    "run from the output directory: the lane writes its artifacts relative to the working directory"
+  ]
+}

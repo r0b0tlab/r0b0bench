@@ -34,3 +34,8 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 r0b0bench = ["profiles/*.yaml"]
+
+[tool.ruff]
+# subsets/q200v2/ is a byte-frozen published benchmark kit: every file is hash-pinned
+# (MANIFEST.sha256 + tests/test_q200_v2.py) and must not be reformatted or re-linted.
+extend-exclude = ["subsets"]

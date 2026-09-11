@@ -1,0 +1,161 @@
+{
+  "benchmark": "Berkeley Function Calling Leaderboard",
+  "bfcl_eval_version": "2025.12.17",
+  "category": "multi_turn_base",
+  "label": "BFCL v4 multi_turn_base structural-hard20",
+  "interpretation": "A deterministic structural-complexity proxy subset, not the 20 semantically hardest cases and not an official full-category leaderboard score.",
+  "schema": "r0b0tlab.qwen38.q200_v2_bfcl_hard20.v1",
+  "selected": [
+    {
+      "id": "multi_turn_base_109",
+      "involved_class_count": 2,
+      "required_path_length": 7,
+      "user_turn_count": 7
+    },
+    {
+      "id": "multi_turn_base_131",
+      "involved_class_count": 2,
+      "required_path_length": 7,
+      "user_turn_count": 7
+    },
+    {
+      "id": "multi_turn_base_97",
+      "involved_class_count": 2,
+      "required_path_length": 7,
+      "user_turn_count": 6
+    },
+    {
+      "id": "multi_turn_base_110",
+      "involved_class_count": 2,
+      "required_path_length": 7,
+      "user_turn_count": 6
+    },
+    {
+      "id": "multi_turn_base_162",
+      "involved_class_count": 2,
+      "required_path_length": 7,
+      "user_turn_count": 6
+    },
+    {
+      "id": "multi_turn_base_170",
+      "involved_class_count": 2,
+      "required_path_length": 7,
+      "user_turn_count": 6
+    },
+    {
+      "id": "multi_turn_base_180",
+      "involved_class_count": 2,
+      "required_path_length": 7,
+      "user_turn_count": 6
+    },
+    {
+      "id": "multi_turn_base_183",
+      "involved_class_count": 2,
+      "required_path_length": 7,
+      "user_turn_count": 6
+    },
+    {
+      "id": "multi_turn_base_184",
+      "involved_class_count": 2,
+      "required_path_length": 7,
+      "user_turn_count": 6
+    },
+    {
+      "id": "multi_turn_base_186",
+      "involved_class_count": 2,
+      "required_path_length": 7,
+      "user_turn_count": 6
+    },
+    {
+      "id": "multi_turn_base_188",
+      "involved_class_count": 2,
+      "required_path_length": 7,
+      "user_turn_count": 6
+    },
+    {
+      "id": "multi_turn_base_116",
+      "involved_class_count": 1,
+      "required_path_length": 7,
+      "user_turn_count": 6
+    },
+    {
+      "id": "multi_turn_base_117",
+      "involved_class_count": 1,
+      "required_path_length": 7,
+      "user_turn_count": 6
+    },
+    {
+      "id": "multi_turn_base_194",
+      "involved_class_count": 1,
+      "required_path_length": 7,
+      "user_turn_count": 6
+    },
+    {
+      "id": "multi_turn_base_2",
+      "involved_class_count": 2,
+      "required_path_length": 7,
+      "user_turn_count": 5
+    },
+    {
+      "id": "multi_turn_base_33",
+      "involved_class_count": 2,
+      "required_path_length": 7,
+      "user_turn_count": 5
+    },
+    {
+      "id": "multi_turn_base_55",
+      "involved_class_count": 2,
+      "required_path_length": 7,
+      "user_turn_count": 5
+    },
+    {
+      "id": "multi_turn_base_60",
+      "involved_class_count": 2,
+      "required_path_length": 7,
+      "user_turn_count": 5
+    },
+    {
+      "id": "multi_turn_base_68",
+      "involved_class_count": 2,
+      "required_path_length": 7,
+      "user_turn_count": 5
+    },
+    {
+      "id": "multi_turn_base_72",
+      "involved_class_count": 2,
+      "required_path_length": 7,
+      "user_turn_count": 5
+    }
+  ],
+  "selection_policy": {
+    "description": "Top 20 by frozen structural complexity; no candidate outputs or scores are inputs.",
+    "model_independent": true,
+    "sort_keys": [
+      "user_turn_count DESC",
+      "required_path_length DESC",
+      "involved_class_count DESC",
+      "numeric_case_id ASC"
+    ],
+    "take": 20
+  },
+  "selection_boundary": {
+    "rank_20_id": "multi_turn_base_72",
+    "rank_21_id": "multi_turn_base_102",
+    "boundary_structural_key": {
+      "user_turn_count": 5,
+      "required_path_length": 7,
+      "involved_class_count": 2
+    },
+    "tied_source_case_count": 20,
+    "selected_from_boundary_tie_count": 6,
+    "disclosure": "The rank-20 boundary is deterministic but arbitrary within a 20-way structural tie; numeric case ID ascending selects the first six tied cases."
+  },
+  "selection_provenance": {
+    "canonical_selected_ids_sha256": "28158003bca5abf7e6922a8aa460d0bed208b3636757349460000b85812b384f",
+    "canonical_selected_feature_projection_sha256": "65c7889c2f78f29bd71e2d74854a11234a20dbb02e83186ae7a4c9050b79cbca",
+    "canonical_selector_policy_sha256": "03999d7f8e22669d5ec51a9920d0e79a6350005f95f7d305e5835e18479dc0f2"
+  },
+  "source_dataset_count": 200,
+  "source_dataset_sha256": "1a21a995d06fd6f20ba55de7bced30ef953ec35e998f502ec2ecf4d66ef1c43a",
+  "source_ground_truth_sha256": "1fee67823b317571649177dd89d63969feaae4e810cc7448ee55ba797fb7c8fc"
+}

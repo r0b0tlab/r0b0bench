@@ -1,8 +1,11 @@
 # Third-Party Notices
 
 This repository currently contains an original implementation specification and
-no vendored benchmark datasets, prompts, evaluator source, or model outputs.
-The MIT License applies only to original r0b0bench material.
+one frozen campaign kit: [`subsets/q200v2/`](subsets/q200v2/README.md), which adds
+prompt/reference datasets (generated-answer quality rows), a BFCL case *selection*,
+harness source and a sandbox driver. Upstream terms continue to apply to material
+derived from the projects below; the MIT License applies only to original r0b0bench
+material and to the kit's own generated rows and harness.
 
 The planned implementation will integrate or depend on the following upstream
 projects and datasets. Their own licenses and terms continue to apply:

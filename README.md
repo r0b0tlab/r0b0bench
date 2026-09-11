@@ -2,7 +2,7 @@
 
 Reproducible **OpenAI-compatible endpoint** benchmarks for humans and agents.
 
-> **Status:** `v1.0.0rc2` client package. Profiles: **`core`**, **`core-subset`**, **`systems`**, **`hard-subset`**. Campaign protocols (Q200v2, r0b0bench-vision, NIAH ladder, telemetry): [`docs/PROCEDURES.md`](docs/PROCEDURES.md).  
+> **Status:** `v1.0.0rc2` client package. Profiles: **`core`**, **`core-subset`**, **`systems`**, **`hard-subset`**. Campaign protocols (Q200v2, r0b0bench-vision, NIAH ladder, telemetry): [`docs/PROCEDURES.md`](docs/PROCEDURES.md). The frozen **Q200v2 kit** (datasets + harness, hash-pinned): [`subsets/q200v2/`](subsets/q200v2/README.md).  
 > Systems package: canary, BFCL-MT, BFCL-AST, **latency**, **concurrency**, **throughput**, max-context **NIAH**.  
 > Quality lanes (QA / IFEval / HumanEval / GSM8K) are executable in rc2 (subset sizes on `core-subset`).  
 > Private campaign dumps are not automatically r0b0bench results — run through this package (or hash-valid import).
