@@ -138,13 +138,20 @@
       }
     },
     "niah": {
-      "status": "512K: RETRY_PENDING; 1M: PENDING",
+      "status": "512K: INFRA_FAILURE; 1M: PENDING",
       "windows": {
         "512k": {
-          "status": "RETRY_PENDING",
-          "logical_cases": 1,
+          "status": "INFRA_FAILURE",
+          "advertised_window": 524288,
+          "target_prompt_tokens": 522174,
+          "raw_sha256": "638934ac65c08051098d5059c36a3ee93c080dcf715e1fc6c7a3a63905776766",
+          "cases": [],
+          "profile_sha256": "24aaa458977e94a7ce6b21548cbf55fba4c10baa99a2709fd41686ab7c71967a",
           "previous_attempt_status": "INFRA_FAILURE",
-          "same_case_replay": true
+          "logical_cases": 1,
+          "execution_attempts": 2,
+          "replayed_case_sha256": "b0c0ecebf697a1418cd517c89a973a947078435dbdcffb6f5ce9f30c83cf4b2d",
+          "qualification": "NOT_QUALIFIED"
         },
         "1m": {
           "status": "PENDING"
@@ -354,7 +361,7 @@
       }
     }
   },
-  "infra_errors_total": 4,
+  "infra_errors_total": 5,
   "eligible_lane_infra_errors": 0,
   "excluded_attempts": [
     {
@@ -395,6 +402,17 @@
       "scheduled_prefix_estimate_tokens": 298752,
       "retry": "same exact logical case in a dedicated cold epoch; no new random case",
       "safety_repairs": "privileged complete kernel journal required on all ranks; initial resident-free reserve10GiB; primary error preserved across cleanup failure"
+    },
+    {
+      "lane": "niah-512k-cold-same-case",
+      "status": "INFRA_MEMORY_ALLOCATION_FAILURE",
+      "scored": false,
+      "answer_returned": false,
+      "last_logged_pending_tokens": 191166,
+      "scheduled_prefix_estimate_tokens": 331008,
+      "logical_cases": 1,
+      "attempt": 2,
+      "note": "Fresh same-profile replay passed resident-free admission but still produced a new NVRM allocation error;512K is not retrieval-qualified."
     }
   ],
   "invalid_for_publish": false,
@@ -408,10 +426,10 @@
   ],
   "artifacts": {
     "repository": "https://github.com/r0b0tlab/dsv41-flash-tp4-sglang-sm121",
-    "commit": "4f4bd73c84d17f6e1c9d955c8d5d1df637697dc6",
-    "results_url": "https://github.com/r0b0tlab/dsv41-flash-tp4-sglang-sm121/blob/4f4bd73c84d17f6e1c9d955c8d5d1df637697dc6/evidence/final/RESULTS.json",
-    "results_sha256": "b463cdaee4d9e573a52139c320ab94b8e42864e337707675c1b1b098ae50cf57",
+    "commit": "137e1d5a8817ed1a9ea24cbbbc897e58a6bac871",
+    "results_url": "https://github.com/r0b0tlab/dsv41-flash-tp4-sglang-sm121/blob/137e1d5a8817ed1a9ea24cbbbc897e58a6bac871/evidence/final/RESULTS.json",
+    "results_sha256": "c84475a3527ab26647aeabf2f7d297ac60859cf177e2ec8a166c058ce43f9c14",
     "q200_closeout_sha256": "e0f00e187709ffc21f3746c9032c46e82c229954139a9d25e9c39863c3971cef"
   },
-  "updated_utc": "2026-09-16T07:18:34.427710+00:00"
+  "updated_utc": "2026-09-16T08:10:22.079462+00:00"
 }
