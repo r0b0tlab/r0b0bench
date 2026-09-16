@@ -138,10 +138,13 @@
       }
     },
     "niah": {
-      "status": "PENDING",
+      "status": "512K: RETRY_PENDING; 1M: PENDING",
       "windows": {
         "512k": {
-          "status": "PENDING"
+          "status": "RETRY_PENDING",
+          "logical_cases": 1,
+          "previous_attempt_status": "INFRA_FAILURE",
+          "same_case_replay": true
         },
         "1m": {
           "status": "PENDING"
@@ -351,7 +354,7 @@
       }
     }
   },
-  "infra_errors_total": 3,
+  "infra_errors_total": 4,
   "eligible_lane_infra_errors": 0,
   "excluded_attempts": [
     {
@@ -382,6 +385,16 @@
       "failure_during": "warmup",
       "originating_kernel": "not established; reported asynchronously by rank0 NCCL watchdog",
       "control": "fresh identical-image/profile epoch for only missing cell; no stability repair claimed"
+    },
+    {
+      "lane": "niah-512k",
+      "status": "INFRA_MEMORY_ALLOCATION_FAILURE",
+      "scored": false,
+      "answer_returned": false,
+      "last_logged_pending_tokens": 223422,
+      "scheduled_prefix_estimate_tokens": 298752,
+      "retry": "same exact logical case in a dedicated cold epoch; no new random case",
+      "safety_repairs": "privileged complete kernel journal required on all ranks; initial resident-free reserve10GiB; primary error preserved across cleanup failure"
     }
   ],
   "invalid_for_publish": false,
@@ -389,16 +402,16 @@
   "disclosures": [
     "This is the complete frozen Q200v2 campaign protocol, not a standard r0b0bench core/core-subset suite.",
     "Q200189/200 includes strict independent reasoning review19/20; historical overlay-v1 192/200 is a different image/profile.",
-    "All completed score-bearing rows are graded and have no transport/grader errors. Three failed infrastructure attempts are separately retained; no general service-stability repair is claimed.",
     "Performance/vision/text/BFCL/missing native cell span verified equivalent image/profile epochs. Native random cells use sampled length caps and distinguish nominal from retokenized token rates.",
     "CV-Bench is the bounded first60 Count subset; MMVP is300 rows. Dedicated mixed-workload soak NOT_RUN.",
-    "Both512K and1M retrieval tests are pending at this publication; update after each actual outcome."
+    "All completed score-bearing rows have no transport/grader errors; excluded attempts are retained separately and no general runtime-stability repair is claimed."
   ],
   "artifacts": {
     "repository": "https://github.com/r0b0tlab/dsv41-flash-tp4-sglang-sm121",
-    "commit": "9b7d03b4227fe40798ee499eb59b15a8f78ee0db",
-    "results_url": "https://github.com/r0b0tlab/dsv41-flash-tp4-sglang-sm121/blob/9b7d03b4227fe40798ee499eb59b15a8f78ee0db/evidence/final/RESULTS.json",
-    "results_sha256": "28a25a6fc6ab75a4b9c93d58a4750d11a075113bd692db007369c686a09b6e1e",
+    "commit": "4f4bd73c84d17f6e1c9d955c8d5d1df637697dc6",
+    "results_url": "https://github.com/r0b0tlab/dsv41-flash-tp4-sglang-sm121/blob/4f4bd73c84d17f6e1c9d955c8d5d1df637697dc6/evidence/final/RESULTS.json",
+    "results_sha256": "b463cdaee4d9e573a52139c320ab94b8e42864e337707675c1b1b098ae50cf57",
     "q200_closeout_sha256": "e0f00e187709ffc21f3746c9032c46e82c229954139a9d25e9c39863c3971cef"
-  }
+  },
+  "updated_utc": "2026-09-16T07:18:34.427710+00:00"
 }
