@@ -1,6 +1,6 @@
 # r0b0bench leaderboard
 
-Entries: **16** · regenerated from `results/entries/*.json`
+Entries: **17** · regenerated from `results/entries/*.json`
 
 Comparable only within the same profile and disclosed scorer variants.
 
@@ -10,6 +10,7 @@ Comparable only within the same profile and disclosed scorer variants.
 |----------|-------|------|------:|-----:|---:|-------:|---------------:|-------:|-----:|------|---------|
 | dsv4-flash-native-v11-core-subset-20260803 | DeepSeek-V4-Flash DSpark NVFP4 (dua | dspark K=6 | 0.950 | 0.909 | 0.960 | 0.795 | — | 0.755 | 0.362 | PASS | False |
 | dsv41-flash-tp4-sglang-sm121-overlay-v2-q200v2-20260916 | DeepSeek-V4.1-Flash (4x GB10) | dspark K=5 | — | — | — | — | — | — | — | 512K: INFRA_FAILURE; 1M: INFRA_FAILURE | False |
+| dsv41-flash-tp4-sglang-sm121-overlay-v4-niah512-20260916 | DeepSeek-V4.1-Flash (4x GB10) | dspark K=5 | — | — | — | — | — | — | — | PASS | False |
 | glm53-flash-nvfp4-dflash2-niah-126k-20260910 | GLM-5.3-Flash-NVFP4 (NVIDIA ModelOp | dflash | — | — | — | — | — | — | — | PASS | None |
 | glm53-flash-nvfp4-dflash2-q200v2-20260910 | GLM-5.3-Flash-NVFP4 (NVIDIA ModelOp | dflash | — | — | — | — | — | — | — | — | None |
 | glm53-flash-nvfp4-dflash2-vision-20260910 | GLM-5.3-Flash-NVFP4 (NVIDIA ModelOp | dflash | — | — | — | — | — | — | — | — | None |
@@ -31,6 +32,7 @@ Comparable only within the same profile and disclosed scorer variants.
 |----------|-------|------|------------:|-------------:|-------:|-------:|-------:|-------:|-------:|
 | dsv4-flash-native-v11-core-subset-20260803 | DeepSeek-V4-Flash DSpark NVFP4 (dua | dspark K=6 | 40.164 | 29203.666 | 221.884 | 86.931 | 145.889 | 239.311 | 337.761 |
 | dsv41-flash-tp4-sglang-sm121-overlay-v2-q200v2-20260916 | DeepSeek-V4.1-Flash (4x GB10) | dspark K=5 | — | — | — | — | — | — | — |
+| dsv41-flash-tp4-sglang-sm121-overlay-v4-niah512-20260916 | DeepSeek-V4.1-Flash (4x GB10) | dspark K=5 | — | — | — | — | — | — | — |
 | glm53-flash-nvfp4-dflash2-niah-126k-20260910 | GLM-5.3-Flash-NVFP4 (NVIDIA ModelOp | dflash | — | — | — | — | — | — | — |
 | glm53-flash-nvfp4-dflash2-q200v2-20260910 | GLM-5.3-Flash-NVFP4 (NVIDIA ModelOp | dflash | — | — | — | — | — | — | — |
 | glm53-flash-nvfp4-dflash2-vision-20260910 | GLM-5.3-Flash-NVFP4 (NVIDIA ModelOp | dflash | — | — | — | — | — | — | — |
@@ -62,6 +64,7 @@ Frozen campaign protocols documented in [`docs/PROCEDURES.md`](../docs/PROCEDURE
 
 - [`dsv4-flash-native-v11-core-subset-20260803.json`](entries/dsv4-flash-native-v11-core-subset-20260803.json) — dsv4-flash-native-v11-core-subset-20260803
 - [`dsv41-flash-tp4-sglang-sm121-overlay-v2-q200v2-20260916.json`](entries/dsv41-flash-tp4-sglang-sm121-overlay-v2-q200v2-20260916.json) — dsv41-flash-tp4-sglang-sm121-overlay-v2-q200v2-20260916
+- [`dsv41-flash-tp4-sglang-sm121-overlay-v4-niah512-20260916.json`](entries/dsv41-flash-tp4-sglang-sm121-overlay-v4-niah512-20260916.json) — dsv41-flash-tp4-sglang-sm121-overlay-v4-niah512-20260916
 - [`glm53-flash-nvfp4-dflash2-niah-126k-20260910.json`](entries/glm53-flash-nvfp4-dflash2-niah-126k-20260910.json) — glm53-flash-nvfp4-dflash2-niah-126k-20260910
 - [`glm53-flash-nvfp4-dflash2-q200v2-20260910.json`](entries/glm53-flash-nvfp4-dflash2-q200v2-20260910.json) — glm53-flash-nvfp4-dflash2-q200v2-20260910
 - [`glm53-flash-nvfp4-dflash2-vision-20260910.json`](entries/glm53-flash-nvfp4-dflash2-vision-20260910.json) — glm53-flash-nvfp4-dflash2-vision-20260910

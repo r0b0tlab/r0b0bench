@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "entry_id": "dsv41-flash-tp4-sglang-sm121-overlay-v4-niah512-20260916",
+  "recorded_utc": "2026-09-16T23:29:22.261212+00:00",
+  "model": {
+    "id": "deepseek-ai/DeepSeek-V4.1-Flash",
+    "display_name": "DeepSeek-V4.1-Flash (4x GB10)",
+    "family": "deepseek-v4.1-flash",
+    "revision": "dba1be0a40aa45a94ad051997016db3960a90277",
+    "quantization": "official mixed FP8 dense / packed FP4 experts; unmodified"
+  },
+  "runtime": {
+    "hardware": "4x NVIDIA DGX Spark GB10/SM121, TP4/EP4, native IB transport",
+    "image_id": "sha256:c010623e97f75bd2be82fda556c667dad64839242f46d58e55be576a16c05d32",
+    "image_tag": "ghcr.io/r0b0tlab/dsv41-flash-tp4-sglang-sm121:overlay-v4",
+    "image_digest": "sha256:537a7bc04a1de6cdaf2086556984a9ee26d15f479dbb2e7799f88bd52a321740",
+    "immutable_ref": "ghcr.io/r0b0tlab/dsv41-flash-tp4-sglang-sm121@sha256:537a7bc04a1de6cdaf2086556984a9ee26d15f479dbb2e7799f88bd52a321740",
+    "engine": "SGLang",
+    "engine_revision": "da64c5cbb8cf6bfd39be19da43573fdfd484c43a",
+    "embedded_source_revision": "cc38a672aa78ced3702addc10b321b2e87a9773f",
+    "profile": "prod",
+    "profile_sha256": "b424efadb052a7477a8db43f6c138aff01000dd33a2127e1cf0252a9ecc7f3fe",
+    "context_length": 524288,
+    "max_running_requests": 1,
+    "chunked_prefill_size": 256,
+    "speculative": {
+      "method": "dspark",
+      "K": 5
+    },
+    "vision": true,
+    "kv_cache_dtype": "fp8_e4m3"
+  },
+  "harness": {
+    "name": "project two-key NIAH (not a r0b0bench core profile)",
+    "profile": "niah",
+    "not_a_core_or_core_subset_run": true
+  },
+  "scores": {
+    "niah": {
+      "status": "PASS",
+      "window": "512k",
+      "advertised_window": 524288,
+      "logical_cases": 1,
+      "passed": 1,
+      "prompt_tokens": 522174,
+      "finish_reason": "stop",
+      "elapsed_s": 4292.0945270619995,
+      "protocol": "exactly one ordered two-key 33%/66% case; not a 25/50/90 ladder",
+      "logical_case_sha256": "b0c0ecebf697a1418cd517c89a973a947078435dbdcffb6f5ce9f30c83cf4b2d",
+      "note": "Same logical case that INFRA_FAILUREd twice on overlay-v2. Overlay-v4 independent K-slice cap 2048. Q200/vision/throughput not transferred from overlay-v2. 1M not run on overlay-v4."
+    }
+  },
+  "source": {
+    "repository": "https://github.com/r0b0tlab/dsv41-flash-tp4-sglang-sm121",
+    "commit": "ef70350ed347dec401c1dd34cc8454fb1b1c1bc1",
+    "results_url": "https://github.com/r0b0tlab/dsv41-flash-tp4-sglang-sm121/blob/ef70350ed347dec401c1dd34cc8454fb1b1c1bc1/evidence/final/RESULTS.json"
+  },
+  "invalid_for_publish": false,
+  "infra_errors_total": 0
+}
