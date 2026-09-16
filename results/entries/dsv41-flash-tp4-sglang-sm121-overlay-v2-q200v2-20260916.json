@@ -1,0 +1,404 @@
+{
+  "schema_version": 1,
+  "entry_id": "dsv41-flash-tp4-sglang-sm121-overlay-v2-q200v2-20260916",
+  "recorded_utc": "2026-09-16T06:20:07.359031+00:00",
+  "model": {
+    "id": "deepseek-ai/DeepSeek-V4.1-Flash",
+    "display_name": "DeepSeek-V4.1-Flash (4x GB10)",
+    "family": "deepseek-v4.1-flash",
+    "revision": "dba1be0a40aa45a94ad051997016db3960a90277",
+    "quantization": "official mixed FP8 dense / packed FP4 experts; unmodified"
+  },
+  "runtime": {
+    "hardware": "4x NVIDIA DGX Spark GB10/SM121, TP4/EP4, native IB transport",
+    "image_id": "sha256:5b246919f183289ab2a147f0ba7f22c54a72c52748082ce4cd2ec8303d38fa1f",
+    "image_tag": "ghcr.io/r0b0tlab/dsv41-flash-tp4-sglang-sm121:overlay-v2",
+    "image_digest": "sha256:6853a22bb652da644d8933d0b879fee04ef9ce424ad48891737636fe7dcf7de9",
+    "immutable_ref": "ghcr.io/r0b0tlab/dsv41-flash-tp4-sglang-sm121@sha256:6853a22bb652da644d8933d0b879fee04ef9ce424ad48891737636fe7dcf7de9",
+    "engine": "SGLang",
+    "engine_revision": "da64c5cbb8cf6bfd39be19da43573fdfd484c43a",
+    "embedded_source_revision": "df92c15b448506575953adfbd137ab83c249e2b1",
+    "profile_sha256": "24aaa458977e94a7ce6b21548cbf55fba4c10baa99a2709fd41686ab7c71967a",
+    "context_length": 524288,
+    "speculative": {
+      "method": "dspark",
+      "K": 5
+    },
+    "vision": true,
+    "kv_cache_dtype": "fp8_e4m3"
+  },
+  "harness": {
+    "name": "frozen Q200v2 campaign kit plus separately labeled project systems/vision",
+    "profile": "q200v2",
+    "not_a_core_or_core_subset_run": true
+  },
+  "scores": {
+    "q200v2_combined": {
+      "status": "SCORED",
+      "correct": 189,
+      "total": 200,
+      "accuracy": 0.945,
+      "families": {
+        "bfcl_hard20": {
+          "accuracy_pct": 70.0,
+          "correct": 14,
+          "grade_complete": 20,
+          "grader_errors": 0,
+          "incorrect": 6,
+          "n": 20,
+          "scorer": "official bfcl-eval partial evaluation",
+          "transported": 20,
+          "ungraded": 0
+        },
+        "gsm8k": {
+          "accuracy_pct": 96.25,
+          "correct": 77,
+          "grade_complete": 80,
+          "grader_errors": 0,
+          "incorrect": 3,
+          "n": 80,
+          "transported": 80,
+          "ungraded": 0
+        },
+        "hard_reasoning": {
+          "accuracy_pct": 95.0,
+          "correct": 19,
+          "grade_complete": 20,
+          "grader_errors": 0,
+          "incorrect": 1,
+          "n": 20,
+          "transported": 20,
+          "ungraded": 0
+        },
+        "humaneval": {
+          "accuracy_pct": 100.0,
+          "correct": 40,
+          "grade_complete": 40,
+          "grader_errors": 0,
+          "incorrect": 0,
+          "n": 40,
+          "transported": 40,
+          "ungraded": 0
+        },
+        "ifeval": {
+          "accuracy_pct": 97.5,
+          "correct": 39,
+          "grade_complete": 40,
+          "grader_errors": 0,
+          "incorrect": 1,
+          "n": 40,
+          "transported": 40,
+          "ungraded": 0
+        }
+      }
+    },
+    "q200v2_text180": {
+      "status": "SCORED",
+      "correct": 175,
+      "rows": 180,
+      "transported": 180,
+      "accuracy_transported": 0.9722222222222222,
+      "dataset_sha256": "74623ab9b075120cd6f7a93059cc16d8817a6039dd20118b8f0350279f8b1ed6"
+    },
+    "bfcl_hard20": {
+      "status": "SCORED",
+      "correct": 14,
+      "total": 20,
+      "accuracy": 0.7,
+      "category": "official BFCL v4 multi_turn_base structural-hard20; not full category",
+      "manifest_sha256": "0860da504a3db2c3cd73647ecdc2a5ecdb1793d7a5cf3f4f004912f0ef314d4e"
+    },
+    "cvbench": {
+      "rows": 60,
+      "correct": 39,
+      "accuracy": 0.65,
+      "wilson95": [
+        0.5236,
+        0.7583
+      ],
+      "subsets": {
+        "cvbench": {
+          "rows": 60,
+          "correct": 39,
+          "accuracy": 0.65
+        }
+      },
+      "thinking": false,
+      "workers": 1,
+      "raw_rows_sha256": "ea6deb1ea4a1f6e1075c74d59844d05d1f5314d0d314f0ef242efcd9d64aad2d"
+    },
+    "mmvp": {
+      "rows": 300,
+      "correct": 205,
+      "accuracy": 0.6833333333333333,
+      "paired": {
+        "both_correct": 74,
+        "pairs": 150,
+        "paired_accuracy": 0.49333333333333335
+      }
+    },
+    "niah": {
+      "status": "PENDING",
+      "windows": {
+        "512k": {
+          "status": "PENDING"
+        },
+        "1m": {
+          "status": "PENDING"
+        }
+      },
+      "protocol": "exactly one ordered two-key 33/66 case per window; not 25/50/90 ladder"
+    }
+  },
+  "system_results": {
+    "primary": {
+      "short_c1": {
+        "aggregate_tok_s": 30.754762446264543,
+        "per_stream_tok_s": 30.756227461441636,
+        "batch_wall_s": 8.32391407500836,
+        "repeats": 3,
+        "prompt_tokens": [
+          1220,
+          1220,
+          1220
+        ]
+      },
+      "medium_c1": {
+        "aggregate_tok_s": 11.217832614876396,
+        "per_stream_tok_s": 11.218010392266006,
+        "batch_wall_s": 34.85521788598271,
+        "repeats": 3,
+        "prompt_tokens": [
+          2070,
+          2070,
+          2070
+        ]
+      },
+      "prose_c1": {
+        "aggregate_tok_s": 6.774762855170798,
+        "per_stream_tok_s": 6.774851557192601,
+        "batch_wall_s": 74.0985346249945,
+        "repeats": 3,
+        "prompt_tokens": [
+          32,
+          32,
+          32
+        ]
+      }
+    },
+    "counting": {
+      "counting_c1": {
+        "aggregate_tok_s": 58.33032308344563,
+        "per_stream_tok_s": 58.33870151493629,
+        "batch_wall_s": 5.143122550012777,
+        "repeats": 3,
+        "prompt_tokens": [
+          30,
+          30,
+          30
+        ]
+      },
+      "counting_c4": {
+        "aggregate_tok_s": 112.74792855315273,
+        "per_stream_tok_s": 28.192431540019793,
+        "batch_wall_s": 7.095474039000692,
+        "repeats": 3,
+        "prompt_tokens": [
+          30,
+          30,
+          30,
+          30,
+          30,
+          30,
+          30,
+          30,
+          30,
+          30,
+          30,
+          30
+        ]
+      }
+    },
+    "ladder": {
+      "status": "VERIFIED_WITH_LOAD_COUNTER_CAVEAT",
+      "source_sha256": "2f08637a1897b72486505d2af066fdda34b45e09d38a1f698de46347b1d9f860",
+      "steps": [
+        {
+          "concurrency": 1,
+          "steady_running": 1,
+          "longest_exact_sample_run": 60,
+          "raw_max_load_count": 1,
+          "over_client_samples": 0,
+          "completed": 17,
+          "errors": 0,
+          "aggregate_tok_s": 55.551446492230845
+        },
+        {
+          "concurrency": 2,
+          "steady_running": 2,
+          "longest_exact_sample_run": 64,
+          "raw_max_load_count": 2,
+          "over_client_samples": 0,
+          "completed": 28,
+          "errors": 0,
+          "aggregate_tok_s": 85.93765658432197
+        },
+        {
+          "concurrency": 4,
+          "steady_running": 4,
+          "longest_exact_sample_run": 50,
+          "raw_max_load_count": 7,
+          "over_client_samples": 2,
+          "completed": 36,
+          "errors": 0,
+          "aggregate_tok_s": 110.47945663807411
+        },
+        {
+          "concurrency": 8,
+          "steady_running": 8,
+          "longest_exact_sample_run": 22,
+          "raw_max_load_count": 8,
+          "over_client_samples": 0,
+          "completed": 48,
+          "errors": 0,
+          "aggregate_tok_s": 136.66904923977273
+        }
+      ],
+      "total_completed": 129,
+      "method": "server-usage tokens / actual complete-client wall; sustained exact load counts, not raw maximum",
+      "caveat": "Pinned load_inquirer.py:100 counts len(get_running_batch().reqs), without filtering finished requests. Raw c4 count transiently exceeded client concurrency; raw maxima retained and only sustained exact levels qualified. Original rc1 receipt retained."
+    },
+    "native_bench_serving": {
+      "bench-short-c1": {
+        "completed": 20,
+        "duration": 136.07337331599956,
+        "total_input_tokens": 1505,
+        "total_output_tokens": 1139,
+        "output_throughput": 8.37048404286216,
+        "request_throughput": 0.14697952665254013,
+        "mean_ttft_ms": 1869.6611191999182,
+        "median_ttft_ms": 1782.5577985004202,
+        "mean_tpot_ms": 104.94935031188616,
+        "median_itl_ms": 60.42963316667738,
+        "random_input_len": 128,
+        "random_output_len": 128,
+        "max_concurrency": 1,
+        "random_range_ratio": 0.0,
+        "total_output_tokens_retokenized": 1137,
+        "raw_sha256": "f2888255fda0f5c8eaa97201a215cd95e21ef767ed68c9448610b1d0b77854a7",
+        "retokenized_output_tok_s": 8.355786090196906,
+        "token_method": "Native harness nominal output count (falls back to requested length when stream usage is absent); independently reported decoded-text retokenization count also retained. Input/output lengths are uniformly sampled from1 through configured maxima at range_ratio0, not fixed shapes."
+      },
+      "bench-short-c8": {
+        "completed": 20,
+        "duration": 99.62831748299868,
+        "total_input_tokens": 1505,
+        "total_output_tokens": 1139,
+        "output_throughput": 11.432492576163071,
+        "request_throughput": 0.20074613829961496,
+        "mean_ttft_ms": 10687.14452739996,
+        "median_ttft_ms": 2997.481831999721,
+        "mean_tpot_ms": 1635.9629850374565,
+        "median_itl_ms": 237.1120713332857,
+        "random_input_len": 128,
+        "random_output_len": 128,
+        "max_concurrency": 8,
+        "random_range_ratio": 0.0,
+        "total_output_tokens_retokenized": 1136,
+        "raw_sha256": "c4d64faac6b9839177a264bf824dae93a0bd9fe749b6e66de4148181d245c395",
+        "retokenized_output_tok_s": 11.40238065541813,
+        "token_method": "Native harness nominal output count (falls back to requested length when stream usage is absent); independently reported decoded-text retokenization count also retained. Input/output lengths are uniformly sampled from1 through configured maxima at range_ratio0, not fixed shapes."
+      },
+      "bench-medium-c1": {
+        "completed": 20,
+        "duration": 576.6644215420001,
+        "total_input_tokens": 20321,
+        "total_output_tokens": 5875,
+        "output_throughput": 10.1879009360249,
+        "request_throughput": 0.03468221595242519,
+        "mean_ttft_ms": 6798.547655600123,
+        "median_ttft_ms": 4941.66247999965,
+        "mean_tpot_ms": 72.01420415326066,
+        "median_itl_ms": 56.08026433340759,
+        "random_input_len": 2048,
+        "random_output_len": 512,
+        "max_concurrency": 1,
+        "random_range_ratio": 0.0,
+        "total_output_tokens_retokenized": 5859,
+        "raw_sha256": "8402e80ee191eb6e4f4e35b2aab0ca4377c76ba95ce8d16c9f10fb7cc689cca4",
+        "retokenized_output_tok_s": 10.160155163262958,
+        "token_method": "Native harness nominal output count (falls back to requested length when stream usage is absent); independently reported decoded-text retokenization count also retained. Input/output lengths are uniformly sampled from1 through configured maxima at range_ratio0, not fixed shapes."
+      },
+      "bench-medium-c8": {
+        "completed": 20,
+        "duration": 829.393920540002,
+        "total_input_tokens": 20321,
+        "total_output_tokens": 5875,
+        "output_throughput": 7.0834857291634155,
+        "request_throughput": 0.02411399397162014,
+        "mean_ttft_ms": 31598.61741959976,
+        "median_ttft_ms": 18575.7175130002,
+        "mean_tpot_ms": 978.7881615307958,
+        "median_itl_ms": 522.6742442500836,
+        "random_input_len": 2048,
+        "random_output_len": 512,
+        "max_concurrency": 8,
+        "random_range_ratio": 0.0,
+        "total_output_tokens_retokenized": 5861,
+        "raw_sha256": "7491afdbf131453889f16708133c829b6ed15725046bcbc6da394b4d43832dc9",
+        "retokenized_output_tok_s": 7.066605933383282,
+        "token_method": "Native harness nominal output count (falls back to requested length when stream usage is absent); independently reported decoded-text retokenization count also retained. Input/output lengths are uniformly sampled from1 through configured maxima at range_ratio0, not fixed shapes."
+      }
+    }
+  },
+  "infra_errors_total": 3,
+  "eligible_lane_infra_errors": 0,
+  "excluded_attempts": [
+    {
+      "lane": "bfcl",
+      "status": "INFRA_MEMORY_ALLOCATION_FAILURE",
+      "scored": false,
+      "prior_text180_preserved": true,
+      "guard_hard_abort": true,
+      "affected_ranks": [
+        0,
+        3
+      ],
+      "note": "Fresh NVRM allocation errors during first BFCL case after completed text180; no cgroup OOM. All ranks stopped by guards. Fresh same-image/profile epoch used for incomplete lanes; no stability fix claimed."
+    },
+    {
+      "lane": "bfcl",
+      "status": "HARNESS_SHARED_RESULT_ROOT",
+      "scored": false,
+      "new_model_requests": 0,
+      "repaired": true,
+      "repair": "Fresh root bound before official imports; only file locks relocated; official frozen evaluator unchanged."
+    },
+    {
+      "lane": "bench-medium-c8",
+      "status": "RUNTIME_CUDA_ILLEGAL_ADDRESS",
+      "scored": false,
+      "measured_requests": 0,
+      "failure_during": "warmup",
+      "originating_kernel": "not established; reported asynchronously by rank0 NCCL watchdog",
+      "control": "fresh identical-image/profile epoch for only missing cell; no stability repair claimed"
+    }
+  ],
+  "invalid_for_publish": false,
+  "runtime_stability_qualified": false,
+  "disclosures": [
+    "This is the complete frozen Q200v2 campaign protocol, not a standard r0b0bench core/core-subset suite.",
+    "Q200189/200 includes strict independent reasoning review19/20; historical overlay-v1 192/200 is a different image/profile.",
+    "All completed score-bearing rows are graded and have no transport/grader errors. Three failed infrastructure attempts are separately retained; no general service-stability repair is claimed.",
+    "Performance/vision/text/BFCL/missing native cell span verified equivalent image/profile epochs. Native random cells use sampled length caps and distinguish nominal from retokenized token rates.",
+    "CV-Bench is the bounded first60 Count subset; MMVP is300 rows. Dedicated mixed-workload soak NOT_RUN.",
+    "Both512K and1M retrieval tests are pending at this publication; update after each actual outcome."
+  ],
+  "artifacts": {
+    "repository": "https://github.com/r0b0tlab/dsv41-flash-tp4-sglang-sm121",
+    "commit": "9b7d03b4227fe40798ee499eb59b15a8f78ee0db",
+    "results_url": "https://github.com/r0b0tlab/dsv41-flash-tp4-sglang-sm121/blob/9b7d03b4227fe40798ee499eb59b15a8f78ee0db/evidence/final/RESULTS.json",
+    "results_sha256": "28a25a6fc6ab75a4b9c93d58a4750d11a075113bd692db007369c686a09b6e1e",
+    "q200_closeout_sha256": "e0f00e187709ffc21f3746c9032c46e82c229954139a9d25e9c39863c3971cef"
+  }
+}
