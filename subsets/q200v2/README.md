@@ -16,8 +16,8 @@ Campaign kit published **as a subset** of r0b0bench so the identity that
 ## Identity (verify the bytes, don't trust the prose)
 
 ```
-74623ab9b075120cd6f7a93059cc16d8817a6039dd20118b8f0350279f8b1ed6  artifacts/quality-text-180-v2.jsonl
-ca35650e0bf4c9997772276c15a7116afd553a305b10c88182f52f050b76e066  artifacts/quality-200.jsonl
+66a75701cbeea69f212e1c8be92aab9efaf3fa4d7af3c6911c8f7864a17d8d14  artifacts/quality-text-180-v2.jsonl
+91fb5386dab146cfd64b66e3622d163db6f39e855ee6b00b992f27f3b9f55616  artifacts/quality-200.jsonl
 0860da504a3db2c3cd73647ecdc2a5ecdb1793d7a5cf3f4f004912f0ef314d4e  artifacts/bfcl-v4-multi-turn-hard20-v1.json
 ```
 
@@ -39,8 +39,19 @@ pytest subsets/q200v2/tests
 - **One sanitized file.** `artifacts/quality-200.manifest.json` originally carried an absolute
   campaign path in its `source` field. That path is replaced (`"source": "artifacts/quality-200.jsonl"`,
   `source_path_redacted: true`) and the file's original byte hash is preserved inside it as
-  `original_file_sha256` (`2b1b898e3eabacbb2c5ff5abaa463538d6db813ca78df4ca1ffeb62bf2c00a83`). No other
-  byte of any kit file was altered, and the dataset hashes above are untouched.
+  `original_file_sha256` (`2b1b898e3eabacbb2c5ff5abaa463538d6db813ca78df4ca1ffeb62bf2c00a83`).
+- **Revision 2026-09-16 (hard_reasoning corrections).** Four `hard_reasoning` entries were
+  corrected after a review found defective grading guidance: `hard-00` reference (p^3-p IS
+  divisible by 24 for prime p>3; the old example was arithmetically broken), `hard-02`
+  reference (added the missing solution (13,8)), `hard-08` prompt (now asks for the largest
+  non-representable value - the Frobenius question its reference answers - instead of the
+  trivial 'smallest'), and `hard-12` reference (scoped to finite graphs; the unqualified
+  statement is false). Updated in this change: both `artifacts/quality-*.jsonl` files, this
+  file's hash block, `kit.json`, `MANIFEST.sha256`, and the pinned dataset hash in
+  `scripts/run_quality_set.py`, `scripts/close_q200_v2.py`, `tests/test_q200_v2.py` and
+  `docs/PROCEDURES.md`. Runs citing the prior dataset sha256
+  `74623ab9b075120cd6f7a93059cc16d8817a6039dd20118b8f0350279f8b1ed6` scored the pre-revision
+  bytes.
 - **The BFCL part is a selection, not a fork.** Only ids plus selection metadata are published here;
   the cases and ground truth come from the official BFCL v4 dataset via `bfcl-eval==2025.12.17`
   (`requirements-bfcl.txt`). The manifest states its own reading: a *deterministic structural-complexity

@@ -13,7 +13,7 @@ from typing import Any, Mapping
 TEXT_SCHEMA = "r0b0tlab.qwen38.quality_text_180_run.v2"
 BFCL_SCHEMA = "r0b0tlab.qwen38.q200_v2_bfcl_hard20_run.v1"
 OUTPUT_SCHEMA = "r0b0tlab.qwen38.q200_v2_closeout.v1"
-TEXT_DATASET_SHA256 = "74623ab9b075120cd6f7a93059cc16d8817a6039dd20118b8f0350279f8b1ed6"
+TEXT_DATASET_SHA256 = "66a75701cbeea69f212e1c8be92aab9efaf3fa4d7af3c6911c8f7864a17d8d14"
 BFCL_MANIFEST_SHA256 = "0860da504a3db2c3cd73647ecdc2a5ecdb1793d7a5cf3f4f004912f0ef314d4e"
 BFCL_LABEL = "BFCL v4 multi_turn_base structural-hard20"
 EXPECTED_CHAT = {"enable_thinking": True, "thinking": True, "reasoning_effort": "low"}

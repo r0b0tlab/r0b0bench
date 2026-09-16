@@ -1,5 +1,5 @@
 {
-  "bytes": 129493,
+  "bytes": 129396,
   "dataset": "quality-200.jsonl",
   "family_counts": {
     "agentic_coding": 20,
@@ -12,7 +12,7 @@
   "original_file_sha256": "2b1b898e3eabacbb2c5ff5abaa463538d6db813ca78df4ca1ffeb62bf2c00a83",
   "rows": 200,
   "schema": "r0b0tlab.qwen38.quality_200_manifest.v1",
-  "sha256": "ca35650e0bf4c9997772276c15a7116afd553a305b10c88182f52f050b76e066",
+  "sha256": "91fb5386dab146cfd64b66e3622d163db6f39e855ee6b00b992f27f3b9f55616",
   "source": "artifacts/quality-200.jsonl",
   "source_path_redacted": true,
   "source_path_redacted_note": "absolute campaign path removed for publication; file bytes otherwise unchanged"

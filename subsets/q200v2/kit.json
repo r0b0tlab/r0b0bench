@@ -10,7 +10,7 @@
   },
   "artifacts": {
     "quality-text-180-v2.jsonl": {
-      "sha256": "74623ab9b075120cd6f7a93059cc16d8817a6039dd20118b8f0350279f8b1ed6",
+      "sha256": "66a75701cbeea69f212e1c8be92aab9efaf3fa4d7af3c6911c8f7864a17d8d14",
       "rows": 180,
       "families": {
         "gsm8k": 80,
@@ -28,7 +28,7 @@
       "identity_role": "this hash is the dataset_sha256 cited in docs/PROCEDURES.md section 1"
     },
     "quality-200.jsonl": {
-      "sha256": "ca35650e0bf4c9997772276c15a7116afd553a305b10c88182f52f050b76e066",
+      "sha256": "91fb5386dab146cfd64b66e3622d163db6f39e855ee6b00b992f27f3b9f55616",
       "rows": 200,
       "note": "parent set; quality-text-180-v2 is its exact projection minus the agentic_coding family (asserted by tests/test_q200_v2.py)"
     },

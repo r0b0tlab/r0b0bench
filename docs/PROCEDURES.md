@@ -11,7 +11,9 @@ template kwargs) in every ledger entry.
 
 **What it is.** 180 frozen text-quality rows (`quality-text-180-v2`: gsm8k 80, humaneval 40,
 ifeval 40, hard_reasoning 20) plus the official BFCL v4 `multi_turn_base` structural-hard20
-subset (20 rows). Dataset sha256 `74623ab9b075120cd6f7a93059cc16d8817a6039dd20118b8f0350279f8b1ed6`.
+subset (20 rows). Dataset sha256 `66a75701cbeea69f212e1c8be92aab9efaf3fa4d7af3c6911c8f7864a17d8d14`. Revision 2026-09-16: four hard_reasoning
+entries corrected (references hard-00/hard-02/hard-12, prompt hard-08); runs citing the prior
+dataset sha256 `74623ab9b075120cd6f7a93059cc16d8817a6039dd20118b8f0350279f8b1ed6` scored the pre-revision bytes - see `subsets/q200v2/README.md`.
 
 **Identity.** Every row binds `dataset_sha256`, `run_identity_sha256` (image id + profile id +
 candidate id + chat kwargs + max_tokens), `request_sha256`, `response_sha256`. The run summary

@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 TEXT180 = ROOT / "artifacts" / "quality-text-180-v2.jsonl"
 HISTORICAL200 = ROOT / "artifacts" / "quality-200.jsonl"
 BFCL20 = ROOT / "artifacts" / "bfcl-v4-multi-turn-hard20-v1.json"
-EXPECTED_TEXT_SHA = "74623ab9b075120cd6f7a93059cc16d8817a6039dd20118b8f0350279f8b1ed6"
+EXPECTED_TEXT_SHA = "66a75701cbeea69f212e1c8be92aab9efaf3fa4d7af3c6911c8f7864a17d8d14"
 EXPECTED_MANIFEST_SHA = "0860da504a3db2c3cd73647ecdc2a5ecdb1793d7a5cf3f4f004912f0ef314d4e"
 EXPECTED_IDS = [
     "multi_turn_base_109",

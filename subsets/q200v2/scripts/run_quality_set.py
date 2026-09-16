@@ -27,7 +27,7 @@ from pathlib import Path
 from typing import Any, Iterable, Mapping
 
 MODEL = "qwen38-flash-next-w4a16"
-DATASET_SHA256 = "74623ab9b075120cd6f7a93059cc16d8817a6039dd20118b8f0350279f8b1ed6"
+DATASET_SHA256 = "66a75701cbeea69f212e1c8be92aab9efaf3fa4d7af3c6911c8f7864a17d8d14"
 EXPECTED_COUNT = 180
 EXPECTED_FAMILY_COUNTS = {"gsm8k": 80, "humaneval": 40, "ifeval": 40, "hard_reasoning": 20}
 DEFAULT_CHAT_KWARGS = {"enable_thinking": True, "thinking": True, "reasoning_effort": "low"}
