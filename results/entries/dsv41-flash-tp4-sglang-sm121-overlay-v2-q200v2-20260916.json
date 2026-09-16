@@ -138,7 +138,7 @@
       }
     },
     "niah": {
-      "status": "512K: INFRA_FAILURE; 1M: PENDING",
+      "status": "512K: INFRA_FAILURE; 1M: INFRA_FAILURE",
       "windows": {
         "512k": {
           "status": "INFRA_FAILURE",
@@ -151,10 +151,22 @@
           "logical_cases": 1,
           "execution_attempts": 2,
           "replayed_case_sha256": "b0c0ecebf697a1418cd517c89a973a947078435dbdcffb6f5ce9f30c83cf4b2d",
-          "qualification": "NOT_QUALIFIED"
+          "qualification": "NOT_QUALIFIED",
+          "answer_returned": false,
+          "scored": false
         },
         "1m": {
-          "status": "PENDING"
+          "status": "INFRA_FAILURE",
+          "advertised_window": 1048576,
+          "target_prompt_tokens": 1046462,
+          "raw_sha256": "d5243d3521ef9c40158fe4946e0f336330765ed3df24c6724b4613debb1eaf21",
+          "cases": [],
+          "profile_sha256": "a40b6878f75eb4b1db2504cb5d20cbad61a6f64c56ffe425dd37f4b9653b5584",
+          "qualification": "NOT_QUALIFIED",
+          "answer_returned": false,
+          "scored": false,
+          "logical_cases": 1,
+          "execution_attempts": 1
         }
       },
       "protocol": "exactly one ordered two-key 33/66 case per window; not 25/50/90 ladder"
@@ -361,7 +373,7 @@
       }
     }
   },
-  "infra_errors_total": 5,
+  "infra_errors_total": 6,
   "eligible_lane_infra_errors": 0,
   "excluded_attempts": [
     {
@@ -413,6 +425,17 @@
       "logical_cases": 1,
       "attempt": 2,
       "note": "Fresh same-profile replay passed resident-free admission but still produced a new NVRM allocation error;512K is not retrieval-qualified."
+    },
+    {
+      "lane": "niah-1m",
+      "status": "INFRA_MEMORY_ALLOCATION_FAILURE",
+      "scored": false,
+      "answer_returned": false,
+      "last_logged_pending_tokens": 707774,
+      "scheduled_prefix_estimate_tokens": 338688,
+      "logical_cases": 1,
+      "attempt": 1,
+      "note": "C1/native-GC0.6 profile admitted, canaries passed, then new rank0 NVRM allocation error; no full-window answer."
     }
   ],
   "invalid_for_publish": false,
@@ -426,10 +449,10 @@
   ],
   "artifacts": {
     "repository": "https://github.com/r0b0tlab/dsv41-flash-tp4-sglang-sm121",
-    "commit": "137e1d5a8817ed1a9ea24cbbbc897e58a6bac871",
-    "results_url": "https://github.com/r0b0tlab/dsv41-flash-tp4-sglang-sm121/blob/137e1d5a8817ed1a9ea24cbbbc897e58a6bac871/evidence/final/RESULTS.json",
-    "results_sha256": "c84475a3527ab26647aeabf2f7d297ac60859cf177e2ec8a166c058ce43f9c14",
+    "commit": "5cc1bab1ae4aab170da0873bbebcb44b3d843144",
+    "results_url": "https://github.com/r0b0tlab/dsv41-flash-tp4-sglang-sm121/blob/5cc1bab1ae4aab170da0873bbebcb44b3d843144/evidence/final/RESULTS.json",
+    "results_sha256": "9cf9f56829a394f26e5d69e5907a6ac4fa5abd4ee652c8e66670879301534829",
     "q200_closeout_sha256": "e0f00e187709ffc21f3746c9032c46e82c229954139a9d25e9c39863c3971cef"
   },
-  "updated_utc": "2026-09-16T08:10:22.079462+00:00"
+  "updated_utc": "2026-09-16T09:16:38.941300+00:00"
 }

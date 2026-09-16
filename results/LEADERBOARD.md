@@ -9,7 +9,7 @@ Comparable only within the same profile and disclosed scorer variants.
 | entry_id | model | spec | GSM8K | HE@1 | QA | IFEval | MultiChallenge | BFCL-MT | ASTµ | NIAH | invalid |
 |----------|-------|------|------:|-----:|---:|-------:|---------------:|-------:|-----:|------|---------|
 | dsv4-flash-native-v11-core-subset-20260803 | DeepSeek-V4-Flash DSpark NVFP4 (dua | dspark K=6 | 0.950 | 0.909 | 0.960 | 0.795 | — | 0.755 | 0.362 | PASS | False |
-| dsv41-flash-tp4-sglang-sm121-overlay-v2-q200v2-20260916 | DeepSeek-V4.1-Flash (4x GB10) | dspark K=5 | — | — | — | — | — | — | — | 512K: INFRA_FAILURE; 1M: PENDING | False |
+| dsv41-flash-tp4-sglang-sm121-overlay-v2-q200v2-20260916 | DeepSeek-V4.1-Flash (4x GB10) | dspark K=5 | — | — | — | — | — | — | — | 512K: INFRA_FAILURE; 1M: INFRA_FAILURE | False |
 | glm53-flash-nvfp4-dflash2-niah-126k-20260910 | GLM-5.3-Flash-NVFP4 (NVIDIA ModelOp | dflash | — | — | — | — | — | — | — | PASS | None |
 | glm53-flash-nvfp4-dflash2-q200v2-20260910 | GLM-5.3-Flash-NVFP4 (NVIDIA ModelOp | dflash | — | — | — | — | — | — | — | — | None |
 | glm53-flash-nvfp4-dflash2-vision-20260910 | GLM-5.3-Flash-NVFP4 (NVIDIA ModelOp | dflash | — | — | — | — | — | — | — | — | None |
@@ -52,7 +52,7 @@ Frozen campaign protocols documented in [`docs/PROCEDURES.md`](../docs/PROCEDURE
 
 | entry_id | profile | headline | detail |
 |----------|---------|----------|--------|
-| dsv41-flash-tp4-sglang-sm121-overlay-v2-q200v2-20260916 | q200v2 | 0.945 | text180 0.972; BFCL-hard20 0.700; NIAH 512K: INFRA_FAILURE; 1M: PENDING |
+| dsv41-flash-tp4-sglang-sm121-overlay-v2-q200v2-20260916 | q200v2 | 0.945 | text180 0.972; BFCL-hard20 0.700; NIAH 512K: INFRA_FAILURE; 1M: INFRA_FAILURE |
 | glm53-flash-nvfp4-dflash2-q200v2-20260910 | q200v2 | — | text180 0.955; BFCL-hard20 0.700; NIAH — |
 | glm53-flash-nvfp4-dflash2-vision-20260910 | vision | — | cvbench —; mmvp-paired —; rwqa —; ocrbench — |
 | ling-3.0-flash-vl-nvfp4-mp-q200v2-20260909 | q200v2 | 0.970 | text180 0.983; BFCL-hard20 0.850; NIAH PASS |
