@@ -1,6 +1,6 @@
 # r0b0bench leaderboard
 
-Entries: **17** · regenerated from `results/entries/*.json`
+Entries: **18** · regenerated from `results/entries/*.json`
 
 Comparable only within the same profile and disclosed scorer variants.
 
@@ -20,6 +20,7 @@ Comparable only within the same profile and disclosed scorer variants.
 | ling-3.0-flash-nvfp4-mtp1-graphs-20260807 | Ling-3.0-flash NVFP4 (MTP scale 1,  | none | 0.945 | 0.659 | 0.960 | 0.830 | — | 0.620 | 0.307 | PASS | False |
 | ling-3.0-flash-vl-nvfp4-mp-q200v2-20260909 | Ling-3.0-flash-VL NVFP4-MP (single  | none | — | — | — | — | — | — | — | PASS | False |
 | ling-3.0-flash-vl-nvfp4-mp-vision-20260909 | Ling-3.0-flash-VL NVFP4-MP (single  | none | — | — | — | — | — | — | — | — | False |
+| mimo26-nvfp4-final3-500k-systems-20260925 | MiMo-V2.6-Flash-RL-NVFP4 FINAL3-500 | none | — | — | — | — | — | 0.570 | 0.352 | PASS | False |
 | nemotron-lightning-mtp-k1-core-subset-20260810 | NVIDIA Nemotron 3.5 Lightning 30B-A | mtp K=1 | 0.945 | 0.860 | 0.953 | 0.775 | — | 0.380 | 0.043 | PASS | False |
 | nemotron-lightning-mtp-k1-thinking-on-core-subset-20260810 | NVIDIA Nemotron 3.5 Lightning 30B-A | mtp K=1 | 0.910 | 0.939 | 0.958 | 0.775 | — | 0.665 | 0.292 | PASS | False |
 | qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-20260819 | Qwen3.8-27B NVFP4 (r0b0tlab 4-of-4) | dflash2 K=8 draft=8 block=8, think-off | 0.865 | 0.872 | 0.963 | 0.820 | — | 0.690 | 0.273 | PASS | False |
@@ -42,6 +43,7 @@ Comparable only within the same profile and disclosed scorer variants.
 | ling-3.0-flash-nvfp4-mtp1-graphs-20260807 | Ling-3.0-flash NVFP4 (MTP scale 1,  | none | 32.830 | 5952.850 | 227.885 | 39.023 | 51.836 | 96.890 | 126.867 |
 | ling-3.0-flash-vl-nvfp4-mp-q200v2-20260909 | Ling-3.0-flash-VL NVFP4-MP (single  | none | — | — | — | — | — | — | — |
 | ling-3.0-flash-vl-nvfp4-mp-vision-20260909 | Ling-3.0-flash-VL NVFP4-MP (single  | none | — | — | — | — | — | — | — |
+| mimo26-nvfp4-final3-500k-systems-20260925 | MiMo-V2.6-Flash-RL-NVFP4 FINAL3-500 | none | 15.477 | 16535.175 | 253.523 | 50.180 | 66.041 | 91.647 | 159.649 |
 | nemotron-lightning-mtp-k1-core-subset-20260810 | NVIDIA Nemotron 3.5 Lightning 30B-A | mtp K=1 | 90.954 | 28815.643 | 92.329 | 103.411 | 180.465 | 304.276 | 376.315 |
 | nemotron-lightning-mtp-k1-thinking-on-core-subset-20260810 | NVIDIA Nemotron 3.5 Lightning 30B-A | mtp K=1 | 89.289 | 2031.666 | 93.628 | 99.470 | 151.647 | 217.046 | 252.004 |
 | qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-20260819 | Qwen3.8-27B NVFP4 (r0b0tlab 4-of-4) | dflash2 K=8 draft=8 block=8, think-off | 26.022 | 22662.780 | 214.609 | 68.610 | 124.305 | 211.981 | 276.450 |
@@ -74,6 +76,7 @@ Frozen campaign protocols documented in [`docs/PROCEDURES.md`](../docs/PROCEDURE
 - [`ling-3.0-flash-nvfp4-mtp1-graphs-20260807.json`](entries/ling-3.0-flash-nvfp4-mtp1-graphs-20260807.json) — ling-3.0-flash-nvfp4-mtp1-graphs-20260807
 - [`ling-3.0-flash-vl-nvfp4-mp-q200v2-20260909.json`](entries/ling-3.0-flash-vl-nvfp4-mp-q200v2-20260909.json) — ling-3.0-flash-vl-nvfp4-mp-q200v2-20260909
 - [`ling-3.0-flash-vl-nvfp4-mp-vision-20260909.json`](entries/ling-3.0-flash-vl-nvfp4-mp-vision-20260909.json) — ling-3.0-flash-vl-nvfp4-mp-vision-20260909
+- [`mimo26-nvfp4-final3-500k-systems-20260925.json`](entries/mimo26-nvfp4-final3-500k-systems-20260925.json) — mimo26-nvfp4-final3-500k-systems-20260925
 - [`nemotron-lightning-mtp-k1-core-subset-20260810.json`](entries/nemotron-lightning-mtp-k1-core-subset-20260810.json) — nemotron-lightning-mtp-k1-core-subset-20260810
 - [`nemotron-lightning-mtp-k1-thinking-on-core-subset-20260810.json`](entries/nemotron-lightning-mtp-k1-thinking-on-core-subset-20260810.json) — nemotron-lightning-mtp-k1-thinking-on-core-subset-20260810
 - [`qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-20260819.json`](entries/qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-20260819.json) — qwen38-27b-nvfp4-sglang-dflash2-k8-core-subset-20260819

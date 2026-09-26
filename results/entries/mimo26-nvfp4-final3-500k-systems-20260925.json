@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "entry_id": "mimo26-nvfp4-final3-500k-systems-20260925",
+  "recorded_utc": "2026-09-26T00:34:26.735466+00:00",
+  "model": {
+    "id": "mimo26",
+    "display_name": "MiMo-V2.6-Flash-RL-NVFP4 FINAL3-500k"
+  },
+  "runtime": {
+    "hardware": "2x GB10 TP=2 DFlash block 8",
+    "base_url_omitted": true
+  },
+  "harness": {
+    "name": "r0b0bench",
+    "version": "1.0.0rc2",
+    "profile": "systems"
+  },
+  "scores": {
+    "canary": {
+      "status": "PASS",
+      "passed": true,
+      "n": 5
+    },
+    "canary_end": {
+      "status": null
+    },
+    "multichallenge": {
+      "status": null,
+      "accuracy": null,
+      "correct": null,
+      "total": null,
+      "by_axis": null,
+      "judge_models": null,
+      "judge_providers": null,
+      "data_revision": null,
+      "dataset_sha256": null,
+      "comparable_only_with_same_judge": null
+    },
+    "bfcl_mt": {
+      "status": "PASS",
+      "accuracy": 0.57,
+      "correct": 114,
+      "total": 200
+    },
+    "bfcl_ast": {
+      "status": "PASS",
+      "micro_accuracy": 0.3516666666666667,
+      "categories": {
+        "multiple": {
+          "accuracy": 0.355,
+          "correct_count": 71,
+          "total_count": 200,
+          "source": "official BFCL score header in this run; package lane summary had pointed every category at parallel_multiple"
+        },
+        "parallel": {
+          "accuracy": 0.505,
+          "correct_count": 101,
+          "total_count": 200,
+          "source": "official BFCL score header in this run; package lane summary had pointed every category at parallel_multiple"
+        },
+        "parallel_multiple": {
+          "accuracy": 0.195,
+          "correct_count": 39,
+          "total_count": 200,
+          "source": "official BFCL score header in this run; package lane summary had pointed every category at parallel_multiple"
+        }
+      },
+      "micro_correct": 211,
+      "micro_total": 600
+    },
+    "latency": {
+      "status": "PASS",
+      "ttft_ms_mean": 253.52319475496188,
+      "itl_ms_mean": 159.20083450445264,
+      "e2el_ms_mean": 5824.119905999396
+    },
+    "concurrency": {
+      "status": "PASS",
+      "ladder_aggregate_tok_s": {
+        "1": 50.18021205614859,
+        "2": 66.04086926248414,
+        "4": 91.64686003362509,
+        "6": 159.64852165614872
+      }
+    },
+    "throughput": {
+      "status": "PASS",
+      "decode_median_client_tok_s": 15.477196348038095,
+      "prefill_median_prompt_tok_s": 16535.174940362354,
+      "prefill_median_prompt_tok_s_proxy": 16535.174940362354,
+      "prefill_mean_prompt_tok_s": 16535.174940362354,
+      "prefill_median_prompt_tokens": 22771.0
+    },
+    "qa": {
+      "status": null,
+      "accuracy": null,
+      "correct": null,
+      "n": null
+    },
+    "ifeval": {
+      "status": null,
+      "accuracy": null,
+      "correct": null,
+      "n": null,
+      "method": null
+    },
+    "humaneval": {
+      "status": null,
+      "pass@1": null,
+      "n": 164
+    },
+    "gsm8k": {
+      "status": null,
+      "accuracy": null,
+      "correct": null,
+      "n": null,
+      "method": null
+    },
+    "niah": {
+      "status": "PASS",
+      "depths": [
+        131008,
+        262016,
+        471628
+      ],
+      "max_model_len": 524288
+    }
+  },
+  "infra_errors_total": 0,
+  "invalid_for_publish": false,
+  "disclosures": [
+    "systems profile only. context-length 524288. tool-call-parser mimo. think-off enable_thinking=false thinking=false. NIAH 3/3 at depths 131008/262016/471628 of max_model_len 524288. BFCL-MT 57.00 percent on 200 rows. Seven multi-turn rows were regenerated after 1200s client timeouts; this invocation scored the repaired file and did not regenerate the other 193. BFCL-AST micro 117/600. C1 decode median 15.48 tok/s. Q200v2 text180 kept from the pre-cut FINAL3 serve (151/160 auto-graded, 20 hard_reasoning ungraded), not remeasured here. Not a core-subset quality claim. BFCL-AST official headers: multiple 71/200, parallel 101/200, parallel_multiple 39/200, micro 211/600. The package lane summary reported 0.195 because it reused the parallel_multiple file for all three categories."
+  ],
+  "artifact_roots_private": []
+}
