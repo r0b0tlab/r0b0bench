@@ -95,8 +95,11 @@ def _parse_mt_score(score_dir: Path) -> dict[str, Any]:
 
 def _parse_ast_scores(score_dir: Path) -> dict[str, Any]:
     out: dict[str, Any] = {"categories": {}}
+    # Exact official filename. A substring glob matches parallel_multiple
+    # for both "multiple" and "parallel" and collapses the micro score.
     for cat in ("multiple", "parallel", "parallel_multiple"):
-        hits = list(score_dir.rglob(f"*{cat}*score*.json"))
+        name = f"BFCL_v4_{cat}_score.json"
+        hits = [p for p in score_dir.rglob(name) if p.name == name]
         for path in hits:
             try:
                 first = path.read_text(encoding="utf-8").splitlines()[0]
