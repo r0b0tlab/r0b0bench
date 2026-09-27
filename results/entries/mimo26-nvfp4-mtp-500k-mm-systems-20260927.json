@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "entry_id": "mimo26-nvfp4-mtp-500k-mm-systems-20260927",
+  "recorded_utc": "2026-09-27T19:40:30.720437+00:00",
+  "model": {
+    "id": "mimo26",
+    "display_name": "MiMo-V2.6-Flash-RL-NVFP4 MTP-500k-mm"
+  },
+  "runtime": {
+    "hardware": "2x GB10 TP=2 EAGLE MTP 3 steps",
+    "base_url_omitted": true,
+    "speculative": {
+      "method": "EAGLE",
+      "draft_tokens": 4,
+      "config": "steps=3 topk=1 window=4096"
+    },
+    "num_steps": 3,
+    "eagle_topk": 1,
+    "draft_tokens": 4,
+    "mem_fraction_static": 0.9,
+    "context_length": 524288,
+    "reasoning_parser": "mimo",
+    "tool_call_parser": "mimo",
+    "mm_attention_backend": "triton_attn",
+    "mm_process_config": "torchvision",
+    "draft_extend_cuda_graph": true,
+    "image": "ghcr.io/r0b0tlab/sglang-mimo26-env:20260922-582389ce-mtp-mm",
+    "image_digest": "sha256:84857252a1a9b4196702154ae38eb3cfafdf4cd832795eba18ac2772f8a83f1e",
+    "image_visibility": "private",
+    "measurement_image": "parent plus bind-mounted loader and window-index files"
+  },
+  "harness": {
+    "name": "r0b0bench",
+    "version": "1.0.0rc2",
+    "profile": "systems"
+  },
+  "scores": {
+    "canary": {
+      "status": "PASS",
+      "passed": true,
+      "n": 5
+    },
+    "canary_end": {
+      "status": null
+    },
+    "multichallenge": {
+      "status": null,
+      "accuracy": null,
+      "correct": null,
+      "total": null,
+      "by_axis": null,
+      "judge_models": null,
+      "judge_providers": null,
+      "data_revision": null,
+      "dataset_sha256": null,
+      "comparable_only_with_same_judge": null
+    },
+    "bfcl_mt": {
+      "status": "PASS",
+      "accuracy": 0.585,
+      "correct": 117,
+      "total": 200
+    },
+    "bfcl_ast": {
+      "status": "PASS",
+      "micro_accuracy": 0.35833333333333334,
+      "categories": {
+        "multiple": {
+          "accuracy": 0.35,
+          "correct_count": 70,
+          "total_count": 200,
+          "source": "official BFCL score header; parser matched BFCL_v4_<category>_score.json"
+        },
+        "parallel": {
+          "accuracy": 0.515,
+          "correct_count": 103,
+          "total_count": 200,
+          "source": "official BFCL score header; parser matched BFCL_v4_<category>_score.json"
+        },
+        "parallel_multiple": {
+          "accuracy": 0.21,
+          "correct_count": 42,
+          "total_count": 200,
+          "source": "official BFCL score header; parser matched BFCL_v4_<category>_score.json"
+        }
+      }
+    },
+    "latency": {
+      "status": "PASS",
+      "ttft_ms_mean": 276.5211082296446,
+      "itl_ms_mean": 139.64724897193875,
+      "e2el_ms_mean": 4116.530102735851
+    },
+    "concurrency": {
+      "status": "PASS",
+      "ladder_aggregate_tok_s": {
+        "1": 26.673013124617768,
+        "2": 43.4784835711401,
+        "4": 66.62872552873816,
+        "6": 93.15317102355169
+      }
+    },
+    "throughput": {
+      "status": "PASS",
+      "decode_median_client_tok_s": 17.313837688860072,
+      "prefill_median_prompt_tok_s": 17940.75034612456,
+      "prefill_median_prompt_tok_s_proxy": 17940.75034612456,
+      "prefill_mean_prompt_tok_s": 17940.75034612456,
+      "prefill_median_prompt_tokens": 22771.0
+    },
+    "qa": {
+      "status": null,
+      "accuracy": null,
+      "correct": null,
+      "n": null
+    },
+    "ifeval": {
+      "status": null,
+      "accuracy": null,
+      "correct": null,
+      "n": null,
+      "method": null
+    },
+    "humaneval": {
+      "status": null,
+      "pass@1": null,
+      "n": 164
+    },
+    "gsm8k": {
+      "status": null,
+      "accuracy": null,
+      "correct": null,
+      "n": null,
+      "method": null
+    },
+    "niah": {
+      "status": "PASS",
+      "depths": [
+        131008,
+        262016,
+        471628
+      ],
+      "max_model_len": 524288,
+      "pass_count": 3,
+      "n": 3,
+      "all_passed": true
+    }
+  },
+  "infra_errors_total": 0,
+  "invalid_for_publish": false,
+  "disclosures": [
+    "Think-off. Advertised context 524288. One full systems profile, no lane subset. BFCL-MT 117/200 (0.585). AST official score headers after exact-filename reparse: multiple 70/200, parallel 103/200, parallel_multiple 42/200, micro 215/600 (0.358). The package summary had collapsed all three categories onto parallel_multiple (126/600) because a substring glob matched the longer filename; that collapsed figure is not the published score. NIAH 3/3 exact at 131008, 262016, and 471628. Throughput is the systems c1 median, not the 1024-token profile harness. The measured process used the parent image with the loader and draft-extend window-index files bind-mounted. The published tag copies those same three files and was not the process that served this suite. Q200 was not remeasured on this serve and is not part of this row."
+  ],
+  "artifact_roots_private": []
+}
